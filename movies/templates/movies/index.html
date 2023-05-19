@@ -1,4 +1,26 @@
 {% extends 'base.html' %}
-
+{% load bootstrap4 %}
 {% block content %}
+{% for resdata in resdatas%}
+id:{{resdata.id}}
+<br>
+title:{{resdata.title}}
+<br>
+평점:{{resdata.vote_average}}
+<br>
+포스터경로:{{resdata.poster_path}}
+<br>
+오버뷰:{{resdata.overview}}
+<br>
+장르:
+{% for genre_id in resdata.genre_ids %}
+{% for data in datas.genres %}
+{% ifequal genre_id data.id %}
+{{data.name}}
+{% endifequal %}
+{% endfor %}
+{% endfor %}
+<hr>
+{% endfor %}
+
 {% endblock content %}

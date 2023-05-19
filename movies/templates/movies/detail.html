@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+id:{{resdatas.id}}
+<br>
+title:{{resdatas.title}}
+<br>
+평점:{{resdatas.vote_average}}
+<br>
+포스터경로:{{resdatas.poster_path}}
+<br>
+오버뷰:{{resdatas.overview}}
+<br>
+장르:
+{% for genre_id in resdatas.genre_ids %}
+{{genre_id.name}}
+{% endfor %}
+<br>
+출연진:
+{% for data in datas %}
+{{data.name}},
+{{data.profile_path}}
+<br>
+{% endfor %}
+<hr>
+{% endblock content %}
