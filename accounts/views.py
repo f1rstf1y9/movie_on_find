@@ -6,6 +6,8 @@ from django.contrib.auth import update_session_auth_hash, get_user_model
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.views.decorators.http import require_http_methods, require_safe, require_POST
 
+# branch test for f1rstf1y9
+
 # Create your views here.
 @require_http_methods(['GET', 'POST'])
 def login(request):
