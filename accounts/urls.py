@@ -1,6 +1,9 @@
 from django.urls import path
 from . import views
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 app_name = 'accounts'
 urlpatterns = [
     path('login/', views.login, name='login'),
@@ -11,4 +14,7 @@ urlpatterns = [
     path('password/', views.change_password, name='change_password'),
     path('profile/<username>', views.profile, name='profile'),
     path('<int:user_pk>/follow/', views.follow, name='follow'),
-]
+    path('email_login', views.email_login, name="email_login"),
+    path('kakao_login', views.kakao_login, name="kakao_login"),
+    path('kakao_login/callback', views.kakao_login_callback, name="kakao_login_callback"),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

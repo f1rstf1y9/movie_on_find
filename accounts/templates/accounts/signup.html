@@ -1,16 +1,57 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 
+{% block nav %}
+<a href="{% url 'accounts:login' %}" class="btn btn-secondary">BACK</a>
+<span>회원가입</span>
+{% endblock nav %}
+
+{% block style %}
+.form-group:has(#id_kakao_id) {
+  display: none;
+} 
+form > div {
+  margin: 30px 0;
+}
+.form-group > textarea, .form-control {
+  color: white;
+  background-color: #494949;
+  border:#b1b1b1;
+  height: 45px;
+}
+.form-group > textarea::placeholder, .form-control::placeholder {
+  color: rgb(202, 202, 202);
+}
+.form-group > textarea:focus, .form-control:focus {
+  color: white;
+  box-shadow: none;
+  box-shadow: 0px 0px 4px 1px rgba(255,255,255,1);
+  -webkit-box-shadow: 0px 0px 4px 1px rgba(255,255,255,1);
+  -moz-box-shadow: 0px 0px 4px 1px rgba(255,255,255,1);
+  background-color: #494949;
+}
+.join-btn > button {
+  background-color: rgb(255, 217, 2);
+  border: none;
+  color: black;
+  height: 40px;
+}
+.join-btn > button:hover {
+  background-color: rgba(255, 217, 2, 0.863);
+  border: none;
+  color: black;
+}
+{% endblock style %}
+
 {% block content %}
   <h1>Signup</h1>
-  <form action="{% url 'accounts:signup' %}" method="POST">
+  <form action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form form %}
-    <div class="d-grid my-2">
-      <button class="btn btn-primary" type="submit">회원 가입</button>
+    <div class="d-grid my-2 join-btn">
+      <button class="btn" type="submit">회원 가입</button>
     </div>
   </form>
   <hr>
-  <a href="{% url 'movies:index' %}" class="btn btn-secondary">BACK</a>
 {% endblock content %}
 
