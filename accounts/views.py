@@ -24,6 +24,8 @@ def email_login(request):
         if form.is_valid():
             auth_login(request, form.get_user())
             return redirect('movies:index')
+        else:
+            return redirect('accounts:email_login')
     else:
         form = AuthenticationForm()
     context = {
