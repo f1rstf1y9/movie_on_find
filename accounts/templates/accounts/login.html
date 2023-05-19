@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+<div class="login-box col-md-8 col-lg-8 mx-auto">
+  <h1>Login</h1>
+  <form action="{% url 'accounts:login' %}" method="POST">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <div class="d-grid my-2">
+      <button class="btn btn-primary" type="submit">LOGIN</button>
+    </div>
+  </form>
+  <hr>
+  <a href="{% url 'movies:index' %}" class="btn btn-secondary">BACK</a>
+</div>
+
+{% endblock content %}

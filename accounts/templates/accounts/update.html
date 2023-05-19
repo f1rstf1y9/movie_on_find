@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+<h1>회원정보수정</h1>
+<form action="{% url 'accounts:update' %}" method="POST">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <div class="d-grid my-2">
+        <button class="btn btn-primary" type="submit">회원 정보 수정</button>
+    </div>
+</form>
+<hr>
+<a href="{% url 'movies:index' %}" class="btn btn-secondary">BACK</a>
+{% endblock content %}
+
