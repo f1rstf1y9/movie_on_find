@@ -4,7 +4,7 @@
 {% for resdata in resdatas%}
 id:{{resdata.id}}
 <br>
-title:{{resdata.title}}
+title:<a href="{% url 'movies:detail' resdata.id%}">{{resdata.title}}</a>
 <br>
 평점:{{resdata.vote_average}}
 <br>

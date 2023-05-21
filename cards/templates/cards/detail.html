@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>DETAIL</h1>
+  <h2>{{ card.pk }}번째 글입니다.</h2>
+  <hr>
+  <p><b>작성자 : {{ card.user }}</b></p>
+  <p>영화번호 : {{ card.movie_id }}</p>
+  <p>제목 : {{ card.title }}</p>
+  <p>내용 : {{ card.content }}</p>
+  <p>작성 시각 : {{ card.created_at }}</p>
+  <p>수정 시각 : {{ card.updated_at }}</p>
+  <p>좋아요 : <p id="likes">{{ likes }}</p></p>
+  <p>{{movie.title}}</p>
+  <p>{{movie.poster_path}}</p>
+  <div>
+    <form class="like-forms" data-card-id="{{ card.pk }}">
+      {% csrf_token %}
+      {% if request.user != card.user%}
+      {% if request.user in card.like_users.all %}
+        <input type="submit" value="좋아요 취소" id="like-{{ card.pk }}">
+      {% else %}
+        <input type="submit" value="좋아요" id="like-{{ card.pk }}">
+      {% endif %}
+      {% endif %}
+    </form>
+  </div>
+  {% if request.user == card.user %}
+    <a href="{% url 'cards:update' card.pk %}">UPDATE</a>
+    <form action="{% url 'cards:delete' card.pk %}" method="POST">
+      {% csrf_token %}
+      <input type="submit" value="DELETE">
+    </form>
+  {% endif %}
+  <hr>
+  <a href="{% url 'cards:index' %}">뒤로가기</a>
+  <hr>
+  <h4>댓글 목록</h4>
+  {% if comments %}
+    <p>{{ comments|length }}개의 댓글이 있습니다.</p>
+  {% endif %}
+  <ul>
+    {% for comment in comments %}
+      <li>
+        {{ comment.user }} - {{ comment.content }}
+        <p>좋아요 : <p id="likes_comment-{{comment.pk}}">{{ comment.like_users|length }}</p></p>
+        <div>
+          <form class="comment-like-forms" data-comment-id="{{ comment.pk }}">
+            {% csrf_token %}
+            {% if request.user != comment.user%}
+            {% if request.user in comment.like_users %}
+              <input type="submit" value="좋아요 취소" id="commentlike-{{ comment.pk }}">
+            {% else %}
+              <input type="submit" value="좋아요" id="commentlike-{{ comment.pk }}">
+            {% endif %}
+            {% endif %}
+          </form>
+        </div>
+        {% if request.user == comment.user %}
+          <form action="{% url 'cards:comments_delete' card.pk comment.pk %}" method="POST">
+            {% csrf_token %}
+            <input type="submit" value="DELETE">
+          </form>
+        {% endif %}
+      </li>
+    {% empty %}
+      <li>댓글이 없어요...</li>
+    {% endfor %}
+  </ul>
+  <hr>
+  {% if request.user.is_authenticated %}
+    <form action="{% url 'cards:comments_create' card.pk %}" method="POST">
+      {% csrf_token %}
+      {{ comment_form }}
+      <input type="submit">
+    </form>
+  {% else %}
+    <a href="{% url 'accounts:login' %}">댓글을 작성하려면 로그인 하세요.</a>
+  {% endif %}
+{% endblock content %}
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  const forms = document.querySelectorAll('.like-forms')
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+
+  forms.forEach((form) => {
+    form.addEventListener('submit', function (event) {
+      event.preventDefault()
+      const cardId = event.target.dataset.cardId
+      // headers: {'X-CSRFToken': csrftoken},
+      axios({
+        method: 'post',
+        url: `http://127.0.0.1:8000/cards/${cardId}/likes/`,
+        headers: {'X-CSRFToken': csrftoken},
+      })
+      .then((response) => {
+        // like 버튼을 이전에 눌렀는가? 좋아요 / 좋아요 취소를 할지 결정 (서버로 좋아요 여부 받기)
+        const isLiked = response.data.is_liked
+        const likeBtn = document.querySelector(`#like-${cardId}`)
+        const likes=document.querySelector("#likes")
+
+        if (isLiked === true) {
+          likeBtn.value = '좋아요 취소'
+          likes.textContent=Number(likes.textContent) + 1
+        
+        } else {
+          likeBtn.value = '좋아요',
+          likes.textContent=Number(likes.textContent) - 1
+
+        }
+      })
+
+
+    })
+  })
+  ///코멘트 좋아요
+  const commentforms = document.querySelectorAll('.comment-like-forms')
+ 
+
+  commentforms.forEach((form) => {
+    form.addEventListener('submit', function (event) {
+      event.preventDefault()
+      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+      const commentId = event.target.dataset.commentId
+      // headers: {'X-CSRFToken': csrftoken},
+      axios({
+        method: 'post',
+        url: `http://127.0.0.1:8000/cards/${commentId}/comment_likes/`,
+        headers: {'X-CSRFToken': csrftoken},
+      })
+      .then((response) => {
+        const is_commentliked = response.data.is_commentliked
+        const commentlikeBtn = document.querySelector(`#commentlike-${commentId}`)
+        const commentlikes=document.querySelector(`#likes_comment-${commentId}`)
+        if (is_commentliked === true) {
+          commentlikeBtn.value = '좋아요 취소'
+          commentlikes.textContent=Number(commentlikes.textContent) + 1
+        
+        } else {
+          commentlikeBtn.value = '좋아요',
+          commentlikes.textContent=Number(commentlikes.textContent) - 1
+
+        }
+      })
+
+
+    })
+  })
+
+
+
+</script>
+
+{% endblock script %}
