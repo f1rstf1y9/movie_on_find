@@ -24,8 +24,6 @@ def email_login(request):
         if form.is_valid():
             auth_login(request, form.get_user())
             return redirect('movies:index')
-        else:
-            return redirect('accounts:email_login')
     else:
         form = AuthenticationForm()
     context = {
@@ -153,5 +151,15 @@ def follow(request, user_pk):
                 person.followers.remove(request.user)
             else:
                 person.followers.add(request.user)
-        return redirect('accounts:profile', person.username)
+        return redirect('accounts:profile', person.email)
     return redirect('accounts:login')
+
+@require_safe
+def followers(request, username):
+    User = get_user_model()
+    person = User.objects.get(email=username)
+    if request.user.is_authenticated:
+        context = {
+            'person' : person,
+        }
+        return render(request, 'accounts/followings.html', context)
