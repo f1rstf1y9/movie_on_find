@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+
+{% block style %}
+a {
+  color: white;
+}
+ul {
+  padding-left: 0;
+}
+li {
+  list-style: none;
+}
+button {
+  background: none;
+  border: none;
+  outline: 0;
+  color: white;
+}
+.container {
+  max-width: 700px;
+  margin: 75px auto;
+}
+.sub-header {
+  position: fixed;
+  height: 50px;
+  z-index: 99;
+  top: 62px;
+  background-color: rgb(44, 44, 44);
+  width: 100%;
+  max-width: 700px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-weight: 700;
+}
+.review-container {
+  margin-top: 140px;
+}
+.review-header {
+  display: flex;
+  justify-content: space-between;
+}
+.review-list li {
+  margin: 15px 0;
+}
+.review-item {
+  background-color: rgb(36, 35, 34);
+  padding: 15px;
+  border-radius: 10px;
+}
+.item-header {
+  display: flex;
+  justify-content: space-between;
+}
+.movie-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+.movie-info > img {
+  width: 50px;
+  border-radius: 6px;
+}
+.item-content {
+  margin-bottom: 10px;
+}
+.spoiler-prevent {
+  color: rgb(103, 103, 103);
+  font-size: 12px;
+}
+.item-content.spoiler {
+  filter: blur(5px);
+}
+.icon-box {
+  border-top: 1px solid rgb(46, 46, 46);
+  padding-top: 10px;
+}
+.icon-box form {
+  display: flex;
+}
+.icon-box button {
+  display: flex;
+  gap: 7px;
+}
+.icon-box button p {
+  width: 20px;
+  display: flex;
+  margin-bottom: 0;
+}
+{% endblock style %}
+
+
+{% block content %}
+<div id="header" class="sub-header">
+  <div class="header-inner">
+    <div class="back-btn">
+      <a href="{% url 'accounts:profile' person.email %}">
+        <svg width="24" height="24" viewBox="0 0 1024 1024" fill="#ffffff" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M669.6 849.6c8.8 8 22.4 7.2 30.4-1.6s7.2-22.4-1.6-30.4l-309.6-280c-8-7.2-8-17.6 0-24.8l309.6-270.4c8.8-8 9.6-21.6 2.4-30.4-8-8.8-21.6-9.6-30.4-2.4L360.8 480.8c-27.2 24-28 64-0.8 88.8l309.6 280z" fill=""></path></g></svg>
+      </a>
+    </div>
+    <p>{{ person.nickname }}님이 작성한 리뷰</p>
+    <div></div>
+  </div>
+</div>
+
+<div class="review-container">
+  <div class="review-header">
+    <p>n개의 리뷰</p>
+    <button>최신순</button>
+  </div>
+  <ul class="review-list">
+    <li>
+      <div class="review-item">
+        <div class="item-header">
+          <div class="movie-info">
+            <img src="https://nujhrcqkiwag1408085.cdn.ntruss.com/static/upload/movie_poster_images/280x400/movie_115800_1681697605.jpeg" alt="영화 포스터">
+            <p>슈퍼 마리오 브라더스</p>
+          </div>
+          <p>2023.05.22</p>
+        </div>
+        <a href="">
+          <div class="item-content">
+            리뷰리뷰!
+          </div>
+        </a>
+        <div class="icon-box">
+          <form action="#">
+            <button class="like">
+              <p class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg></p>
+              <p>0</p>
+            </button>
+            <button class="comment">
+              <p class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_429_11233)"> <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 13.4876 3.36093 14.891 4 16.1272L3 21L7.8728 20C9.10904 20.6391 10.5124 21 12 21Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> <defs> <clipPath id="clip0_429_11233"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg></p>
+              <p>0</p>
+            </button>
+          </form>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="review-item">
+        <div class="item-header">
+          <div class="movie-info">
+            <img src="https://nujhrcqkiwag1408085.cdn.ntruss.com/static/upload/movie_poster_images/280x400/movie_115800_1681697605.jpeg" alt="영화 포스터">
+            <p>슈퍼 마리오 브라더스</p>
+          </div>
+          <p>2023.05.22</p>
+        </div>
+        <a href="#" class="spoiler-link">
+          <div class="spoiler-prevent">
+            *스포일러가 포함된 리뷰입니다. 확인하려면 클릭해주세요.
+          </div>
+          <div class="item-content spoiler">
+            리뷰리뷰!
+          </div>
+        </a>
+        <div class="icon-box">
+          <form action="#">
+            <button class="like">
+              <p class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg></p>
+              <p>0</p>
+            </button>
+            <button class="comment">
+              <p class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_429_11233)"> <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 13.4876 3.36093 14.891 4 16.1272L3 21L7.8728 20C9.10904 20.6391 10.5124 21 12 21Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> <defs> <clipPath id="clip0_429_11233"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg></p>
+              <p>0</p>
+            </button>
+          </form>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="review-item">
+        <div class="item-header">
+          <div class="movie-info">
+            <img src="https://nujhrcqkiwag1408085.cdn.ntruss.com/static/upload/movie_poster_images/280x400/movie_115800_1681697605.jpeg" alt="영화 포스터">
+            <p>슈퍼 마리오 브라더스</p>
+          </div>
+          <p>2023.05.22</p>
+        </div>
+        <a href="#" class="spoiler-link">
+          <div class="spoiler-prevent">
+            *스포일러가 포함된 리뷰입니다. 확인하려면 클릭해주세요.
+          </div>
+          <div class="item-content spoiler">
+            리뷰리뷰!
+          </div>
+        </a>
+        <div class="icon-box">
+          <form action="#">
+            <button class="like">
+              <p class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg></p>
+              <p>0</p>
+            </button>
+            <button class="comment">
+              <p class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_429_11233)"> <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 13.4876 3.36093 14.891 4 16.1272L3 21L7.8728 20C9.10904 20.6391 10.5124 21 12 21Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> <defs> <clipPath id="clip0_429_11233"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg></p>
+              <p>0</p>
+            </button>
+          </form>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+
+{% endblock content %}
+
+
+{% block script %}
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const spoilerLinks = document.querySelectorAll(".spoiler-link");
+    const reviewItems = document.querySelectorAll(".review-item");
+
+    spoilerLinks.forEach(function(item) {
+      item.addEventListener("click", function() {
+        if (item.classList.contains('spoiler-link')){
+          event.preventDefault();
+          const itemMessage = item.querySelector(".spoiler-prevent");
+          const itemContent = item.querySelector(".item-content");
+          itemContent.classList.remove("spoiler");
+          itemMessage.style.display = "none";
+          item.classList.remove("spoiler-link");
+        }
+      });
+    });
+  });
+</script>
+{% endblock script %}

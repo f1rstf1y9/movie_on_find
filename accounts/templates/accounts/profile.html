@@ -3,6 +3,7 @@
 {% block style %}
 .card {
   border: none;
+  box-shadow: 0px 0px 80px -18px rgba(255, 183, 0, 0.273);
 }
 .card-header {
   background-color: rgb(255, 204, 0); 
@@ -277,7 +278,7 @@
             <div class="card-body p-4">
 
               <div class="profile-contents-container">
-                <a href="/user/185/watchlist?tab=interest" class="content-wrap" id="interestLabel">
+                <a href="{% url 'accounts:interest' person.email %}" class="content-wrap" id="interestLabel">
                   <span class="content-count">25</span>
                   <span class="content-label">보고싶어요</span>
                 </a>
@@ -292,7 +293,7 @@
               </div>
               
               <div class="other-profile-links-container">
-                <a href="/user/185/review" class="other-link-wrap" id="userReviewLabel">
+                <a href="{% url 'accounts:reviews' person.email %}" class="other-link-wrap" id="userReviewLabel">
                   <div class="link-label-wrap">
                     <span class="link-label">작성한 리뷰</span>
                   </div>
@@ -377,7 +378,7 @@
               </div>
               {% comment %} 컬렉션 {% endcomment %}
               <div class="d-flex justify-content-between align-items-center mb-4">
-                <p class="lead fw-normal mb-0">{{ person.nickname }}님의 컬렉션</p>
+                <p class="lead fw-normal mb-0">{{ person.nickname }}님의 포토티켓북</p>
                 <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
               </div>
               <div class="row g-2">

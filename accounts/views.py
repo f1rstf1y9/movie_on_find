@@ -194,3 +194,19 @@ def followers(request, username):
             'followers_list': followers_list,
         }
         return render(request, 'accounts/followers.html', context)
+    
+def interest(request, username):
+    User = get_user_model()
+    person = User.objects.get(email=username)
+    context = {
+        'person' : person,
+    }
+    return render(request, 'accounts/interest.html', context)
+
+def reviews(request, username):
+    User = get_user_model()
+    person = User.objects.get(email=username)
+    context = {
+        'person' : person,
+    }
+    return render(request, 'accounts/reviews.html', context)
