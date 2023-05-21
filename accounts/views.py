@@ -154,12 +154,43 @@ def follow(request, user_pk):
         return redirect('accounts:profile', person.email)
     return redirect('accounts:login')
 
+@require_POST
+def list_follow(request, current_user, follow_user, category):
+    if request.user.is_authenticated:
+        User = get_user_model()
+        follow = User.objects.get(pk=follow_user)
+        if follow != request.user:
+            if follow.followers.filter(pk=request.user.pk).exists():
+                follow.followers.remove(request.user)
+            else:
+                follow.followers.add(request.user)
+        if category == 1:
+          return redirect('accounts:followers', current_user)
+        else:
+          return redirect('accounts:followings', current_user)
+          
+    return redirect('accounts:login')
+
+@require_safe
+def followings(request, username):
+    User = get_user_model()
+    person = User.objects.get(email=username)
+    if request.user.is_authenticated:
+        followings_list = person.followings.all()
+        context = {
+            'person' : person,
+            'followings_list': followings_list,
+        }
+        return render(request, 'accounts/followings.html', context)
+
 @require_safe
 def followers(request, username):
     User = get_user_model()
     person = User.objects.get(email=username)
     if request.user.is_authenticated:
+        followers_list = person.followers.all()
         context = {
             'person' : person,
+            'followers_list': followers_list,
         }
-        return render(request, 'accounts/followings.html', context)
+        return render(request, 'accounts/followers.html', context)

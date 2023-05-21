@@ -4,17 +4,14 @@
 .card {
   border: none;
 }
-
 .card-header {
   background-color: rgb(255, 204, 0); 
   height:200px;
   color: black;
 }
-
 .follow-btn button {
   width: 150px;
 }
-
 .profile-image {
   min-width: 150px;
   max-width: 150px;
@@ -26,7 +23,10 @@
   border-radius: 50%;
   margin: auto;
 }
-
+.profile-email {
+  color: rgba(0, 0, 0, 0.326);
+  font-size: 12px;
+}
 .profile-info-container {
   text-decoration: none;
 }
@@ -249,7 +249,7 @@
               </div>
               <div class="ms-3" style="margin-top: 130px; color: black">
                 <h5>{{person.nickname}}</h5>
-                <p>{{person.email}}</p>
+                <p class="profile-email">{{person.email}}</p>
               </div>
             </div>
             <div class="p-4 text-black profile-info-container" style="background-color: #f8f9fa;">
@@ -264,7 +264,7 @@
                     <p class="small text-muted mb-0">팔로워</p>
                   </div>
                 </a>
-                <a href="{% url 'accounts:followers' person.email %}">
+                <a href="{% url 'accounts:followings' person.email %}">
                   <div>
                     <p class="mb-1 h5 text-black">{{person.followings.all|length}}</p>
                     <p class="small text-muted mb-0">팔로잉</p>
@@ -279,11 +279,11 @@
               <div class="profile-contents-container">
                 <a href="/user/185/watchlist?tab=interest" class="content-wrap" id="interestLabel">
                   <span class="content-count">25</span>
-                  <span class="content-label">찜했어요</span>
+                  <span class="content-label">보고싶어요</span>
                 </a>
                 <a href="/user/185/watchlist?tab=watching" class="content-wrap" id="watchingLabel">
                   <span class="content-count">0</span>
-                  <span class="content-label">보는중</span>
+                  <span class="content-label">보는 중</span>
                 </a>
                 <a href="/user/185/watchlist?tab=watched" class="content-wrap" id="watchedLabel">
                   <span class="content-count">612</span>
@@ -307,7 +307,7 @@
               {% comment %} 포토카드 {% endcomment %}
               <div class="carousel__wrapper">
                 <div class="carousel__header">
-                    <p class="carousel__headline lead fw-normal mb-0">Headline 1</p>
+                    <p class="carousel__headline lead fw-normal mb-0">최근 등록한 포토티켓</p>
                     <div>
                       <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
                     </div>
@@ -377,7 +377,7 @@
               </div>
               {% comment %} 컬렉션 {% endcomment %}
               <div class="d-flex justify-content-between align-items-center mb-4">
-                <p class="lead fw-normal mb-0">Recent photos</p>
+                <p class="lead fw-normal mb-0">{{ person.nickname }}님의 컬렉션</p>
                 <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
               </div>
               <div class="row g-2">

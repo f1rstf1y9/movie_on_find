@@ -26,13 +26,19 @@
         <div class="navbar__menu">
           <!-- 메뉴 항목들 -->
         </div>
-        {% if request.user.is_authenticated %}
         <div class="navbar__profile">
+        {% if request.user.is_authenticated %}
+          <form action="{% url 'accounts:logout' %}" method="POST">
+            {% csrf_token %}
+            <input type="submit" value="로그아웃" class="logout-btn">
+          </form>
           <a href="{% url 'accounts:profile' user.email %}">
             <img src="{{ user.profile_image.url }}" alt="{{ user.nickname }}" class="profile__image">
           </a>
-        </div>
+        {% else %}
+          <a href="{% url 'accounts:login' %}" class="text-white">로그인 / 회원가입</a>
         {% endif %}
+      </div>
       </div>
     </nav>   
   </header>
