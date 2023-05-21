@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% block content %}
+<h1>추천영화</h1>
 {% for resdata in resdatas%}
 id:{{resdata.id}}
 <br>
@@ -14,7 +15,7 @@ title:<a href="{% url 'movies:detail' resdata.id%}">{{resdata.title}}</a>
 <br>
 장르:
 {% for genre_id in resdata.genre_ids %}
-{% for data in datas.genres %}
+{% for data in datas %}
 {% ifequal genre_id data.id %}
 {{data.name}}
 {% endifequal %}
@@ -22,5 +23,7 @@ title:<a href="{% url 'movies:detail' resdata.id%}">{{resdata.title}}</a>
 {% endfor %}
 <hr>
 {% endfor %}
-
+<h1>최신영화</h1>
+<hr>
+<h1>당신을 위한영화</h1>
 {% endblock content %}

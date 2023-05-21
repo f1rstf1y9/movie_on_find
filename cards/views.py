@@ -27,38 +27,41 @@ def index(request):
         poster.append(data)
     return render(request,'cards/index.html',{'poster':poster})
 
-@login_required
-@require_http_methods(['GET', 'POST'])
-def create(request):
-    L=[]
-    for i in Movie.objects.all():
-        L.append(i.title)
-    form =CardForm(request.POST)
-    if form.is_valid():
-        card=form.save(commit=False)
-        card.user=request.user
-        card.save()
-        return redirect('cards:detail',card.pk)
-    else:
-        form=CardForm()
-    return render(request,'cards/create.html',{'form':form})
 # @login_required
 # @require_http_methods(['GET', 'POST'])
-# def create(request, pk):
-#     if request.user.is_authenticated:
-#         if request.method == 'POST':
-#             form = CardForm(request.POST)
-#             movie = Movie.objects.get(pk=pk)
-#             if form.is_valid():
-#                 card = form.save(commit=False)
-#                 card.user = request.user
-#                 card.movie = movie
-#                 card.save()
-#                 return redirect('cards:detail', card.pk)
-#         else:
-#             form = CardForm()
-#         return render(request, 'cards/create.html', {'movie_pk':pk,'form': form})
-#     return redirect('accounts:login')
+# def create(request):
+#     L=[]
+#     for i in Movie.objects.all():
+#         L.append(i.title)
+#     form =CardForm(request.POST)
+#     if form.is_valid():
+#         card=form.save(commit=False)
+#         card.user=request.user
+#         card.save()
+#         return redirect('cards:detail',card.pk)
+#     else:
+#         form=CardForm()
+#     return render(request,'cards/create.html',{'form':form})
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def create(request, movie_pk):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = CardForm(request.POST)
+            movie = Movie.objects.get(pk=movie_pk)
+            if form.is_valid():
+                print(1)
+                card = form.save(commit=False)
+                card.user = request.user
+                card.movie = movie
+                card.save()
+                return redirect('cards:detail', card.pk)
+        else:
+            print(2)
+            form = CardForm()
+        return render(request, 'cards/create.html', {'pk':movie_pk,'form': form})
+    return redirect('accounts:login')
 
 @require_safe
 def detail(request, pk):

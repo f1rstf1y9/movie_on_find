@@ -6,9 +6,6 @@ id: <span data-resdatas-id="{{ resdatas.id }}">{{ resdatas.id }}</span>
 {% for c in comment %}
 {{c.content}}
 {% endfor %}
-{% comment %} {% if request.user.is_authenticated %}
-<a href="{% url 'cards:create' movie_pk=resdatas.id%}">CREATE CARD</a>
-{% endif %} {% endcomment %}
 title:{{resdatas.title}}
 <br>
 평점:{{resdatas.vote_average}}
@@ -19,17 +16,27 @@ title:{{resdatas.title}}
 <br>
 장르:
 {% for genre_id in resdatas.genre_ids %}
-{{genre_id.name}}
+{% for data in datas %}
+{% ifequal genre_id data.id %}
+{{data.name}}
+{% endifequal %}
+{% endfor %}
 {% endfor %}
 <br>
 출연진:
-{% for data in datas %}
+{% comment %} {% for data in datas %}
 {{data.id}}
 <a href="{% url 'movies:actor_detail' data.id%}">{{data.name}}</a>
 
 {{data.profile_path}}
 <br>
-{% endfor %}
+{% endfor %} {% endcomment %}
+<hr>
+{% if request.user.is_authenticated %}
+<div>
+<a href="{% url 'cards:create' resdatas.id%}">CREATE CARD</a>
+</div>
+{% endif %}
 <hr>
 <h4>댓글 목록</h4>
 {% if comments %}
@@ -38,7 +45,7 @@ title:{{resdatas.title}}
   <ul>
     {% for comment in comments %}
       <li>
-        {{ comment.user }} - {{ comment.content }}
+        {{ comment.user }} - {{ comment.content }}-{{comment.vote}}
         {% if request.user == comment.user %}
           <form action="{% url 'movies:comments_delete' resdatas.id comment.pk %}" method="POST">
             {% csrf_token %}

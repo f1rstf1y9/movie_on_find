@@ -18,9 +18,22 @@ class Movie(models.Model):
     wish_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='wish_movies')
 
 class Comment(models.Model):
+    STAR_CHOICES = [
+        ('10',"★★★★★★★★★★"),
+        ('9',"★★★★★★★★★"),
+        ('8',"★★★★★★★★"),
+        ('7',"★★★★★★★"),
+        ('6',"★★★★★★"),
+        ('5',"★★★★★"),
+        ('4',"★★★★"),
+        ('3',"★★★"),
+        ('2',"★★"),
+        ('1',"★"),
+        (None, '선택')
+    ]
     movie = models.TextField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     content=models.CharField(max_length=200)
-    vote=models.TextField()
+    vote=models.CharField(max_length=10, choices=STAR_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

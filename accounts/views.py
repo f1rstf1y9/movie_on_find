@@ -82,6 +82,7 @@ def delete(request):
 def profile(request, username):
     User = get_user_model()
     person = User.objects.get(username=username)
+    print(person)
     context = {
         'person': person,
     }

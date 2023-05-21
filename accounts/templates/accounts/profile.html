@@ -51,7 +51,7 @@
   <ul class="list-group col-md-11 mx-auto">
     {% for comment in person.comment_set.all %}
       <li class="list-group-item">
-        <a href="{% url 'movies:detail' comment.movie_id %}">{{comment.content}}</a>
+        <a href="{% url 'movies:detail' comment.movie %}">{{comment.content}}</a>
       </li>
     {% endfor %}
   </ul>

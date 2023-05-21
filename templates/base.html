@@ -31,6 +31,7 @@
           <a href="{% url 'accounts:update' %}">회원정보 수정</a>
         </div>
         
+        <a href="{% url 'movies:index' %}" class="btn btn-primary my-4">Movie</a>
         <a href="{% url 'cards:index' %}" class="btn btn-primary my-4">Card</a>
       {% else %}
         <a href="{% url 'accounts:login' %}" class="btn btn-primary my-4">Login</a>

@@ -57,7 +57,6 @@ def get_top_rated_data():
 
             }
             result.append(movie_dict)
-        # print(result)
     return result
 # with open('movies/fixtures/movie.json','w',encoding="UTF-8") as f:
 #     json.dump(get_top_rated_data(),f,ensure_ascii=False,indent=2)
@@ -89,60 +88,65 @@ def Actor_data(movie_pk):
     return [data]
 
 def Actor_Detail_data(actor_pk):
-    # 'https://api.themoviedb.org/3/person/1158/movie_credits?language=en-US'
     url='https://api.themoviedb.org/3/person/'+str(actor_pk)+'/movie_credits?api_key='+my_id+'&language=ko'
     response=requests.get(url)
-    # print(response.json())
     data=response.json()
     return [data]
 
+# @api_view(['GET'])
+# def index(request):
+#     movies_data=Movies_data()
+#     serializer=MovieListSerializer(movies_data,many=True)
+#     serialized_data = serializer.data
+#     data=Genre_data()
+#     return render(request,'movies/index.html',{'resdatas':serialized_data,'datas':data})
+
 @api_view(['GET'])
 def index(request):
-    movies_data=Movies_data()
-    # print(movies_data)
-    serializer=MovieListSerializer(movies_data,many=True)
+    movie=Movie.objects.all().order_by('-vote_average')[:10]
+    genre=Genre.objects.values()
+    serializer=MovieListSerializer(movie,many=True)
     serialized_data = serializer.data
-    # print(serialized_data)
-    data=Genre_data()
-    # print(data)
-    # return Response(serializer.data,status=status.HTTP_201_CREATED)
-    return render(request,'movies/index.html',{'resdatas':serialized_data,'datas':data})
+    
+    return render(request,'movies/index.html',{'resdatas':serialized_data,'datas':genre})
     
 
-@require_safe
+# @require_safe
 # @login_required
-def detail(request,movie_pk):
-    movie_data=Movie_data(movie_pk)
-    actor_data=Actor_data(movie_pk)
-    # print(actor_data)
-    serializer1=MovieDetailSerializer(movie_data,many=True)
-    serialized_data1 = serializer1.data
-    serializer2=ActorList(actor_data,many=True)
-    # print(serializer2.data)
-    serialized_data2 = serializer2.data
-    comment_form = CommentForm()
-    # print(serialized_data2[0]['name'])
-    comments=Comment.objects.all()
-    comment=Comment.objects.filter(movie=movie_pk)
-    # print(comment)
-    C=[]
-    for i in comments:
-        if int(i.movie)==movie_pk:
-            C.append(i)
+# def detail(request,movie_pk):
+#     movie_data=Movie_data(movie_pk)
+#     actor_data=Actor_data(movie_pk)
+#     serializer1=MovieDetailSerializer(movie_data,many=True)
+#     serialized_data1 = serializer1.data
+#     serializer2=ActorList(actor_data,many=True)
+#     serialized_data2 = serializer2.data
+#     comment_form = CommentForm()
+#     comments=Comment.objects.all()
+#     comment=Comment.objects.filter(movie=movie_pk)
+#     C=[]
+#     for i in comments:
+#         if int(i.movie)==movie_pk:
+#             C.append(i)
+#     return render(request, 'movies/detail.html',{'resdatas':serialized_data1[0],'datas':serialized_data2[0]['name'],'comment_form':comment_form,'comments':C,'comment':comment})
 
-    return render(request, 'movies/detail.html',{'resdatas':serialized_data1[0],'datas':serialized_data2[0]['name'],'comment_form':comment_form,'comments':C,'comment':comment})
+@require_safe
+@login_required
+def detail(request,movie_pk):
+    movie=Movie.objects.get(pk=movie_pk)
+    serializer1=MovieDetailSerializer(movie)
+    serialized_data1 = serializer1.data
+    genre=Genre.objects.values()
+    comment_form=CommentForm()
+    comments=Comment.objects.filter(movie=movie_pk)
+    return render(request, 'movies/detail.html',{'resdatas':serialized_data1,'datas':genre,'comment_form':comment_form,'comments':comments})
 
 @login_required
 def actor_detail(request,actor_pk):
     actor_data=Actor_Detail_data(actor_pk)
     serializer=ActorDetail(actor_data,many=True)
-    # print(serializer2.data)
     serialized_data = serializer.data
-    # print(serialized_data)
-    # print(serialized_data)
-    # print(serialized_data[0]['cast'])
     return render(request, 'movies/actordetail.html',{'resdatas':serialized_data[0]['cast']})
-    # return 
+
 
 @require_POST
 def comment_create(request,movie_pk):

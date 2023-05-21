@@ -2,9 +2,9 @@
 
 {% block content %}
   <h1>Cards</h1>
-{% if request.user.is_authenticated %}
+{% comment %} {% if request.user.is_authenticated %}
     <a href="{% url 'cards:create' %}">CREATE</a>
- {% endif %}
+ {% endif %} {% endcomment %}
   <hr>
   {% for card in poster %}
     <p>

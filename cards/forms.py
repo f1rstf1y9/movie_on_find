@@ -6,7 +6,7 @@ class CardForm(forms.ModelForm):
     # movies = forms.ModelChoiceField(Movie.objects.values('title'), initial=None)
     class Meta:
         model=Card
-        exclude=('user', 'like_users')
+        exclude=('user', 'like_users','movie',)
 
 class CommentForm(forms.ModelForm):
 
