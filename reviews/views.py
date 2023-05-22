@@ -115,6 +115,15 @@ def comments_create(request, pk):
         return redirect('reviews:detail', review.pk)
     return redirect('accounts:login')
 
+@require_POST
+def comments_update(request, review_pk, comment_pk):
+    if request.user.is_authenticated:
+        comment = Comment.objects.get(pk=comment_pk)  
+        if request.user == comment.user:
+          form = CommentForm(request.POST, instance=comment)
+          if form.is_valid():
+              form.save()
+    return redirect('reviews:detail', review_pk)
 
 @require_POST
 def comments_delete(request, review_pk, comment_pk):

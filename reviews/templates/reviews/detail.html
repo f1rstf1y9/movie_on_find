@@ -29,9 +29,15 @@ button {
 }
 .user-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 10px;
   margin-bottom: 15px;
+}
+.user-header > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 .review-profile-image img {
   width: 35px;
@@ -101,6 +107,8 @@ button {
 }
 .comment-profile-image img {
   width: 40px;
+  height: 40px;
+  object-fit: cover;
   border-radius: 50%;
 }
 .comment-content {
@@ -131,20 +139,193 @@ button {
   font-size: 14px;
   margin-top: 10px;
 }
+.comment-tools {
+  margin-top: 10px;
+  margin-left: -2px;
+  font-size: 12px;
+  color: #999999;
+}
+.comment-tools span {
+  padding: 1px 6px;
+}
+.comment-tools span svg {
+  margin-top: -3px;
+}
+.comment-tools button {
+  color: #999999;
+}
+.comment-tools span:hover, .comment-tools button:hover {
+  background-color: #444444;
+  border-radius: 5px;
+}
+
+/* modal */
+.section{
+  position: relative;
+  width: 100%;
+  display: block;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+[type="checkbox"]:checked,
+[type="checkbox"]:not(:checked){
+  position: absolute;
+  left: -9999px;
+}
+.modal-btn:checked + label,
+.modal-btn:not(:checked) + label{
+  position: relative;
+  transition: all 200ms linear;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+  -ms-flex-pack: center;
+  text-align: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+  border: none;
+  cursor: pointer;
+}
+.modal-btn:checked + label:after,
+.modal-btn:not(:checked) + label:after{
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  z-index: 1100;
+  content: url("data:image/svg+xml,%3Csvg width='18' height='18' viewBox='0 0 1024 1024' xmlns='http://www.w3.org/2000/svg' fill='%23000000'%3E%3Cg id='SVGRepo_bgCarrier' stroke-width='0'%3E%3C/g%3E%3Cg id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round'%3E%3C/g%3E%3Cg id='SVGRepo_iconCarrier'%3E%3Cpath fill='%23ffffff' d='M195.2 195.2a64 64 0 0 1 90.496 0L512 421.504 738.304 195.2a64 64 0 0 1 90.496 90.496L602.496 512 828.8 738.304a64 64 0 0 1-90.496 90.496L512 602.496 285.696 828.8a64 64 0 0 1-90.496-90.496L421.504 512 195.2 285.696a64 64 0 0 1 0-90.496z'%3E%3C/path%3E%3C/g%3E%3C/svg%3E");
+  transition: all 200ms linear;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+  background-color: rgb(205, 49, 49);
+  padding: 7px 10px 5px 10px;
+  border-radius: 4px;
+}
+.modal-btn:checked + label:after{
+  transition: opacity 300ms 300ms ease, transform 300ms 300ms ease, background-color 250ms linear, color 250ms linear;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.modal{
+  position: fixed;
+  display: block;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -ms-flex-pack: center;
+  justify-content: center;
+  margin: 0 auto;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  overflow-x: hidden;
+  background-color: rgba(31,32,41,.75);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 250ms 700ms ease;
+}
+.modal-btn:checked ~ .modal{
+  pointer-events: auto;
+  opacity: 1;
+  transition: all 300ms ease-in-out;
+}
+.modal-wrap {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 380px;
+  max-width: 400px;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+  padding-bottom: 20px;
+  background-color: rgb(31,32,41);
+    -ms-flex-item-align: center;
+    align-self: center;
+    box-shadow: 0 0px 25px 0 rgba(79, 58, 21, 0.25);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 250ms 250ms ease, transform 300ms 250ms ease;
+}
+.modal-wrap textarea {
+  padding: 20px 30px 0 30px;
+  border: none;
+  resize: none;
+  background-color: rgb(31,32,41);
+  color: white;
+}
+.modal-wrap textarea:focus {
+  outline: none;
+}
+.modal-wrap label {
+  display: none;
+}
+.modal-wrap .modal-title {
+  font-size: 22px;
+  margin-top: 20px;
+  margin-left: 30px;
+}
+.modal-wrap .comment-submit-btn {
+  position: absolute;
+  right: 0;
+  background:#ffbb00;
+  border: none;
+  outline: 0;
+  padding: 5px 10px;
+  border-radius: 3px;
+  margin-right: 30px;
+}
+.modal-btn:checked ~ .modal .modal-wrap{
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 250ms 500ms ease, transform 350ms 500ms ease;
+}
+
+@media screen and (max-width: 500px) {
+	.modal-wrap {
+		width: calc(100% - 40px);
+		padding-bottom: 15px;
+	}
+	.modal-wrap p {
+	  padding: 15px 20px 0 20px;
+	}
+}
+
 {% endblock style %}
 
 {% block content %}
 <div class="review-container">
   <div class="review-item">
     <div class="user-header">
-      <div class="review-profile-image">
+      <div>
+        <div class="review-profile-image">
+          <a href="{% url 'accounts:profile' review.user.email %}">
+            <img src="{{ review.user.profile_image.url }}" alt="{{ review.user.profile_image }}">
+          </a>
+        </div>
         <a href="{% url 'accounts:profile' review.user.email %}">
-          <img src="{{ review.user.profile_image.url }}" alt="{{ review.user.profile_image }}">
+          <p class="review-profile-nickname">{{ review.user.nickname }}</p>
         </a>
       </div>
-      <a href="{% url 'accounts:profile' review.user.email %}">
-        <p class="review-profile-nickname">{{ review.user.nickname }}</p>
-      </a>
       <p class="review-created-time">{{ review.created_at }}</p>
     </div>
     <div class="movie-header">
@@ -160,7 +341,7 @@ button {
     </div>
     <div class="review-sub">
       <div>
-        <span>좋아요 {{ review.like_users.all|length }}</span> ·
+        <span>좋아요 <b class="review-like-count">{{ review.like_users.all|length }}</b></span> ·
         <span>댓글 {{ review.comment_set.all|length }}</span>
       </div>
       {% if request.user == review.user %}
@@ -178,17 +359,42 @@ button {
   </div>
 
   <div class="icon-container">
-    <form action="#">
-      <button class="like">
-        <p class="icon">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
-        </p>
-        <p>{{ review.like_users.all|length }}</p>
+    <form action="#" class="review-like-form" data-review-id="{{ review.pk }}">
+      {% csrf_token %}
+      <button class="like" id="like-{{ review.pk }}"{% if not user.is_authenticated or user == review.user %}disabled{% endif %}>
+        {% if request.user in review.like_users.all %}
+          <p class="icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#ff4d4d" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ff4d4d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+          </p>
+        {% else %}
+          <p class="icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+          </p>
+        {% endif %}
+        <p>좋아요</p>
       </button>
     </form>
-    <a class="comment" href="#">
+    <a class="comment">
       <p class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_429_11233)"> <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 13.4876 3.36093 14.891 4 16.1272L3 21L7.8728 20C9.10904 20.6391 10.5124 21 12 21Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> <defs> <clipPath id="clip0_429_11233"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg></p>
-      <p>{{ review.comment_set.all|length }}</p>
+      <div class="section">
+        <input class="modal-btn" type="checkbox" id="modal-btn" name="modal-btn"/>
+        <label for="modal-btn"><span onclick="updateModal('{{review.pk}}','{{comment.pk}}','{{comment.content}}')">댓글 달기</span></label>
+        <div class="modal">		
+          <div class="modal-wrap">	
+            <p class="modal-title">댓글</p>
+            {% if request.user.is_authenticated %}
+              <form action="{% url 'reviews:comments_create' review.pk %}" method="POST">
+                {% csrf_token %}
+                {{ comment_form }}
+                <br>
+                <input class="comment-submit-btn" type="submit">
+              </form>
+            {% else %}
+              <a href="{% url 'accounts:login' %}">댓글을 작성하려면 로그인 하세요.</a>
+            {% endif %}  		
+          </div>			          		
+        </div>	
+      </div>
     </a>
   </div>
     
@@ -210,10 +416,10 @@ button {
             <div class="comment-desc">
               {{ comment.content }}
             </div>
+            {% if request.user != comment.user %}
             <div class="comment-like">
               <form class="comment-like-forms" data-comment-id="{{ comment.pk }}" {% if not user.is_authenticated %}disabled{% endif %}>
                 {% csrf_token %}
-                {% if request.user != comment.user %}
                   {% if request.user in comment.like_users.all %}
                   <button class="comment-like-btn" id="likes_comment-{{comment.pk}}">
                   <svg width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ff4d4d" fill="#ff4d4d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
@@ -225,9 +431,23 @@ button {
                   <p>{{ comment.like_users.all|length }}</p>
                   </button>
                   {% endif %}
-                {% endif %}
+               
               </form>
             </div>
+            {% else %}
+            <div class="comment-tools">
+              <input class="modal-btn" type="checkbox" id="modal-btn" name="modal-btn"/>
+              <label for="modal-btn"><span onclick="updateModal({{review.pk}},{{comment.pk}},'{{comment.content}}')">
+              <svg width="12" height="12" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#4d52ff" stroke="#4d52ff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="edit"> <g> <path d="M20,16v4a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V6A2,2,0,0,1,4,4H8" fill="none" stroke="#4d52ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path> <polygon fill="none" points="12.5 15.8 22 6.2 17.8 2 8.3 11.5 8 16 12.5 15.8" stroke="#4d52ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polygon> </g> </g> </g> </g></svg>
+              </span></label>
+              <form action="{% url 'reviews:comments_delete' review.pk comment.pk %}" method="POST">
+                {% csrf_token %}
+                <button>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 10V16M14 10V16M18 6V18C18 19.1046 17.1046 20 16 20H8C6.89543 20 6 19.1046 6 18V6M4 6H20M15 6V5C15 3.89543 14.1046 3 13 3H11C9.89543 3 9 3.89543 9 5V6" stroke="#f23a3a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                </button>
+              </form>
+            </div>
+            {% endif %}
           </div>
         </div>
       </li>
@@ -237,14 +457,26 @@ button {
       </li>
       {% endfor %}
     </ul>
-
   </div>
-
 </div>
+
 {% endblock content %}
 
 {% block script %}
 <script>
+  function updateModal(reviewPk, commentPk, content){
+    console.log(commentPk)
+    if (commentPk == ''){
+      document.querySelector('.modal-wrap textarea').defaultValue = '';
+      document.querySelector('.modal-title').innerText = '댓글';
+      document.querySelector('.modal-wrap form').setAttribute('action', `/reviews/${reviewPk}/comments/`);
+    } else {
+      document.querySelector('.modal-wrap textarea').defaultValue = content;
+      document.querySelector('.modal-title').innerText = '댓글 수정';
+      document.querySelector('.modal-wrap form').setAttribute('action', `/reviews/${reviewPk}/comments/${commentPk}/update/`);
+    }
+  }
+
   // Comment like buttons
   const commentForms = document.querySelectorAll('.comment-like-forms')
   commentForms.forEach((form) => {
@@ -255,7 +487,7 @@ button {
 
       axios({
         method: 'post',
-        url: `http://127.0.0.1:8080/reviews/${commentId}/comment_likes/`,
+        url: `http://127.0.0.1:8000/reviews/${commentId}/comment_likes/`,
         headers: { 'X-CSRFToken': csrftoken },
       })
         .then((response) => {
@@ -272,6 +504,35 @@ button {
             commentLikes.textContent = parseInt(commentLikes.textContent) - 1
           }
         })
+    })
+  })
+
+
+  const reviewForms = document.querySelectorAll('.review-like-form');
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+
+  reviewForms.forEach((form) => {
+    form.addEventListener('submit', function (event) {
+      event.preventDefault()
+      const reviewId = event.target.dataset.reviewId
+      axios({
+        method: 'post',
+        url: `http://127.0.0.1:8000/reviews/${reviewId}/likes/`,
+        headers: {'X-CSRFToken': csrftoken},
+      })
+      .then((response) => {
+        const isLiked = response.data.is_liked
+        const likeBtn = document.querySelector(`#like-${reviewId}`)
+        const likes = document.querySelector(".review-like-count")
+        const likeIcon = likeBtn.querySelector('.icon')
+        if (isLiked === true) {
+          likeIcon.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="#ff4d4d" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ff4d4d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>'
+          likes.textContent=Number(likes.textContent) + 1
+        } else {
+          likeIcon.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>'
+          likes.textContent=Number(likes.textContent) - 1
+        }
+      })
     })
   })
 </script>

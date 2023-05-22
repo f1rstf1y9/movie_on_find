@@ -21,7 +21,7 @@ body {
   height: 62px;
   background-color: #0e0e0e;
   padding: 10px 40px;
-  z-index: 9999; /* 다른 요소들 위에 표시하기 위한 z-index 설정 */
+  z-index: 1000; /* 다른 요소들 위에 표시하기 위한 z-index 설정 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
 }
 
