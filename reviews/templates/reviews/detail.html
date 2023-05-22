@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>게시글</h1>
+  <h2>{{ review.pk }}번째 글입니다.</h2>
+  <hr>
+  <p><b>작성자 : {{ review.user }}</b></p>
+  <p>영화번호 : {{ review.movie_id }}</p>
+  <p>제목 : {{ review.title }}</p>
+  <p>내용 : {{ review.content }}</p>
+  <p>작성 시각 : {{ review.created_at }}</p>
+  <p>수정 시각 : {{ review.updated_at }}</p>
+  <p>{{movie.title}}</p>
+  <p>{{movie.poster_path}}</p>
+  {% if request.user == review.user %}
+    <a href="{% url 'reviews:update' review.pk %}">UPDATE</a>
+    <form action="{% url 'reviews:delete' review.pk %}" method="POST">
+      {% csrf_token %}
+      <input type="submit" value="DELETE">
+    </form>
+  {% endif %}
+  <hr>
+  <p>좋아요 : <p id="likes">{{ review.like_users.all|length }}</p></p>
+  <hr>
+  {% if comments %}
+    <p>{{ comments|length }}개의 댓글가 있습니다.</p>
+  {% endif %}
+  <ul>
+    {% for comment in comments %}
+      <li>
+        {{ comment.user }} - {{ comment.content }}
+        <p>좋아요 : <p id="likes_comment-{{comment.pk}}">{{ comment.like_users.all|length }}</p></p>
+        <div>
+          <form class="comment-like-forms" data-comment-id="{{ comment.pk }}">
+            {% csrf_token %}
+            {% if request.user != comment.user%}
+            {% if request.user in comment.like_users.all %}
+              <input type="submit" value="좋아요 취소" id="commentlike-{{ comment.pk }}">
+            {% else %}
+              <input type="submit" value="좋아요" id="commentlike-{{ comment.pk }}">
+            {% endif %}
+            {% endif %}
+          </form>
+        </div>
+        {% if request.user == comment.user %}
+          <form action="{% url 'reviews:comments_delete' review.pk comment.pk %}" method="POST">
+            {% csrf_token %}
+            <input type="submit" value="DELETE">
+          </form>
+        {% endif %}
+      </li>
+    {% empty %}
+      <li>댓글이 없어요...</li>
+    {% endfor %}
+    <hr>
+  {% if request.user.is_authenticated %}
+    <form action="{% url 'reviews:comments_create' review.pk %}" method="POST">
+      {% csrf_token %}
+      {{ comment_form }}
+      <input type="submit">
+    </form>
+  {% else %}
+    <a href="{% url 'accounts:login' %}">댓글을 작성하려면 로그인 하세요.</a>
+  {% endif %}
+
+  </ul>
+  <hr>
+  <a href="{% url 'movies:detail' review.movie_id %}">뒤로가기</a>
+{% endblock content %}
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  ///코멘트 좋아요
+  const commentforms = document.querySelectorAll('.comment-like-forms')
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+ 
+
+  commentforms.forEach((form) => {
+    form.addEventListener('submit', function (event) {
+      event.preventDefault()
+      const commentId = event.target.dataset.commentId
+      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+      // headers: {'X-CSRFToken': csrftoken},
+      axios({
+        method: 'post',
+        url: `http://127.0.0.1:8000/reviews/${commentId}/comment_likes/`,
+        headers: {'X-CSRFToken': csrftoken},
+      })
+      .then((response) => {
+        console.log(134324342)
+        const is_commentliked = response.data.is_commentliked
+        const commentlikeBtn = document.querySelector(`#commentlike-${commentId}`)
+        const commentlikes=document.querySelector(`#likes_comment-${commentId}`)
+        if (is_commentliked === true) {
+          commentlikeBtn.value = '좋아요 취소'
+          commentlikes.textContent=Number(commentlikes.textContent) + 1
+        
+        } else {
+          commentlikeBtn.value = '좋아요',
+          commentlikes.textContent=Number(commentlikes.textContent) - 1
+
+        }
+      })
+
+
+    })
+  })
+</script>
+
+{% endblock script %}

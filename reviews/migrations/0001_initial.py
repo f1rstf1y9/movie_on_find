@@ -16,14 +16,16 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Card',
+            name='Review',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('vote', models.CharField(choices=[('10', '★★★★★★★★★★'), ('9', '★★★★★★★★★'), ('8', '★★★★★★★★'), ('7', '★★★★★★★'), ('6', '★★★★★★'), ('5', '★★★★★'), ('4', '★★★★'), ('3', '★★★'), ('2', '★★'), ('1', '★'), (None, '선택')], max_length=10)),
+                ('spoiler', models.TextField()),
                 ('title', models.CharField(max_length=100)),
                 ('content', models.TextField()),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('like_users', models.ManyToManyField(related_name='like_cards', to=settings.AUTH_USER_MODEL)),
+                ('like_users', models.ManyToManyField(related_name='like_reivew', to=settings.AUTH_USER_MODEL)),
                 ('movie', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='movies.movie')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
@@ -35,9 +37,9 @@ class Migration(migrations.Migration):
                 ('content', models.TextField()),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('card', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='cards.card')),
-                ('like_users', models.ManyToManyField(related_name='like_cards_comment', to=settings.AUTH_USER_MODEL)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='card_comment', to=settings.AUTH_USER_MODEL)),
+                ('like_users', models.ManyToManyField(related_name='like_review_comment', to=settings.AUTH_USER_MODEL)),
+                ('review', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='reviews.review')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='review_comment', to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect,get_object_or_404, get_list_or_404
 from django.views.decorators.http import require_http_methods, require_safe, require_POST
 from django.contrib.auth.decorators import login_required
 from movies.models import Movie
-from movies.serializers import MovieListSerializer,MovieDetailSerializer,ActorList,ActorDetail,CommentCreateSerializer
+from movies.serializers import MovieListSerializer,MovieDetailSerializer,ActorList,ActorDetail
 from django.core import serializers
 from rest_framework.response import Response
 from django.http import HttpResponse
@@ -11,8 +11,9 @@ from rest_framework.decorators import api_view
 from django.views.decorators.http import require_POST, require_safe, require_http_methods
 import requests
 import json
-from .forms import CommentForm
-from movies.models import Comment,Genre
+from movies.models import Genre
+from reviews.models import Review
+from cards.models import Card
 from django.db import transaction
 
 
@@ -32,8 +33,8 @@ def get_Genre_data():
         }
         result.append(genre_dict)
     return result
-# with open('movies/fixtures/genre.json','w',encoding="UTF-8") as f:
-#     json.dump(get_Genre_data(),f,ensure_ascii=False,indent=2)
+with open('movies/fixtures/genre.json','w',encoding="UTF-8") as f:
+    json.dump(get_Genre_data(),f,ensure_ascii=False,indent=2)
 
 def get_top_rated_data():
     result=[]
@@ -51,8 +52,9 @@ def get_top_rated_data():
                     "overview":i.get("overview"),
                     "poster_path":i.get("poster_path"),
                     "genres":i.get("genre_ids"),
-                    "like_users":[],
-                    "wish_users":[]
+                    "interest":[],
+                    "watched":[],
+                    "watching":[]
                     },
 
             }
@@ -64,11 +66,15 @@ def get_top_rated_data():
 
 def Genre_data():
     url='https://api.themoviedb.org/3/genre/movie/list?api_key='+my_id+'&language=ko'
-    response=requests.get(url)
+    response=requests.get(url).json()
     data=response.json()
     return data
-
-
+def get_movie_video(movie_pk):
+    url='https://api.themoviedb.org/3/movie/'+movie_pk+'/videos?api_key='+my_id+'&language=ko'
+    response=requests.get(url).json()
+    data=response
+    print()
+    return data
 def Movies_data():
     url='https://api.themoviedb.org/3/movie/top_rated?api_key='+my_id+'&language=ko'
     response=requests.get(url)
@@ -107,6 +113,7 @@ def index(request):
     genre=Genre.objects.values()
     serializer=MovieListSerializer(movie,many=True)
     serialized_data = serializer.data
+    print(get_movie_video)
     
     return render(request,'movies/index.html',{'resdatas':serialized_data,'datas':genre})
     
@@ -136,9 +143,19 @@ def detail(request,movie_pk):
     serializer1=MovieDetailSerializer(movie)
     serialized_data1 = serializer1.data
     genre=Genre.objects.values()
-    comment_form=CommentForm()
-    comments=Comment.objects.filter(movie=movie_pk)
-    return render(request, 'movies/detail.html',{'resdatas':serialized_data1,'datas':genre,'comment_form':comment_form,'comments':comments})
+    raw_data=Review.objects.filter(movie_id=movie_pk)
+    reviews=raw_data
+    cards=Card.objects.filter(movie_id=movie_pk)
+    # likes=reviews.like_user.all()
+    # comment_form=CommentForm()
+    # comments=Comment.objects.filter(movie=movie_pk)
+    context={
+        'resdatas':serialized_data1,
+        'datas':genre,
+        'reviews':reviews,
+        'cards':cards
+    }
+    return render(request, 'movies/detail.html',context)
 
 @login_required
 def actor_detail(request,actor_pk):
@@ -148,27 +165,27 @@ def actor_detail(request,actor_pk):
     return render(request, 'movies/actordetail.html',{'resdatas':serialized_data[0]['cast']})
 
 
-@require_POST
-def comment_create(request,movie_pk):
-    if request.user.is_authenticated:
-        comment_form = CommentForm(request.POST)
-        if comment_form.is_valid():
-            comment = comment_form.save(commit=False)
-            comment.movie = movie_pk
-            comment.user = request.user
-            comment.save()
-        return redirect('movies:detail', movie_pk)
-    return redirect('accounts:login')
+# @require_POST
+# def comment_create(request,movie_pk):
+#     if request.user.is_authenticated:
+#         comment_form = CommentForm(request.POST)
+#         if comment_form.is_valid():
+#             comment = comment_form.save(commit=False)
+#             comment.movie = movie_pk
+#             comment.user = request.user
+#             comment.save()
+#         return redirect('movies:detail', movie_pk)
+#     return redirect('accounts:login')
 
 
 
-@require_POST
-def comments_delete(request,comment_pk,movie_pk):
-    if request.user.is_authenticated:
-        comment = Comment.objects.get(pk=comment_pk)
-        if request.user == comment.user:
-            comment.delete()
-    return redirect('movies:detail', movie_pk)
+# @require_POST
+# def comments_delete(request,comment_pk,movie_pk):
+#     if request.user.is_authenticated:
+#         comment = Comment.objects.get(pk=comment_pk)
+#         if request.user == comment.user:
+#             comment.delete()
+#     return redirect('movies:detail', movie_pk)
 
 
 
