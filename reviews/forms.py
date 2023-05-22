@@ -5,8 +5,9 @@ from movies.models import Movie
 class ReviewForm(forms.ModelForm):
     # movies = forms.ModelChoiceField(Movie.objects.values('title'), initial=None)
     class Meta:
-        model=Review
-        exclude=('user', 'like_users','movie','spoiler')
+        model = Review
+        spoiler = forms.BooleanField()
+        exclude = ('user', 'like_users','movie',)
 
 class CommentForm(forms.ModelForm):
 

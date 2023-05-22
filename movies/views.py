@@ -71,7 +71,7 @@ def Genre_data():
     return data
 
 def get_movie_video(movie_pk):
-    url='https://api.themoviedb.org/3/movie/'+movie_pk+'/videos?api_key='+my_id+'&language=ko'
+    url='https://api.themoviedb.org/3/movie/'+str(movie_pk)+'/videos?api_key='+my_id+'&language=ko'
     response=requests.get(url).json()
     data=response
     print()
@@ -148,9 +148,8 @@ def detail(request,movie_pk):
     raw_data=Review.objects.filter(movie_id=movie_pk)
     reviews=raw_data
     cards=Card.objects.filter(movie_id=movie_pk)
-    # likes=reviews.like_user.all()
-    # comment_form=CommentForm()
-    # comments=Comment.objects.filter(movie=movie_pk)
+    movie.video=get_movie_video(movie_pk)
+    movie.save()
     context={
         'resdatas':serialized_data1,
         'datas':genre,

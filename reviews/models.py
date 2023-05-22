@@ -9,23 +9,22 @@ from movies.models import Movie
 # Create your models here.
 class Review(models.Model):
     STAR_CHOICES = [
-        ('10',"★★★★★★★★★★"),
-        ('9',"★★★★★★★★★"),
-        ('8',"★★★★★★★★"),
-        ('7',"★★★★★★★"),
-        ('6',"★★★★★★"),
-        ('5',"★★★★★"),
-        ('4',"★★★★"),
-        ('3',"★★★"),
-        ('2',"★★"),
-        ('1',"★"),
-        (None, '선택')
+      ('10',"★★★★★★★★★★"),
+      ('9',"★★★★★★★★★"),
+      ('8',"★★★★★★★★"),
+      ('7',"★★★★★★★"),
+      ('6',"★★★★★★"),
+      ('5',"★★★★★"),
+      ('4',"★★★★"),
+      ('3',"★★★"),
+      ('2',"★★"),
+      ('1',"★"),
+      (None, '선택')
     ]
     vote=models.CharField(max_length=10, choices=STAR_CHOICES)
     #스포일러추가
-    spoiler=models.TextField()
+    spoiler=models.BooleanField()
     user=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    title = models.CharField(max_length=100)
     content = models.TextField()
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_reivew')
     movie=models.ForeignKey(Movie, on_delete=models.CASCADE)
