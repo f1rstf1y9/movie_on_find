@@ -7,8 +7,6 @@ class Genre(models.Model):
     def __str__(self):
         return self.name
 
-class Actor(models.Model):
-    name=models.CharField(max_length=100)
 
 class Movie(models.Model):
     title = models.CharField(max_length=100)
@@ -21,3 +19,7 @@ class Movie(models.Model):
     interest = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='interest_movies')
     watching = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='watching_movies')
     watched = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='watched_movies')
+
+class Actor(models.Model):
+    name=models.CharField(max_length=100)
+    # movie=models.ManyToManyField(Movie, related_name='actor')
