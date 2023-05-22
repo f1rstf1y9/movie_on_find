@@ -20,8 +20,9 @@
     <nav class="navbar px-md-5">
       <div class="navbar__content mx-md-5">
         <div class="navbar__logo">
-          <!-- 로고 이미지 또는 텍스트 -->
-          무비온파인드
+          <a href="{% url 'movies:index' %}">
+            <img height="45px" src="{% static 'main-logo.png' %}" alt="무비온파인드">
+          </a>
         </div>
         <div class="navbar__menu">
           <!-- 메뉴 항목들 -->
