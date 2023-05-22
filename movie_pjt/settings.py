@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     
     'movies',
     'accounts',
+    'reviews',
     'cards',
     'card_collections',
 

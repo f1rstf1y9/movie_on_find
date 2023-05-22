@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% block style %}
+p {
+  margin-bottom: 0;
+}
 a {
   color: white;
 }
@@ -66,6 +69,10 @@ button {
   width: 50px;
   border-radius: 6px;
 }
+.item-data {
+  color: rgba(255, 175, 2, 0.719);
+  font-size: 12px;
+}
 .item-content {
   margin-bottom: 10px;
 }
@@ -121,9 +128,9 @@ button {
             <img src="https://nujhrcqkiwag1408085.cdn.ntruss.com/static/upload/movie_poster_images/280x400/movie_115800_1681697605.jpeg" alt="영화 포스터">
             <p>슈퍼 마리오 브라더스</p>
           </div>
-          <p>2023.05.22</p>
+          <p class="item-data">2023.05.22</p>
         </div>
-        <a href="">
+        <a href="{% url 'reviews:review' 1 %}">
           <div class="item-content">
             리뷰리뷰!
           </div>
@@ -149,7 +156,7 @@ button {
             <img src="https://nujhrcqkiwag1408085.cdn.ntruss.com/static/upload/movie_poster_images/280x400/movie_115800_1681697605.jpeg" alt="영화 포스터">
             <p>슈퍼 마리오 브라더스</p>
           </div>
-          <p>2023.05.22</p>
+          <p class="item-data">2023.05.22</p>
         </div>
         <a href="#" class="spoiler-link">
           <div class="spoiler-prevent">
@@ -180,7 +187,7 @@ button {
             <img src="https://nujhrcqkiwag1408085.cdn.ntruss.com/static/upload/movie_poster_images/280x400/movie_115800_1681697605.jpeg" alt="영화 포스터">
             <p>슈퍼 마리오 브라더스</p>
           </div>
-          <p>2023.05.22</p>
+          <p class="item-data">2023.05.22</p>
         </div>
         <a href="#" class="spoiler-link">
           <div class="spoiler-prevent">

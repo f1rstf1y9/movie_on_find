@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+
+{% block style %}
+p {
+  margin-bottom: 0;
+}
+a {
+  color: white;
+}
+ul {
+  padding-left: 0;
+}
+li {
+  list-style: none;
+}
+button {
+  background: none;
+  border: none;
+  outline: 0;
+  color: white;
+}
+.navbar__profile {
+  display: flex;
+  align-items: center;
+}
+.container {
+  max-width: 700px;
+  margin: 75px auto;
+}
+.user-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.review-profile-image img {
+  width: 35px;
+  border-radius: 50%;
+}
+.review-created-time {
+  color: rgb(173, 173, 173);
+  font-size: 12px;
+}
+.movie-header {
+  border-bottom: 1px solid #5f5f5f;
+  padding-bottom: 10px;
+}
+.movie-header > div > a {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.movie-poster img {
+  width: 60px;
+  border-radius: 6px;
+}
+.review-content {
+  margin: 20px 0;
+  min-height: 100px;
+}
+.review-sub {
+  color: #8d8d8d;
+  font-size: 12px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+.my-btn form {
+  padding: 5px;
+}
+.my-btn form:hover {
+  background-color: #444444;
+  border-radius: 5px;
+}
+.icon-container {
+  border-top: 1px solid #5f5f5f;
+  border-bottom: 1px solid #5f5f5f;
+  padding: 10px 0;
+}
+.icon-container {
+  display: flex;
+  justify-content: space-around;
+}
+.icon-container button, a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+} 
+.comments-container {
+  margin-top: 50px;
+}
+.comment-item {
+  display: flex;
+  gap: 10px;
+  border-bottom: 1px solid #444444;
+  padding: 10px 0;
+}
+.comment-profile-image img {
+  width: 40px;
+  border-radius: 50%;
+}
+.comment-content {
+  width: 100%;
+}
+.comment-info {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.comment-profile-nickname {
+  font-weight: 700;
+}
+.comment-created-time {
+  color: #8d8d8d;
+  font-size: 14px;
+}
+.comment-desc {
+  margin-top: 10px;
+}
+.comment-like-btn {
+  padding: 0;
+  color: rgba(255, 255, 255, 0.548);
+  font-size: 14px;
+  margin-top: 10px;
+}
+{% endblock style %}
+
+{% block content %}
+<div class="review-container">
+  <div class="review-item">
+    <div class="user-header">
+      <div class="review-profile-image">
+        <a href="{% url 'accounts:profile' 'f1rstf1y9@naver.com' %}">
+          <img src="https://an2-img.amz.wtchn.net/image/v2/9hfJA2V4E2TWVqNzzJRRkA.jpg?jwt=ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKdmNIUnpJanBiSW1SZk1UQXdlREV3TUNKZExDSndJam9pTDNZeUwzTjBiM0psTDNWelpYSXZZVGxNTlZBME1tNVhTelYzWnk5d2NtOW1hV3hsTHpFMk5ETTNNelE1T1RZeE1qRTVOamMwT0RNaWZRLmZmTVhlZFdEejFSaGlEa1VISlZkUUxOTXRuQ2Naa21HMDlVdHFFTGNlamM" alt="">
+        </a>
+      </div>
+      <a href="{% url 'accounts:profile' 'f1rstf1y9@naver.com' %}">
+        <p class="review-profile-nickname">정은경</p>
+      </a>
+      <p class="review-created-time">2023.05.22</p>
+    </div>
+    <div class="movie-header">
+      <div class="movie-poster">
+        <a href="#">
+          <img src="https://nujhrcqkiwag1408085.cdn.ntruss.com/static/upload/movie_poster_images/280x400/movie_115800_1681697605.jpeg" alt="">
+          <p>슈퍼 마리오 브라더스</p>
+        </a>
+      </div>
+    </div>
+    <div class="review-content">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nisl tincidunt eget nullam non. Quis hendrerit dolor magna eget est lorem ipsum dolor sit. Volutpat odio facilisis mauris sit amet massa. Commodo odio aenean sed adipiscing diam donec adipiscing tristique. Mi eget mauris pharetra et. Non tellus orci ac auctor augue. Elit at imperdiet dui accumsan sit. Ornare arcu dui vivamus arcu felis. Egestas integer eget aliquet nibh praesent. In hac habitasse platea dictumst quisque sagittis purus. Pulvinar elementum integer enim neque volutpat ac.
+    </div>
+    <div class="review-sub">
+      <div>
+        <span>좋아요 8</span> ·
+        <span>댓글 2</span>
+      </div>
+      <div class="my-btn">
+        <form action="#" method="POST">
+          {% csrf_token %}
+          <button>수정하기</button>
+        </form>
+        <form action="#" method="POST">
+          {% csrf_token %}
+          <button>삭제하기</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="icon-container">
+    <form action="#">
+      <button class="like">
+        <p class="icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+        </p>
+        <p>0</p>
+      </button>
+    </form>
+    <a class="comment" href="#">
+      <p class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_429_11233)"> <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 13.4876 3.36093 14.891 4 16.1272L3 21L7.8728 20C9.10904 20.6391 10.5124 21 12 21Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> <defs> <clipPath id="clip0_429_11233"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg></p>
+      <p>0</p>
+    </a>
+  </div>
+    
+  <div class="comments-container">
+    <ul>
+      <li>
+        <div class="comment-item">
+          <div class="comment-profile-image">
+            <a href="{% url 'accounts:profile' 'f1rstf1y9@naver.com' %}">
+              <img src="https://an2-img.amz.wtchn.net/image/v2/9hfJA2V4E2TWVqNzzJRRkA.jpg?jwt=ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKdmNIUnpJanBiSW1SZk1UQXdlREV3TUNKZExDSndJam9pTDNZeUwzTjBiM0psTDNWelpYSXZZVGxNTlZBME1tNVhTelYzWnk5d2NtOW1hV3hsTHpFMk5ETTNNelE1T1RZeE1qRTVOamMwT0RNaWZRLmZmTVhlZFdEejFSaGlEa1VISlZkUUxOTXRuQ2Naa21HMDlVdHFFTGNlamM" alt="">
+            </a>
+          </div>
+          <div class="comment-content">
+            <div class="comment-info">
+              <div class="comment-profile-nickname">ek</div>
+              <div class="comment-created-time">23.05.22</div>
+            </div>
+            <div class="comment-desc">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nisl tincidunt eget nullam non. Quis hendrerit dolor magna eget est lorem ipsum dolor sit. Volutpat odio facilisis mauris sit amet massa. Commodo odio aenean sed adipiscing diam donec adipiscing tristique. Mi eget mauris pharetra et. Non tellus orci ac auctor augue. Elit at imperdiet dui accumsan sit. Ornare arcu dui vivamus arcu felis. Egestas integer eget aliquet nibh praesent. In hac habitasse platea dictumst quisque sagittis purus. Pulvinar elementum integer enim neque volutpat ac.
+            </div>
+            <div class="comment-like">
+              <form action="#">
+                <button class="comment-like-btn">
+                좋아요
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#98A0A0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="comment-item">
+          <div class="comment-profile-image">
+            <a href="#">
+              <img src="https://an2-img.amz.wtchn.net/image/v2/9hfJA2V4E2TWVqNzzJRRkA.jpg?jwt=ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKdmNIUnpJanBiSW1SZk1UQXdlREV3TUNKZExDSndJam9pTDNZeUwzTjBiM0psTDNWelpYSXZZVGxNTlZBME1tNVhTelYzWnk5d2NtOW1hV3hsTHpFMk5ETTNNelE1T1RZeE1qRTVOamMwT0RNaWZRLmZmTVhlZFdEejFSaGlEa1VISlZkUUxOTXRuQ2Naa21HMDlVdHFFTGNlamM" alt="">
+            </a>
+          </div>
+          <div class="comment-content">
+            <div class="comment-info">
+              <div class="comment-profile-nickname">ek</div>
+              <div class="comment-created-time">23.05.22</div>
+            </div>
+            <div class="comment-desc">
+              인정!
+            </div>
+            <div class="comment-like">
+              <form action="#">
+                <button class="comment-like-btn">
+                좋아요
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#98A0A0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+  </div>
+
+</div>
+{% endblock content %}

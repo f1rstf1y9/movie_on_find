@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block style %}
 .card {
@@ -83,12 +84,15 @@
 }
 .carousel a {
   text-decoration: none;
-  color: #fff;
 }
-.carousel img {
+.carousel__item {
+  width: 200px;
+}
+.carousel .item-front img {
   aspect-ratio: 1/1;
   width: 175px;
-  height: 175px;
+  height: 350px;
+  object-fit: cover;
   -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;
@@ -138,11 +142,12 @@
   display: grid;
   -webkit-overflow-scrolling: touch;
   cursor: grab;
-  padding: 0;
+  padding: 10px;
   margin: 0;
   grid-gap: 24px;
   grid-auto-flow: column;
   list-style: none;
+  padding-left: 10px;
 }
 .carousel .carousel__content::-webkit-scrollbar {
   display: none;
@@ -160,10 +165,78 @@
   user-select: none;
   margin: 10px 0px;
   padding: 16px;
-  background: #181818;
   border-radius: clamp(0px, ((100vw - 4px) - 100%) * 9999, 8px);
   cursor: pointer;
+  width: 200px;
+  height: 300px;
+  perspective: 1000px;
+  background: white;
+  color: black;
+  /* border: 1px solid rgb(145, 145, 145); */
+
+  box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.35);
+  -webkit-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.35);
+  -moz-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.35);
 }
+
+.item-inner {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  transform-style: preserve-3d;
+  transition: transform 0.8s;
+}
+
+.carousel__item:hover .item-inner {
+  transform: rotateY(180deg);
+}
+.item-front, .item-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+.item-front {
+  z-index:10;
+}
+.item-back {
+  position: relative;
+  z-index: 1;
+  transform: rotateY(180deg) translateY(-103%);
+  font-size: 14px;
+  text-align: left;
+}
+.item-back > div {
+  width: 100%;
+  margin-bottom: 10px;
+}
+.item-back .movie-info-top {
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+.item-back .movie-info-bottom {
+  margin-bottom: 10px;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  padding: 10px 0;
+}
+.item-back .movie-info-bottom p {
+  margin-bottom: 0;
+}
+.item-back .movie-info-bottom p:first-child {
+  font-size: 16px;
+  font-weight: bold;
+}
+.item-back .ticket-date {
+  font-size: 12px;
+}
+.item-back .ticket-barcode {
+  position: absolute;
+  text-align: center;
+  bottom: 10px;
+}
+
 .carousel .carousel__controls {
   position: relative;
   top: 170px;
@@ -171,7 +244,8 @@
   width: 105%;
   display: flex;
   justify-content: space-between;
-  z-index: 1;
+  z-index: 99;
+  pointer-events: none;
 }
 .carousel .carousel__arrow {
   padding: 0;
@@ -181,6 +255,7 @@
   padding: 18px 16px;
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.728);
+  pointer-events: auto;
 }
 .carousel .carousel__arrow:before {
   content: "";
@@ -318,61 +393,166 @@
                   <button class="carousel__arrow arrow-next"></button>
                 </div>
                 <ul class="carousel__content">
-                  <li class="carousel__item"> <a href="#"><img class="carousel__item__image" src="https://picsum.photos/id/21/300/300" alt="" />
-                          <div class="carousel__description">
-                              <h3 class="carousel__title">Amazing Title 1</h3><span class="carousel__subtitle">Some subtitle goes here</span>
+                  <li class="carousel__item">
+                    <div class="item-inner">
+                      <a class="item-front">
+                        <img class="carousel__item__image" src="https://picsum.photos/id/21/300/300" alt="" />
+                      </a>
+                      <a class="item-back">
+                          <div class="movie-info-top">
+                            <p>2D</p>
+                            <p>15세이상관람가</p>
                           </div>
-                      </a></li>
-                  <li class="carousel__item"> <a href="#"><img class="carousel__item__image" src="https://picsum.photos/id/22/300/300" alt="" />
-                          <div class="carousel__description">
-                              <h3 class="carousel__title">Amazing Title 2</h3><span class="carousel__subtitle">Some subtitle goes here</span>
+                          <div class="movie-info-bottom">
+                            <p class="movie-title-ko">곡성</p>
+                            <p class="movie-title-en">The Wailing</p>
                           </div>
-                      </a></li>
-                  <li class="carousel__item"> <a href="#"><img class="carousel__item__image" src="https://picsum.photos/id/23/300/300" alt="" />
-                          <div class="carousel__description">
-                              <h3 class="carousel__title">Amazing Title 3</h3><span class="carousel__subtitle">Some subtitle goes here</span>
+                          <div class="ticket-date">
+                            2023.05.22(월)
                           </div>
-                      </a></li>
-                  <li class="carousel__item"> <a href="#"><img class="carousel__item__image" src="https://picsum.photos/id/24/300/300" alt="" />
-                          <div class="carousel__description">
-                              <h3 class="carousel__title">Amazing Title 4</h3><span class="carousel__subtitle">Some subtitle goes here</span>
+                          <div class="ticket-comment">
+                            짱재밌었다
                           </div>
-                      </a></li>
-                  <li class="carousel__item"> <a href="#"><img class="carousel__item__image" src="https://picsum.photos/id/25/300/300" alt="" />
-                          <div class="carousel__description">
-                              <h3 class="carousel__title">Amazing Title 5</h3><span class="carousel__subtitle">Some subtitle goes here</span>
+                          <div class="ticket-people">
+                            2명
                           </div>
-                      </a></li>
-                  <li class="carousel__item"> <a href="#"><img class="carousel__item__image" src="https://picsum.photos/id/26/300/300" alt="" />
-                          <div class="carousel__description">
-                              <h3 class="carousel__title">Amazing Title 6</h3><span class="carousel__subtitle">Some subtitle goes here</span>
+                          <div class="ticket-barcode">
+                            <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
                           </div>
-                      </a></li>
-                  <li class="carousel__item"> <a href="#"><img class="carousel__item__image" src="https://picsum.photos/id/27/300/300" alt="" />
-                          <div class="carousel__description">
-                              <h3 class="carousel__title">Amazing Title 7</h3><span class="carousel__subtitle">Some subtitle goes here</span>
+                          {% comment %} <div class="ticket-logo">
+                            MOVIEONFIND
+                          </div> {% endcomment %}
+                      </a>
+                    </div>
+                  </li>
+                  <li class="carousel__item">
+                    <div class="item-inner">
+                      <a class="item-front">
+                        <img class="carousel__item__image" src="https://picsum.photos/id/21/300/300" alt="" />
+                      </a>
+                      <a class="item-back">
+                          <div class="movie-info-top">
+                            <p>2D</p>
+                            <p>15세이상관람가</p>
                           </div>
-                      </a></li>
-                  <li class="carousel__item"> <a href="#"><img class="carousel__item__image" src="https://picsum.photos/id/28/300/300" alt="" />
-                          <div class="carousel__description">
-                              <h3 class="carousel__title">Amazing Title 8</h3><span class="carousel__subtitle">Some subtitle goes here</span>
+                          <div class="movie-info-bottom">
+                            <p class="movie-title-ko">곡성</p>
+                            <p class="movie-title-en">The Wailing</p>
                           </div>
-                      </a></li>
-                  <li class="carousel__item"> <a href="#"><img class="carousel__item__image" src="https://picsum.photos/id/29/300/300" alt="" />
-                          <div class="carousel__description">
-                              <h3 class="carousel__title">Amazing Title 9</h3><span class="carousel__subtitle">Some subtitle goes here</span>
+                          <div class="ticket-date">
+                            2023.05.22(월)
                           </div>
-                      </a></li>
-                  <li class="carousel__item"> <a href="#"><img class="carousel__item__image" src="https://picsum.photos/id/210/300/300" alt="" />
-                          <div class="carousel__description">
-                              <h3 class="carousel__title">Amazing Title 10</h3><span class="carousel__subtitle">Some subtitle goes here</span>
+                          <div class="ticket-comment">
+                            짱재밌었다
                           </div>
-                      </a></li>
-                  <li class="carousel__item"> <a href="#"><img class="carousel__item__image" src="https://picsum.photos/id/211/300/300" alt="" />
-                          <div class="carousel__description">
-                              <h3 class="carousel__title">Amazing Title 11</h3><span class="carousel__subtitle">Some subtitle goes here</span>
+                          <div class="ticket-people">
+                            2명
                           </div>
-                      </a></li>
+                          <div class="ticket-barcode">
+                            <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
+                          </div>
+                          {% comment %} <div class="ticket-logo">
+                            MOVIEONFIND
+                          </div> {% endcomment %}
+                      </a>
+                    </div>
+                  </li>
+                  <li class="carousel__item">
+                    <div class="item-inner">
+                      <a class="item-front">
+                        <img class="carousel__item__image" src="https://picsum.photos/id/21/300/300" alt="" />
+                      </a>
+                      <a class="item-back">
+                          <div class="movie-info-top">
+                            <p>2D</p>
+                            <p>15세이상관람가</p>
+                          </div>
+                          <div class="movie-info-bottom">
+                            <p class="movie-title-ko">곡성</p>
+                            <p class="movie-title-en">The Wailing</p>
+                          </div>
+                          <div class="ticket-date">
+                            2023.05.22(월)
+                          </div>
+                          <div class="ticket-comment">
+                            짱재밌었다
+                          </div>
+                          <div class="ticket-people">
+                            2명
+                          </div>
+                          <div class="ticket-barcode">
+                            <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
+                          </div>
+                          {% comment %} <div class="ticket-logo">
+                            MOVIEONFIND
+                          </div> {% endcomment %}
+                      </a>
+                    </div>
+                  </li>
+                  <li class="carousel__item">
+                    <div class="item-inner">
+                      <a class="item-front">
+                        <img class="carousel__item__image" src="https://picsum.photos/id/21/300/300" alt="" />
+                      </a>
+                      <a class="item-back">
+                          <div class="movie-info-top">
+                            <p>2D</p>
+                            <p>15세이상관람가</p>
+                          </div>
+                          <div class="movie-info-bottom">
+                            <p class="movie-title-ko">곡성</p>
+                            <p class="movie-title-en">The Wailing</p>
+                          </div>
+                          <div class="ticket-date">
+                            2023.05.22(월)
+                          </div>
+                          <div class="ticket-comment">
+                            짱재밌었다
+                          </div>
+                          <div class="ticket-people">
+                            2명
+                          </div>
+                          <div class="ticket-barcode">
+                            <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
+                          </div>
+                          {% comment %} <div class="ticket-logo">
+                            MOVIEONFIND
+                          </div> {% endcomment %}
+                      </a>
+                    </div>
+                  </li>
+                  <li class="carousel__item">
+                    <div class="item-inner">
+                      <a class="item-front">
+                        <img class="carousel__item__image" src="https://picsum.photos/id/21/300/300" alt="" />
+                      </a>
+                      <a class="item-back">
+                          <div class="movie-info-top">
+                            <p>2D</p>
+                            <p>15세이상관람가</p>
+                          </div>
+                          <div class="movie-info-bottom">
+                            <p class="movie-title-ko">곡성</p>
+                            <p class="movie-title-en">The Wailing</p>
+                          </div>
+                          <div class="ticket-date">
+                            2023.05.22(월)
+                          </div>
+                          <div class="ticket-comment">
+                            짱재밌었다
+                          </div>
+                          <div class="ticket-people">
+                            2명
+                          </div>
+                          <div class="ticket-barcode">
+                            <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
+                          </div>
+                          {% comment %} <div class="ticket-logo">
+                            MOVIEONFIND
+                          </div> {% endcomment %}
+                      </a>
+                    </div>
+                  </li>
                 </ul>
                 </div>
               </div>
