@@ -149,7 +149,7 @@ button {
     </div>
     <div class="movie-header">
       <div class="movie-poster">
-        <a href="{% url 'movies:index' review.movie.pk %}">
+        <a href="{% url 'movies:detail' review.movie.pk %}">
           <img src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/{{ review.movie.poster_path }}" alt="">
           <p>{{ review.movie.title }}</p>
         </a>
@@ -244,7 +244,6 @@ button {
 {% endblock content %}
 
 {% block script %}
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
   // Comment like buttons
   const commentForms = document.querySelectorAll('.comment-like-forms')

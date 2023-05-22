@@ -202,6 +202,22 @@ def interest(request, username):
         'person' : person,
     }
     return render(request, 'accounts/interest.html', context)
+    
+def watching(request, username):
+    User = get_user_model()
+    person = User.objects.get(email=username)
+    context = {
+        'person' : person,
+    }
+    return render(request, 'accounts/watching.html', context)
+    
+def watched(request, username):
+    User = get_user_model()
+    person = User.objects.get(email=username)
+    context = {
+        'person' : person,
+    }
+    return render(request, 'accounts/watched.html', context)
 
 def reviews(request, username):
     User = get_user_model()

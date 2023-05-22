@@ -84,17 +84,16 @@ button {
   filter: blur(5px);
 }
 .icon-box {
+  display: flex;
   border-top: 1px solid rgb(46, 46, 46);
   padding-top: 10px;
 }
-.icon-box form {
+.icon-box button, .icon-box a {
   display: flex;
-}
-.icon-box button {
-  display: flex;
+  justify-content: center;
   gap: 7px;
 }
-.icon-box button p {
+.icon-box button p, .icon-box a p {
   width: 20px;
   display: flex;
   margin-bottom: 0;
@@ -117,39 +116,46 @@ button {
 
 <div class="review-container">
   <div class="review-header">
-    <p>n개의 리뷰</p>
+    <p>{{person.review_set.all|length}}개의 리뷰</p>
     <button>최신순</button>
   </div>
   <ul class="review-list">
+    {% for review in person.review_set.all  %}
     <li>
       <div class="review-item">
         <div class="item-header">
-          <div class="movie-info">
-            <img src="https://nujhrcqkiwag1408085.cdn.ntruss.com/static/upload/movie_poster_images/280x400/movie_115800_1681697605.jpeg" alt="영화 포스터">
-            <p>슈퍼 마리오 브라더스</p>
-          </div>
-          <p class="item-data">2023.05.22</p>
+          <a class="movie-info" href="{% url 'movies:detail' review.movie.pk %}">
+            <img src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/{{ review.movie.poster_path }}" alt="영화 포스터">
+            <p>{{ review.movie.title }}</p>
+          </a>
+          <p class="item-data">{{ review.created_at }}</p>
         </div>
-        <a href="{% url 'reviews:review' 1 %}">
+        <a href="{% url 'reviews:detail' review.pk %}">
           <div class="item-content">
-            리뷰리뷰!
+            {{ review.content }}
           </div>
         </a>
         <div class="icon-box">
-          <form action="#">
-            <button class="like">
-              <p class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg></p>
-              <p>0</p>
-            </button>
-            <button class="comment">
-              <p class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_429_11233)"> <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 13.4876 3.36093 14.891 4 16.1272L3 21L7.8728 20C9.10904 20.6391 10.5124 21 12 21Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> <defs> <clipPath id="clip0_429_11233"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg></p>
-              <p>0</p>
-            </button>
-          </form>
+          <form action="#" class="review-like-form" data-review-id="{{ review.pk }}">
+            {% csrf_token %}
+            <button class="like" id="like-{{ review.pk }}"  {% if not user.is_authenticated or user == review.user %}disabled{% endif %}>
+              {% if request.user in review.like_users.all %}
+                <p class="icon"><svg viewBox="0 0 24 24" fill="#ff4d4d" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ff4d4d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg></p>
+              {% else %}
+                <p class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg></p>
+              {% endif %}
+              <p class="review-like-count">{{ review.like_users.all|length}}</p>
+            </button>  
+          </form>   
+          <a class="comment" href="{% url 'reviews:detail' review.pk %}">
+            <p class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_429_11233)"> <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 13.4876 3.36093 14.891 4 16.1272L3 21L7.8728 20C9.10904 20.6391 10.5124 21 12 21Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> <defs> <clipPath id="clip0_429_11233"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg></p>
+            <p>{{ review.comment_set.all|length }}</p>
+          </a>
         </div>
       </div>
     </li>
-    <li>
+    {% endfor %}
+    {% comment %} <li>
       <div class="review-item">
         <div class="item-header">
           <div class="movie-info">
@@ -210,7 +216,7 @@ button {
           </form>
         </div>
       </div>
-    </li>
+    </li> {% endcomment %}
   </ul>
 </div>
 
@@ -237,5 +243,33 @@ button {
       });
     });
   });
+
+  const forms = document.querySelectorAll('.review-like-form');
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+
+  forms.forEach((form) => {
+    form.addEventListener('submit', function (event) {
+      event.preventDefault()
+      const reviewId = event.target.dataset.reviewId
+      axios({
+        method: 'post',
+        url: `http://127.0.0.1:8080/reviews/${reviewId}/likes/`,
+        headers: {'X-CSRFToken': csrftoken},
+      })
+      .then((response) => {
+        const isLiked = response.data.is_liked
+        const likeBtn = document.querySelector(`#like-${reviewId}`)
+        const likes = likeBtn.querySelector(".review-like-count")
+        const likeIcon = likeBtn.querySelector('.icon')
+        if (isLiked === true) {
+          likeIcon.innerHTML = '<svg viewBox="0 0 24 24" fill="#ff4d4d" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ff4d4d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>'
+          likes.textContent=Number(likes.textContent) + 1
+        } else {
+          likeIcon.innerHTML = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>'
+          likes.textContent=Number(likes.textContent) - 1
+        }
+      })
+    })
+  })
 </script>
 {% endblock script %}

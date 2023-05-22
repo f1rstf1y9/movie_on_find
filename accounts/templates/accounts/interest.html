@@ -48,7 +48,7 @@ li {
   position: absolute;
   border-radius: 40px;
   box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
-  transition: transform 0.5s cubic-bezier(0.15, 0.88, 0.15, 0.97);
+  transition: transform 0.2s cubic-bezier(0.15, 0.88, 0.15, 0.97);
 }
 
 #daily:checked ~ .marker {
@@ -242,11 +242,11 @@ li {
 </div>
 
 <div class="radio-wrapper">
-  <input type="radio" id="daily" name="groupName" value="Daily" checked="checked">
+  <input onclick="javascript:goToInterest();" type="radio" id="daily" name="groupName" value="Daily" checked="checked">
   <label for="daily">보고싶어요</label><br>
-  <input type="radio" id="monthly" name="groupName" value="Monthly">
+  <input onclick="javascript:goToWatching();" type="radio" id="monthly" name="groupName" value="Monthly">
   <label for="monthly">보는중</label><br>
-  <input type="radio" id="yearly" name="groupName" value="Yearly">
+  <input onclick="javascript:goToWatched();" type="radio" id="yearly" name="groupName" value="Yearly">
   <label for="yearly">봤어요</label>
   <span class="marker"></span>
 </div>
@@ -290,4 +290,15 @@ li {
 
 
 {% block script %}
+<script>
+  function goToInterest() {
+    window.location.href = "{% url 'accounts:interest' person.email %}";
+  }
+  function goToWatching() {
+    window.location.href = "{% url 'accounts:watching' person.email %}";
+  }
+  function goToWatched() {
+    window.location.href = "{% url 'accounts:watched' person.email %}";
+  }
+</script>
 {% endblock script %}

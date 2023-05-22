@@ -1,4 +1,31 @@
 {% extends 'base.html' %}
 
 {% block content %}
+  <h1>추천영화</h1>
+  {% for resdata in resdatas%}
+  id:{{resdata.id}}
+  <br>
+  title:<a href="{% url 'movies:detail' resdata.id%}">{{resdata.title}}</a>
+  <br>
+  평점:{{resdata.vote_average}}
+  <br>
+  <img src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/{{resdata.poster_path}}" alt="">
+  <br>
+  오버뷰:{{resdata.overview}}
+  <br>
+  장르:
+  {% for genre_id in resdata.genre_ids %}
+  {% for data in datas %}
+  {% ifequal genre_id data.id %}
+  {{data.name}}
+  {% endifequal %}
+  {% endfor %}
+  {% endfor %}
+  <hr>
+  {% endfor %}
+
+  <h1>당신을 위한영화</h1>
+  <hr>
+  
+  <h1>컬렉션</h1>
 {% endblock content %}

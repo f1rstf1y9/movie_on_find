@@ -357,11 +357,11 @@
                   <span class="content-count">25</span>
                   <span class="content-label">보고싶어요</span>
                 </a>
-                <a href="/user/185/watchlist?tab=watching" class="content-wrap" id="watchingLabel">
+                <a href="{% url 'accounts:watching' person.email %}" class="content-wrap" id="watchingLabel">
                   <span class="content-count">0</span>
                   <span class="content-label">보는 중</span>
                 </a>
-                <a href="/user/185/watchlist?tab=watched" class="content-wrap" id="watchedLabel">
+                <a href="{% url 'accounts:watched' person.email %}" class="content-wrap" id="watchedLabel">
                   <span class="content-count">612</span>
                   <span class="content-label">봤어요</span>
                 </a>
@@ -373,7 +373,7 @@
                     <span class="link-label">작성한 리뷰</span>
                   </div>
                   <div class="link-action-wrap">
-                    <span class="link-count">35</span>
+                    <span class="link-count">{{person.review_set.all|length}}</span>
                     <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" preserveAspectRatio="none" class=""><path fill-rule="evenodd" clip-rule="evenodd" d="M5.293 3.05a1 1 0 000 1.415L8.828 8l-3.535 3.536a1 1 0 101.414 1.414l4.23-4.23a1 1 0 00.013-1.427L6.707 3.051a1 1 0 00-1.414 0z" fill="#586A85"></path></svg>
                   </div>
                 </a>
