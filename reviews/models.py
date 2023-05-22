@@ -21,9 +21,14 @@ class Review(models.Model):
         ('1',"★"),
         (None, '선택')
     ]
+    BLUR_CHOICES=[
+        ('True',"스포방지"),
+        ('False',"스포일러"),
+        (None, '선택')
+    ]
     vote=models.CharField(max_length=10, choices=STAR_CHOICES)
     #스포일러추가
-    spoiler=models.TextField()
+    spoiler=models.CharField(max_length=10,choices=BLUR_CHOICES)
     user=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     content = models.TextField()

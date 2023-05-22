@@ -18,7 +18,6 @@ class ActorList(serializers.ModelSerializer):
         L=[]
         for i in actor.get('cast'):
             if i['known_for_department'] == 'Acting':
-                # print(i['profile_path'])
                 L.append({'id':i['id'],'name':i['name'],'profile_path':i['profile_path']})
         return [{'name':item['name'],'id':item['id'],'profile_path':item['profile_path']} for item in L]
     class Meta:
@@ -51,11 +50,3 @@ class MovieDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
         fields = ('id','title', 'overview','vote_average','poster_path','genre_ids',)
-
-
-# class CommentCreateSerializer(serializers.ModelSerializer):
-
-#     class Meta:
-#         model=Comment
-#         fields='__all__'
-#         read_only_fields = ('movie','user')

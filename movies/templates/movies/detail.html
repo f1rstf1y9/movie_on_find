@@ -41,6 +41,12 @@ title:{{resdatas.title}}
   {% endif %}
   <ul>
     {% for review in reviews %}
+    <div>
+      {% if review.spoiler == 'True' %}
+      스포방지
+      {% else %}
+      스포일러
+      {% endif %}
       <li>
         {{ review.user }}
         <br>
@@ -64,6 +70,7 @@ title:{{resdatas.title}}
           </form>
         </div>
       </li>
+    </div>
     {% empty %}
       <li>게시글이 없어요...</li>
     {% endfor %}
@@ -85,6 +92,7 @@ title:{{resdatas.title}}
   title:{{card.title}}
   content:{{card.content}}
   movie_id:{{card.movie_id}}
+  이미지:{{resdatas.poster_path}}
 </div>
   {% endfor %}
 </ul>

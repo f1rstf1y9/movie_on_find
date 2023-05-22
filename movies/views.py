@@ -5,7 +5,7 @@ from movies.models import Movie
 from movies.serializers import MovieListSerializer,MovieDetailSerializer,ActorList,ActorDetail
 from django.core import serializers
 from rest_framework.response import Response
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
 from django.views.decorators.http import require_POST, require_safe, require_http_methods
@@ -17,7 +17,7 @@ from cards.models import Card
 from django.db import transaction
 
 
-
+# 장르데이터저장
 my_id='b4d8715368a27e1da703d584f643db18'
 def get_Genre_data():
     url='https://api.themoviedb.org/3/genre/movie/list?api_key='+my_id+'&language=ko'
@@ -35,7 +35,7 @@ def get_Genre_data():
     return result
 with open('movies/fixtures/genre.json','w',encoding="UTF-8") as f:
     json.dump(get_Genre_data(),f,ensure_ascii=False,indent=2)
-
+# 영화데이터저장
 def get_top_rated_data():
     result=[]
     for page in range(1,31):
@@ -70,10 +70,9 @@ def Genre_data():
     data=response.json()
     return data
 def get_movie_video(movie_pk):
-    url='https://api.themoviedb.org/3/movie/'+movie_pk+'/videos?api_key='+my_id+'&language=ko'
+    url='https://api.themoviedb.org/3/movie/'+str(movie_pk)+'/videos?api_key='+my_id+'&language=ko'
     response=requests.get(url).json()
-    data=response
-    print()
+    data=response['results'][0]['key']
     return data
 def Movies_data():
     url='https://api.themoviedb.org/3/movie/top_rated?api_key='+my_id+'&language=ko'
@@ -99,13 +98,6 @@ def Actor_Detail_data(actor_pk):
     data=response.json()
     return [data]
 
-# @api_view(['GET'])
-# def index(request):
-#     movies_data=Movies_data()
-#     serializer=MovieListSerializer(movies_data,many=True)
-#     serialized_data = serializer.data
-#     data=Genre_data()
-#     return render(request,'movies/index.html',{'resdatas':serialized_data,'datas':data})
 
 @api_view(['GET'])
 def index(request):
@@ -113,28 +105,9 @@ def index(request):
     genre=Genre.objects.values()
     serializer=MovieListSerializer(movie,many=True)
     serialized_data = serializer.data
-    print(get_movie_video)
+
     
     return render(request,'movies/index.html',{'resdatas':serialized_data,'datas':genre})
-    
-
-# @require_safe
-# @login_required
-# def detail(request,movie_pk):
-#     movie_data=Movie_data(movie_pk)
-#     actor_data=Actor_data(movie_pk)
-#     serializer1=MovieDetailSerializer(movie_data,many=True)
-#     serialized_data1 = serializer1.data
-#     serializer2=ActorList(actor_data,many=True)
-#     serialized_data2 = serializer2.data
-#     comment_form = CommentForm()
-#     comments=Comment.objects.all()
-#     comment=Comment.objects.filter(movie=movie_pk)
-#     C=[]
-#     for i in comments:
-#         if int(i.movie)==movie_pk:
-#             C.append(i)
-#     return render(request, 'movies/detail.html',{'resdatas':serialized_data1[0],'datas':serialized_data2[0]['name'],'comment_form':comment_form,'comments':C,'comment':comment})
 
 @require_safe
 @login_required
@@ -146,9 +119,8 @@ def detail(request,movie_pk):
     raw_data=Review.objects.filter(movie_id=movie_pk)
     reviews=raw_data
     cards=Card.objects.filter(movie_id=movie_pk)
-    # likes=reviews.like_user.all()
-    # comment_form=CommentForm()
-    # comments=Comment.objects.filter(movie=movie_pk)
+    movie.video=get_movie_video(movie_pk)
+    movie.save()
     context={
         'resdatas':serialized_data1,
         'datas':genre,
@@ -157,35 +129,22 @@ def detail(request,movie_pk):
     }
     return render(request, 'movies/detail.html',context)
 
-@login_required
-def actor_detail(request,actor_pk):
-    actor_data=Actor_Detail_data(actor_pk)
-    serializer=ActorDetail(actor_data,many=True)
-    serialized_data = serializer.data
-    return render(request, 'movies/actordetail.html',{'resdatas':serialized_data[0]['cast']})
+# @login_required
+# def actor_detail(request,actor_pk):
+#     actor_data=Actor_Detail_data(actor_pk)
+#     serializer=ActorDetail(actor_data,many=True)
+#     serialized_data = serializer.data
+#     return render(request, 'movies/actordetail.html',{'resdatas':serialized_data[0]['cast']})
 
-
-# @require_POST
-# def comment_create(request,movie_pk):
-#     if request.user.is_authenticated:
-#         comment_form = CommentForm(request.POST)
-#         if comment_form.is_valid():
-#             comment = comment_form.save(commit=False)
-#             comment.movie = movie_pk
-#             comment.user = request.user
-#             comment.save()
-#         return redirect('movies:detail', movie_pk)
-#     return redirect('accounts:login')
-
-
-
-# @require_POST
-# def comments_delete(request,comment_pk,movie_pk):
-#     if request.user.is_authenticated:
-#         comment = Comment.objects.get(pk=comment_pk)
-#         if request.user == comment.user:
-#             comment.delete()
-#     return redirect('movies:detail', movie_pk)
-
-
+@api_view(['GET'])
+def search(request):
+    movies=Movie.objects.all()
+    content = request.GET.get('content')
+    print(content)
+    for i in movies:
+        if i.title==content:
+            context={
+                'ID':i.id
+            }
+            return JsonResponse(context)
 

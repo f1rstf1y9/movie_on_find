@@ -3,10 +3,9 @@ from cards.models import Card, Comment
 from movies.models import Movie
 
 class CardForm(forms.ModelForm):
-    # movies = forms.ModelChoiceField(Movie.objects.values('title'), initial=None)
     class Meta:
         model=Card
-        exclude=('user', 'like_users','movie',)
+        exclude=('user', 'like_users','movie','movie_posterpath')
 
 class CommentForm(forms.ModelForm):
 

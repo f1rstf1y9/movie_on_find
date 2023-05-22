@@ -10,6 +10,7 @@ class Card(models.Model):
     content = models.TextField()
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_cards')
     movie=models.ForeignKey(Movie, on_delete=models.CASCADE)
+    movie_posterpath=models.CharField(max_length=100,null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

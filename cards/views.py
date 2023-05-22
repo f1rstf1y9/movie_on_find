@@ -27,21 +27,6 @@ def index(request):
         poster.append(data)
     return render(request,'cards/index.html',{'poster':poster})
 
-# @login_required
-# @require_http_methods(['GET', 'POST'])
-# def create(request):
-#     L=[]
-#     for i in Movie.objects.all():
-#         L.append(i.title)
-#     form =CardForm(request.POST)
-#     if form.is_valid():
-#         card=form.save(commit=False)
-#         card.user=request.user
-#         card.save()
-#         return redirect('cards:detail',card.pk)
-#     else:
-#         form=CardForm()
-#     return render(request,'cards/create.html',{'form':form})
 
 @login_required
 @require_http_methods(['GET', 'POST'])
@@ -55,6 +40,7 @@ def create(request, movie_pk):
                 card = form.save(commit=False)
                 card.user = request.user
                 card.movie = movie
+                card.movie_posterpath = movie.poster_path
                 card.save()
                 return redirect('cards:detail', card.pk)
         else:
