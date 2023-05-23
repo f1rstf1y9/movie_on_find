@@ -10,12 +10,14 @@ class MovieListSerializer(serializers.ModelSerializer):
         return list(movie.genres.values_list('id', flat=True))
     class Meta:
         model = Movie
-        fields = ('id','title', 'overview','vote_average','poster_path','genre_ids','popularity','release_date')
+        fields = '__all__'
 
 class GenreListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
         fields = '__all__'
+
+
 
 class MovieDetailSerializer(serializers.ModelSerializer):
     genre_ids = serializers.SerializerMethodField()
@@ -26,4 +28,4 @@ class MovieDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Movie
-        fields = ('id','title', 'overview','vote_average','poster_path','genre_ids',)
+        fields = '__all__'

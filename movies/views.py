@@ -15,11 +15,16 @@ from card_collections.models import Card_collection
 from movies.models import Genre
 from reviews.models import Review
 from cards.models import Card
+from accounts.models import User
 from django.db import transaction
 from movies.forms import Searchform
+from django.template.defaulttags import register
 
+@register.filter(name='split')
+def split(value, key): 
+    return value.split(key)[0]
 
-my_id=''
+my_id='4d159f322795f49ab1e9bb06b61577fb'
 def get_top_rated_data():
     result=[]
     for page in range(1,51):
@@ -67,6 +72,14 @@ def data_sort():
     for i in movie:
         if i.overview=='':
             i.delete()
+
+def recommend(id):
+    genre=Genre.objects.filter(like_users=id).values()
+    G=[]
+    for i in genre:
+        G.append(i['name'])
+    print(G)
+    return set(G)
 @api_view(['GET'])
 def index(request):
     # get_top_rated_data()
@@ -76,8 +89,20 @@ def index(request):
     genre=Genre.objects.values()
     serializer=MovieListSerializer(movie,many=True)
     serialized_data = serializer.data
+    if request.user.is_authenticated:
+        rec=recommend(request.user.id)
+        rec_movie=Movie.objects.all()
+        L=[]
+        for i in rec_movie:
+            D=[]
+            for j in i.genres.all().values():
+                D.append(j['name'])
+            a=set.intersection(set(D),rec)
+            if abs(len(rec)-len(a))<2:
+                L.append(i)
+
     collections=Card_collection.objects.all()
-    return render(request,'movies/index.html',{'resdatas':serialized_data,'datas':genre,'collections':collections})
+    return render(request,'movies/index.html',{'resdatas':serialized_data,'datas':genre,'collections':collections,'rec':L})
 
 @require_safe
 @login_required
@@ -175,9 +200,6 @@ def sort(request,pk):
     serializer=MovieListSerializer(movie,many=True)
     serialized_data = serializer.data
     return render(request,'movies/sort.html',{'resdatas':serialized_data,'datas':genre})
-
-    pass
-
 
 
 @api_view(['GET'])
