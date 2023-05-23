@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Cards</h1>
+  <hr>
+  {% for card in poster %}
+    <p>
+      <b>작성자 : <a href="{% url 'accounts:profile' card.user %}">{{ card.user }}</a></b>
+    </p>
+    <p>글 번호 : {{ card.pk }}</p>
+    <p>내용 : {{ card.content }}</p>
+    <p>이미지경로:{{card.card_image.url}}</p>
+    <a href="{% url 'cards:detail' card.pk %}">상세 페이지</a>
+    <hr>
+  {% endfor %}
+{% endblock content %}
+

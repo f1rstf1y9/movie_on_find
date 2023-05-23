@@ -1,6 +1,7 @@
 from django import forms
-from cards.models import Card, Comment
+from cards.models import Card
 from movies.models import Movie
+from .widgets import DatePickerInput
 
 class CardForm(forms.ModelForm):
     # movies = forms.ModelChoiceField(Movie.objects.values('title'), initial=None)
@@ -8,8 +9,7 @@ class CardForm(forms.ModelForm):
         model=Card
         exclude=('user', 'like_users', 'movie',)
 
-class CommentForm(forms.ModelForm):
-
-    class Meta:
-        model = Comment
-        exclude = ('card', 'user','like_users')
+        watched_at = forms.DateField(widget=DatePickerInput)
+        widgets = {
+            'watched_at': DatePickerInput(),
+        }
