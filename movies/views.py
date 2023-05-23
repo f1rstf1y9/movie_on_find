@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect,get_object_or_404, get_list_or_404
 from django.views.decorators.http import require_http_methods, require_safe, require_POST
 from django.contrib.auth.decorators import login_required
-from movies.models import Movie,Actor
-from movies.serializers import MovieListSerializer,MovieDetailSerializer,ActorList,ActorDetail
+from movies.models import Movie
+from movies.serializers import MovieListSerializer,MovieDetailSerializer
 from django.core import serializers
 from rest_framework.response import Response
 from django.http import HttpResponse,JsonResponse
@@ -11,31 +11,15 @@ from rest_framework.decorators import api_view
 from django.views.decorators.http import require_POST, require_safe, require_http_methods
 import requests
 import json
+from card_collections.models import Card_collection
 from movies.models import Genre
 from reviews.models import Review
 from cards.models import Card
 from django.db import transaction
+from movies.forms import Searchform
 
 
-# 장르데이터저장
 my_id=''
-def get_Genre_data():
-    url='https://api.themoviedb.org/3/genre/movie/list?api_key='+my_id+'&language=ko'
-    response=requests.get(url)
-    raw_data=response.json()
-    data=raw_data.get('genres')
-    result=[]
-    for i in data:
-        genre_dict={
-            "model":"movies.genre",
-            "pk":i.get("id"),
-            "fields":{"name":i.get("name")}
-        }
-        result.append(genre_dict)
-    return result
-# with open('movies/fixtures/genre.json','w',encoding="UTF-8") as f:
-    json.dump(get_Genre_data(),f,ensure_ascii=False,indent=2)
-# 영화데이터저장
 def get_top_rated_data():
     result=[]
     for page in range(1,51):
@@ -49,9 +33,13 @@ def get_top_rated_data():
                 "pk":i.get("id"),
                 "fields":{
                     "title":i.get("title"),
+                    "original_title":i.get("original_title"),
                     "vote_average":i.get("vote_average"),
+                    "popularity":i.get("popularity"),
                     "overview":i.get("overview"),
                     "poster_path":i.get("poster_path"),
+                    "backdrop_path":i.get("backdrop_path"),
+                    "release_date":i.get("release_date"),
                     "genres":i.get("genre_ids"),
                     "interest":[],
                     "watched":[],
@@ -62,19 +50,6 @@ def get_top_rated_data():
     return result
 # with open('movies/fixtures/movie.json','w',encoding="UTF-8") as f:
 #     json.dump(get_top_rated_data(),f,ensure_ascii=False,indent=2)
-# Create your views here.
-
-def data_sort():
-    movie=Movie.objects.all()
-    for i in movie:
-        if i.overview=='':
-            i.delete()
-
-def Genre_data():
-    url='https://api.themoviedb.org/3/genre/movie/list?api_key='+my_id+'&language=ko'
-    response=requests.get(url).json()
-    data=response.json()
-    return data
 def get_movie_video():
     movie=Movie.objects.all()
     for i in movie:
@@ -87,45 +62,22 @@ def get_movie_video():
             key=data1[0]['key']
             i.video=key
             i.save()
-
-
-def Movies_data():
-    url='https://api.themoviedb.org/3/movie/top_rated?api_key='+my_id+'&language=ko'
-    response=requests.get(url)
-    data=response.json()
-    
-    return data.get('results',[])
-def Movie_data(movie_pk):
-    url='https://api.themoviedb.org/3/movie/'+str(movie_pk)+'?api_key='+my_id+'&language=ko'
-    response=requests.get(url)
-    data=response.json()
-    return [data]
-
-def Actor_data(movie_pk):
-    url='https://api.themoviedb.org/3/movie/'+str(movie_pk)+'/credits?api_key='+my_id+'&language=ko'
-    response=requests.get(url)
-    data=response.json()
-    return [data]
-
-def Actor_Detail_data(actor_pk):
-    url='https://api.themoviedb.org/3/person/'+str(actor_pk)+'/movie_credits?api_key='+my_id+'&language=ko'
-    response=requests.get(url)
-    data=response.json()
-    return [data]
-
-
-
+def data_sort():
+    movie=Movie.objects.all()
+    for i in movie:
+        if i.overview=='':
+            i.delete()
 @api_view(['GET'])
 def index(request):
+    # get_top_rated_data()
     # data_sort()
     # get_movie_video()
     movie=Movie.objects.all().order_by('-vote_average')[:10]
     genre=Genre.objects.values()
     serializer=MovieListSerializer(movie,many=True)
     serialized_data = serializer.data
-
-    
-    return render(request,'movies/index.html',{'resdatas':serialized_data,'datas':genre})
+    collections=Card_collection.objects.all()
+    return render(request,'movies/index.html',{'resdatas':serialized_data,'datas':genre,'collections':collections})
 
 @require_safe
 @login_required
@@ -137,8 +89,6 @@ def detail(request,movie_pk):
     raw_data=Review.objects.filter(movie_id=movie_pk)
     reviews=raw_data
     cards=Card.objects.filter(movie_id=movie_pk)
-    # movie.video=get_movie_video(movie_pk)
-    # movie.save()
     context={
         'resdatas':serialized_data1,
         'datas':genre,
@@ -147,22 +97,169 @@ def detail(request,movie_pk):
     }
     return render(request, 'movies/detail.html',context)
 
-# @login_required
-# def actor_detail(request,actor_pk):
-#     actor_data=Actor_Detail_data(actor_pk)
-#     serializer=ActorDetail(actor_data,many=True)
-#     serialized_data = serializer.data
-#     return render(request, 'movies/actordetail.html',{'resdatas':serialized_data[0]['cast']})
+def genre_sort(request,genre_pk):
+    print(type(genre_pk))
+    # 모험
+    if genre_pk==12:
+        movie=Movie.objects.filter(genres=genre_pk)
+    # 판타지
+    elif genre_pk==14:
+        movie=Movie.objects.filter(genres=genre_pk)
+    # 애니메이션
+    elif genre_pk==16:
+        movie=Movie.objects.filter(genres=genre_pk)
+    # 드라마
+    elif genre_pk==18:
+        movie=Movie.objects.filter(genres=genre_pk)
+    # 공포
+    elif genre_pk==27:
+        movie=Movie.objects.filter(genres=genre_pk)
+    # 액션
+    elif genre_pk==28:
+        movie=Movie.objects.filter(genres=genre_pk)
+    # 코미디
+    elif genre_pk==35:
+        movie=Movie.objects.filter(genres=genre_pk)
+    # 역사
+    elif genre_pk==36:
+        movie=Movie.objects.filter(genres=genre_pk)
+    # 서부
+    elif genre_pk==37:
+        movie=Movie.objects.filter(genres=genre_pk)
+    # 스릴러
+    elif genre_pk==53:
+        movie=Movie.objects.filter(genres=genre_pk)
+    # 범죄
+    elif genre_pk==80:
+        movie=Movie.objects.filter(genres=genre_pk)
+    # 다큐멘터리
+    elif genre_pk==99:
+        movie=Movie.objects.filter(genres=genre_pk)
+    # SF
+    elif genre_pk==878:
+        movie=Movie.objects.filter(genres=genre_pk)
+    # 미스터리
+    elif genre_pk==9648:
+        movie=Movie.objects.filter(genres=genre_pk)
+    # 음악
+    elif genre_pk==10402:
+        movie=Movie.objects.filter(genres=genre_pk)
+    # 로맨스
+    elif genre_pk==10749:
+        movie=Movie.objects.filter(genres=genre_pk)
+    # 가족
+    elif genre_pk==10751:
+        movie=Movie.objects.filter(genres=genre_pk)
+    # 전쟁
+    elif genre_pk==10752:
+        movie=Movie.objects.filter(genres=genre_pk)
+    # TV 영화
+    elif genre_pk==10770:
+        movie=Movie.objects.filter(genres=genre_pk)
+    genre=Genre.objects.values()
+    serializer=MovieListSerializer(movie,many=True)
+    serialized_data = serializer.data
+    return render(request,'movies/sort.html',{'resdatas':serialized_data,'datas':genre})
+
+def sort(request,pk):
+    # 평점순
+    if pk==1:
+        movie=Movie.objects.all().order_by('-vote_average')
+    #인기도순
+    elif pk==2:
+        movie=Movie.objects.all().order_by('-popularity')
+    #개봉일순
+    elif pk==3:
+        movie=Movie.objects.all().order_by('-release_date')
+    genre=Genre.objects.values()
+    serializer=MovieListSerializer(movie,many=True)
+    serialized_data = serializer.data
+    return render(request,'movies/sort.html',{'resdatas':serialized_data,'datas':genre})
+
+    pass
+
+
 
 @api_view(['GET'])
 def search(request):
+    form =Searchform(request.GET)
     movies=Movie.objects.all()
-    content = request.GET.get('content')
-    print(content)
-    for i in movies:
-        if i.title==content:
-            context={
-                'ID':i.id
+    blind={'ans':False}
+    if form.is_valid():
+        keyword=form.cleaned_data.get('keyword')
+        if keyword:
+            blind={'ans':True}
+            movies=movies.filter(title__icontains=keyword)
+    context={
+        'form':form,
+        'movies':movies,
+        'blind':blind
+    }
+    return render(request,'movies/search.html',context)
+
+@require_POST
+def watching(request, card_pk):
+    if request.user.is_authenticated:
+        card = Card.objects.get(pk=card_pk)
+        if card.user_id==request.user.pk:
+            pass
+        else:
+            if card.like_users.filter(pk=request.user.pk).exists():
+                card.like_users.remove(request.user)
+                is_liked = False
+                likes=card.like_users.all()
+            else:
+                card.like_users.add(request.user)
+                is_liked = True
+                likes=card.like_users.all()
+            context = {
+                'is_liked': is_liked,
+                'likes':len(likes),
             }
             return JsonResponse(context)
+    return redirect('accounts:login')
+
+@require_POST
+def watched(request, card_pk):
+    if request.user.is_authenticated:
+        card = Card.objects.get(pk=card_pk)
+        if card.user_id==request.user.pk:
+            pass
+        else:
+            if card.like_users.filter(pk=request.user.pk).exists():
+                card.like_users.remove(request.user)
+                is_liked = False
+                likes=card.like_users.all()
+            else:
+                card.like_users.add(request.user)
+                is_liked = True
+                likes=card.like_users.all()
+            context = {
+                'is_liked': is_liked,
+                'likes':len(likes),
+            }
+            return JsonResponse(context)
+    return redirect('accounts:login')
+
+@require_POST
+def interest(request, card_pk):
+    if request.user.is_authenticated:
+        card = Card.objects.get(pk=card_pk)
+        if card.user_id==request.user.pk:
+            pass
+        else:
+            if card.like_users.filter(pk=request.user.pk).exists():
+                card.like_users.remove(request.user)
+                is_liked = False
+                likes=card.like_users.all()
+            else:
+                card.like_users.add(request.user)
+                is_liked = True
+                likes=card.like_users.all()
+            context = {
+                'is_liked': is_liked,
+                'likes':len(likes),
+            }
+            return JsonResponse(context)
+    return redirect('accounts:login')
 

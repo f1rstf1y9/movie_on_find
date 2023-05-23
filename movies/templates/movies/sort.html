@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% block content %}
+<h1>분류영화</h1>
+<a href="{% url 'movies:index'%}">홈</a>
 <a href="{% url 'movies:sort' pk=1%}">평점순</a>
 <a href="{% url 'movies:sort' pk=2%}">인기도순</a>
-<a href="{% url 'movies:sort' pk=3%}">개봉일순</a><br>
-{% for genre_id in datas %}
-<a href="{% url 'movies:genre_sort' genre_id.id%}">{{genre_id.name}}</a>
-{% endfor %}
-<h1>추천영화</h1>
+<a href="{% url 'movies:sort' pk=3%}">개봉일순</a>
+<br>
+<a href="{% url 'movies:index'%}">back</a>
+<hr>
 {% for resdata in resdatas%}
 id:{{resdata.id}}
 <br>
@@ -28,16 +29,5 @@ title:<a href="{% url 'movies:detail' resdata.id%}">{{resdata.title}}</a>
 {% endfor %}
 {% endfor %}
 <hr>
-{% endfor %}
-<h1>당신을 위한영화</h1>
-<hr>
-<h1>컬렉션</h1>
-{% for collection in collections %}
-{{collection.title}}
-<ul>
-{% for card in collection.cards.all %}
-<li>{{card.movie_id}}-{{card.title}}</li>
-{% endfor %}
-</ul>
 {% endfor %}
 {% endblock content %}

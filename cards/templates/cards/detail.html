@@ -33,7 +33,7 @@
     </form>
   {% endif %}
   <hr>
-  <a href="{% url 'cards:index' %}">뒤로가기</a>
+  <a href="{% url 'movies:detail' card.movie_id %}">뒤로가기</a>
   <hr>
   <h4>댓글 목록</h4>
   {% if comments %}

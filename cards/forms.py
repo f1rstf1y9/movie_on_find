@@ -5,7 +5,7 @@ from movies.models import Movie
 class CardForm(forms.ModelForm):
     class Meta:
         model=Card
-        exclude=('user', 'like_users','movie','movie_posterpath')
+        exclude=('user', 'like_users','movie','movie_posterpath','collection')
 
 class CommentForm(forms.ModelForm):
 

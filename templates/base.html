@@ -31,50 +31,20 @@
           <a href="{% url 'accounts:update' %}">회원정보 수정</a>
         </div>
         
+        <a href="{% url 'movies:search' %}" class="btn btn-primary my-4">검색</a>
         <a href="{% url 'movies:index' %}" class="btn btn-primary my-4">Movie</a>
         <a href="{% url 'cards:index' %}" class="btn btn-primary my-4">Card</a>
+        <a href="{% url 'card_collections:index' %}" class="btn btn-primary my-4">card_collections</a>
       {% else %}
         <a href="{% url 'accounts:login' %}" class="btn btn-primary my-4">Login</a>
         <a href="{% url 'accounts:signup' %}" class="btn btn-success my-4">Signup</a>
-      {% endif %}
-      <form class="search-forms">
-        <input type="text" id='search'>
-        <input type="submit" value="검색" id="searching">
-      </form>
-      {% if searchlist %}
       {% endif %}
     </nav>
     <hr>
     {% block content %}
     {% endblock content %}
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-    <script>
-      const searchforms = document.querySelectorAll('.search-forms');
-      
-      searchforms.forEach((searchform) => {
-        searchform.addEventListener('submit', function (event) {
-          event.preventDefault()
-          const content = document.querySelector('#search').value;
-          console.log(content)
-          axios({
-            method: 'get',
-            url: `http://127.0.0.1:8000/movies/search/`,
-            params:{
-              'content':content
-            }
-          })
-          .then((res)=>{
-            console.log(res.data.ID)
-          })
-          .catch((err)=>{
-            alert('검색내용이 없습니다.')
-          })
-        })
-      })
-    </script>
-      {% block script %}
-      {% endblock script %}
+    {% block script %}
+    {% endblock script %}
   </div>
 </body>
 </html>
