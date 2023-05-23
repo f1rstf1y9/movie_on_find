@@ -27,7 +27,6 @@ class ActorList(serializers.ModelSerializer):
 
 class MovieListSerializer(serializers.ModelSerializer):
     genre_ids = serializers.SerializerMethodField()
-
     def get_genre_ids(self, movie):
         # Movie 모델의 genres 필드로부터 genre_ids 값을 추출
         return list(movie.genres.values_list('id', flat=True))

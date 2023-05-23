@@ -98,7 +98,6 @@ button {
   display: flex;
   margin-bottom: 0;
 }
-
 {% endblock style %}
 
 
@@ -122,55 +121,57 @@ button {
   </div>
   <ul class="review-list">
     {% for review in person.review_set.all  %}
-    <li>
-      <div class="review-item">
-        <div class="item-header">
-          <a class="movie-info" href="{% url 'movies:detail' review.movie.pk %}">
-            <img src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/{{ review.movie.poster_path }}" alt="영화 포스터">
-            <p>{{ review.movie.title }}</p>
+      <li>
+        <div class="review-item">
+          <div class="item-header">
+            <a class="movie-info" href="{% url 'movies:detail' review.movie.pk %}">
+              <img src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/{{ review.movie.poster_path }}" alt="영화 포스터">
+              <p>{{ review.movie.title }}</p>
+            </a>
+            <p class="item-data">{{ review.created_at }}</p>
+          </div>
+          {% if review.spoiler %}
+          <a href="{% url 'reviews:detail' review.pk %}" class="spoiler-link">
+            <div class="spoiler-prevent">
+              *스포일러가 포함된 리뷰입니다. 확인하려면 클릭해주세요.
+            </div>
+            <div class="item-content spoiler">
+              {{ review.content }}
+            </div>
           </a>
-          <p class="item-data">{{ review.created_at }}</p>
-        </div>
-        {% if review.spoiler %}
-        <a href="{% url 'reviews:detail' review.pk %}" class="spoiler-link">
-          <div class="spoiler-prevent">
-            *스포일러가 포함된 리뷰입니다. 확인하려면 클릭해주세요.
-          </div>
-          <div class="item-content spoiler">
-            {{ review.content }}
-          </div>
-        </a>
-        {% else %}
-        <a href="{% url 'reviews:detail' review.pk %}">
-          <div class="item-content">
-            {{ review.content }}
-          </div>
-        </a>
-        {% endif %}
-        <div class="icon-box">
-          <form action="#" class="review-like-form" data-review-id="{{ review.pk }}">
-            {% csrf_token %}
-            <button class="like" id="like-{{ review.pk }}"  {% if not user.is_authenticated or user == review.user %}disabled{% endif %}>
-              {% if request.user in review.like_users.all %}
-                <p class="icon"><svg viewBox="0 0 24 24" fill="#ff4d4d" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ff4d4d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg></p>
-              {% else %}
-                <p class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg></p>
-              {% endif %}
-              <p class="review-like-count">{{ review.like_users.all|length}}</p>
-            </button>  
-          </form>   
-          <a class="comment" href="{% url 'reviews:detail' review.pk %}">
-            <p class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_429_11233)"> <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 13.4876 3.36093 14.891 4 16.1272L3 21L7.8728 20C9.10904 20.6391 10.5124 21 12 21Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> <defs> <clipPath id="clip0_429_11233"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg></p>
-            <p>{{ review.comment_set.all|length }}</p>
+          {% else %}
+          <a href="{% url 'reviews:detail' review.pk %}">
+            <div class="item-content">
+              {{ review.content }}
+            </div>
           </a>
+          {% endif %}
+          <div class="icon-box">
+            <form action="#" class="review-like-form" data-review-id="{{ review.pk }}">
+              {% csrf_token %}
+              <button class="like" id="like-{{ review.pk }}"  {% if not user.is_authenticated or user == review.user %}disabled{% endif %}>
+                {% if request.user in review.like_users.all %}
+                  <p class="icon"><svg viewBox="0 0 24 24" fill="#ff4d4d" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ff4d4d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg></p>
+                {% else %}
+                  <p class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg></p>
+                {% endif %}
+                <p class="review-like-count">{{ review.like_users.all|length}}</p>
+              </button>  
+            </form>   
+            <a class="comment" href="{% url 'reviews:detail' review.pk %}">
+              <p class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_429_11233)"> <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 13.4876 3.36093 14.891 4 16.1272L3 21L7.8728 20C9.10904 20.6391 10.5124 21 12 21Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> <defs> <clipPath id="clip0_429_11233"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg></p>
+              <p>{{ review.comment_set.all|length }}</p>
+            </a>
+          </div>
         </div>
-      </div>
-    </li>
+      </li>
+    {% empty %}
+      <li>
+        아직 작성하신 리뷰가 없어요!
+      </li>
     {% endfor %}
   </ul>
 </div>
-
-
 {% endblock content %}
 
 

@@ -32,7 +32,6 @@
 .profile-info-container {
   text-decoration: none;
 }
-
 .profile-contents-container {
   width: 100%;
   background-color: #f2f2f2;
@@ -144,6 +143,7 @@
   cursor: grab;
   padding: 10px;
   margin: 0;
+  justify-content: start;
   grid-gap: 24px;
   grid-auto-flow: column;
   list-style: none;
@@ -382,24 +382,27 @@
               <div class="carousel">
               {% comment %} 포토카드 {% endcomment %}
               <div class="carousel__wrapper">
-                <div class="carousel__header">
-                    <p class="carousel__headline lead fw-normal mb-0">최근 등록한 포토티켓</p>
-                    <div>
-                      <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
-                    </div>
-                </div>
-                <div class="carousel__controls">
-                  <button class="carousel__arrow disabled arrow-prev"></button>
-                  <button class="carousel__arrow arrow-next"></button>
-                </div>
-                <ul class="carousel__content">
-                  {% for card in person.card_set.all %}
-                  <li class="carousel__item" onclick="moveTo({{card.pk}})">
-                    <div class="item-inner">
-                      <a class="item-front" href="{% url 'cards:detail' card.pk %}">
-                        <img class="carousel__item__image" src="{{ card.card_image.url }}" alt="{{ card.card_image }}" />
-                      </a>
-                      <a class="item-back" href="{% url 'cards:detail' card.pk %}">
+                {% if person.card_set.all|length > 0 %}
+                  <div class="carousel__header">
+                      <p class="carousel__headline lead fw-normal mb-0">최근 등록한 포토티켓</p>
+                      <div>
+                        <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
+                      </div>
+                  </div>
+                  {% if person.card_set.all|length >= 2 %}
+                  <div class="carousel__controls">
+                    <button class="carousel__arrow disabled arrow-prev"></button>
+                    <button class="carousel__arrow arrow-next"></button>
+                  </div>
+                  {% endif %}
+                  <ul class="carousel__content">
+                    {% for card in person.card_set.all %}
+                    <li class="carousel__item" onclick="moveTo({{card.pk}})">
+                      <div class="item-inner">
+                        <a class="item-front" href="{% url 'cards:detail' card.pk %}">
+                          <img class="carousel__item__image" src="{{ card.card_image.url }}" alt="{{ card.card_image }}" />
+                        </a>
+                        <a class="item-back" href="{% url 'cards:detail' card.pk %}">
                           <div class="movie-info-top">
                             <p>{{ card.movie_type }}</p>
                             <p>{{ card.movie_location }}</p>
@@ -420,12 +423,26 @@
                           <div class="ticket-barcode">
                             <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
                           </div>
-                      </a>
-                    </div>
-                  </li>
-                  {% endfor %}
-                </ul>
-                </div>
+                        </a>
+                      </div>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                {% else %}
+                  <div class="carousel__header">
+                    <p class="carousel__headline lead fw-normal mb-0">최근 등록한 포토티켓</p>
+                  </div>
+                  <div class="carousel__wrapper">
+                    <ul class="carousel__content" style="cursor: default;">
+                      <li class="carousel__item" style="padding-top:50px;">
+                        등록한 포토카드가 없어요ㅠ.ㅠ
+                      </li>
+                    </ul>
+                  </div>
+                {% endif %}
+              </div>
+              
+
               </div>
               {% comment %} 컬렉션 {% endcomment %}
               <div class="d-flex justify-content-between align-items-center mb-4">

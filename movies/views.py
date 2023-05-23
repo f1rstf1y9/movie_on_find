@@ -60,9 +60,6 @@ def get_top_rated_data():
             }
             result.append(movie_dict)
     return result
-# with open('movies/fixtures/movie.json','w',encoding="UTF-8") as f:
-#     json.dump(get_top_rated_data(),f,ensure_ascii=False,indent=2)
-# Create your views here.
 
 def Genre_data():
     url='https://api.themoviedb.org/3/genre/movie/list?api_key='+my_id+'&language=ko'
@@ -74,7 +71,6 @@ def get_movie_video(movie_pk):
     url='https://api.themoviedb.org/3/movie/'+str(movie_pk)+'/videos?api_key='+my_id+'&language=ko'
     response=requests.get(url).json()
     data=response
-    print()
     return data
 
 def Movies_data():
@@ -117,27 +113,8 @@ def index(request):
     serializer=MovieListSerializer(movie,many=True)
     serialized_data = serializer.data
     print(get_movie_video)
-    
     return render(request,'movies/index.html',{'resdatas':serialized_data,'datas':genre})
     
-
-# @require_safe
-# @login_required
-# def detail(request,movie_pk):
-#     movie_data=Movie_data(movie_pk)
-#     actor_data=Actor_data(movie_pk)
-#     serializer1=MovieDetailSerializer(movie_data,many=True)
-#     serialized_data1 = serializer1.data
-#     serializer2=ActorList(actor_data,many=True)
-#     serialized_data2 = serializer2.data
-#     comment_form = CommentForm()
-#     comments=Comment.objects.all()
-#     comment=Comment.objects.filter(movie=movie_pk)
-#     C=[]
-#     for i in comments:
-#         if int(i.movie)==movie_pk:
-#             C.append(i)
-#     return render(request, 'movies/detail.html',{'resdatas':serialized_data1[0],'datas':serialized_data2[0]['name'],'comment_form':comment_form,'comments':C,'comment':comment})
 
 @require_safe
 def detail(request,movie_pk):
@@ -150,6 +127,7 @@ def detail(request,movie_pk):
     cards=Card.objects.filter(movie_id=movie_pk)
     movie.video=get_movie_video(movie_pk)
     movie.save()
+    print(serialized_data1)
     context={
         'resdatas':serialized_data1,
         'datas':genre,
