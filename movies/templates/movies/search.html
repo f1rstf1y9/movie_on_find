@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<form action="{% url 'movies:search'%}" method="GET">
+    {% csrf_token %}
+    {{form.keyword}}
+    <button type="submit">검색</button>
+</form>
+{% if blind.ans %}
+{% for movie in movies %}
+<a href="{% url 'movies:detail' movie.id%}"> <h3>{{ movie.title }}</h3></a>
+{% empty %}
+    <p>검색 결과가 없습니다.</p>
+{% endfor %}
+{% else %}
+{% endif %}
+
+{% endblock content %}

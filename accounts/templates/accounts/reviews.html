@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+
+{% block style %}
+p {
+  margin-bottom: 0;
+}
+a {
+  color: white;
+}
+ul {
+  padding-left: 0;
+}
+li {
+  list-style: none;
+}
+button {
+  background: none;
+  border: none;
+  outline: 0;
+  color: white;
+}
+.container {
+  max-width: 700px;
+  margin: 75px auto;
+}
+.sub-header {
+  position: fixed;
+  height: 50px;
+  z-index: 99;
+  top: 62px;
+  background-color: rgb(44, 44, 44);
+  width: 100%;
+  max-width: 700px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-weight: 700;
+}
+.review-container {
+  margin-top: 140px;
+}
+.review-header {
+  display: flex;
+  justify-content: space-between;
+}
+.review-list li {
+  margin: 15px 0;
+}
+.review-item {
+  background-color: rgb(36, 35, 34);
+  padding: 15px;
+  border-radius: 10px;
+}
+.item-header {
+  display: flex;
+  justify-content: space-between;
+}
+.movie-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+.movie-info > img {
+  width: 50px;
+  border-radius: 6px;
+}
+.item-data {
+  color: rgba(255, 175, 2, 0.719);
+  font-size: 12px;
+}
+.item-content {
+  margin-bottom: 10px;
+}
+.spoiler-prevent {
+  color: rgb(103, 103, 103);
+  font-size: 12px;
+}
+.item-content.spoiler {
+  filter: blur(5px);
+}
+.icon-box {
+  display: flex;
+  border-top: 1px solid rgb(46, 46, 46);
+  padding-top: 10px;
+}
+.icon-box button, .icon-box a {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+}
+.icon-box button p, .icon-box a p {
+  width: 20px;
+  display: flex;
+  margin-bottom: 0;
+}
+{% endblock style %}
+
+
+{% block content %}
+<div id="header" class="sub-header">
+  <div class="header-inner">
+    <div class="back-btn">
+      <a href="{% url 'accounts:profile' person.email %}">
+        <svg width="24" height="24" viewBox="0 0 1024 1024" fill="#ffffff" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M669.6 849.6c8.8 8 22.4 7.2 30.4-1.6s7.2-22.4-1.6-30.4l-309.6-280c-8-7.2-8-17.6 0-24.8l309.6-270.4c8.8-8 9.6-21.6 2.4-30.4-8-8.8-21.6-9.6-30.4-2.4L360.8 480.8c-27.2 24-28 64-0.8 88.8l309.6 280z" fill=""></path></g></svg>
+      </a>
+    </div>
+    <p>{{ person.nickname }}님이 작성한 리뷰</p>
+    <div></div>
+  </div>
+</div>
+
+<div class="review-container">
+  <div class="review-header">
+    <p>{{person.review_set.all|length}}개의 리뷰</p>
+    <button>최신순</button>
+  </div>
+  <ul class="review-list">
+    {% for review in person.review_set.all  %}
+    <li>
+      <div class="review-item">
+        <div class="item-header">
+          <a class="movie-info" href="{% url 'movies:detail' review.movie.pk %}">
+            <img src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/{{ review.movie.poster_path }}" alt="영화 포스터">
+            <p>{{ review.movie.title }}</p>
+          </a>
+          <p class="item-data">{{ review.created_at }}</p>
+        </div>
+        {% if review.spoiler %}
+        <a href="{% url 'reviews:detail' review.pk %}" class="spoiler-link">
+          <div class="spoiler-prevent">
+            *스포일러가 포함된 리뷰입니다. 확인하려면 클릭해주세요.
+          </div>
+          <div class="item-content spoiler">
+            {{ review.content }}
+          </div>
+        </a>
+        {% else %}
+        <a href="{% url 'reviews:detail' review.pk %}">
+          <div class="item-content">
+            {{ review.content }}
+          </div>
+        </a>
+        {% endif %}
+        <div class="icon-box">
+          <form action="#" class="review-like-form" data-review-id="{{ review.pk }}">
+            {% csrf_token %}
+            <button class="like" id="like-{{ review.pk }}"  {% if not user.is_authenticated or user == review.user %}disabled{% endif %}>
+              {% if request.user in review.like_users.all %}
+                <p class="icon"><svg viewBox="0 0 24 24" fill="#ff4d4d" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ff4d4d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg></p>
+              {% else %}
+                <p class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg></p>
+              {% endif %}
+              <p class="review-like-count">{{ review.like_users.all|length}}</p>
+            </button>  
+          </form>   
+          <a class="comment" href="{% url 'reviews:detail' review.pk %}">
+            <p class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_429_11233)"> <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 13.4876 3.36093 14.891 4 16.1272L3 21L7.8728 20C9.10904 20.6391 10.5124 21 12 21Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> <defs> <clipPath id="clip0_429_11233"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg></p>
+            <p>{{ review.comment_set.all|length }}</p>
+          </a>
+        </div>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+
+{% endblock content %}
+
+
+{% block script %}
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const spoilerLinks = document.querySelectorAll(".spoiler-link");
+    const reviewItems = document.querySelectorAll(".review-item");
+
+    spoilerLinks.forEach(function(item) {
+      item.addEventListener("click", function() {
+        if (item.classList.contains('spoiler-link')){
+          event.preventDefault();
+          const itemMessage = item.querySelector(".spoiler-prevent");
+          const itemContent = item.querySelector(".item-content");
+          itemContent.classList.remove("spoiler");
+          itemMessage.style.display = "none";
+          item.classList.remove("spoiler-link");
+        }
+      });
+    });
+  });
+
+  const forms = document.querySelectorAll('.review-like-form');
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+
+  forms.forEach((form) => {
+    form.addEventListener('submit', function (event) {
+      event.preventDefault()
+      const reviewId = event.target.dataset.reviewId
+      axios({
+        method: 'post',
+        url: `http://127.0.0.1:8000/reviews/${reviewId}/likes/`,
+        headers: {'X-CSRFToken': csrftoken},
+      })
+      .then((response) => {
+        const isLiked = response.data.is_liked
+        const likeBtn = document.querySelector(`#like-${reviewId}`)
+        const likes = likeBtn.querySelector(".review-like-count")
+        const likeIcon = likeBtn.querySelector('.icon')
+        if (isLiked === true) {
+          likeIcon.innerHTML = '<svg viewBox="0 0 24 24" fill="#ff4d4d" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ff4d4d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>'
+          likes.textContent=Number(likes.textContent) + 1
+        } else {
+          likeIcon.innerHTML = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>'
+          likes.textContent=Number(likes.textContent) - 1
+        }
+      })
+    })
+  })
+</script>
+{% endblock script %}

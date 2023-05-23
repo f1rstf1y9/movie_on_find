@@ -1,18 +1,170 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load bootstrap4 %}
+
+{% block nav %}
+<a href="{% url 'movies:index' %}" class="btn btn-secondary">BACK</a>
+{% endblock nav %}
+
+{% block style %}
+
+body {
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5)), url("{% static 'accounts/login_background.jpeg' %}");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+
+.login-box {
+  padding: 20px;
+  max-width: 480px;
+  top: 20vh;
+  text-align: center;
+  letter-spacing: 1px;
+  position: relative;
+}
+
+.social-button {
+  background-position: 25px 0px;
+  box-sizing: border-box;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  display: inline-block;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  vertical-align: middle;
+  width: 100%;
+  border-radius: 5px;
+  margin: 10px auto;
+  outline: rgb(255, 255, 255) none 0px;
+  transition: all 0.2s cubic-bezier(0.72, 0.01, 0.56, 1) 0s;
+  -webkit-transition: all .3s ease;
+  -moz-transition: all .3s ease;
+  -ms-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease;
+}
+
+#email-login:hover span, #email-signup:hover span, #kakao-login:hover span {
+  color: black;
+  -webkit-transition: all .3s ease;
+  -moz-transition: all .3s ease;
+  -ms-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease;
+}
+
+#kakao-login {
+  background: url("{% static 'accounts/kakao-svg-yellow.svg' %}") no-repeat scroll 10px 0px / 30px 50px padding-box border-box;
+  border: 1px solid #FEE500
+}
+
+#kakao-login:hover {
+  border-color: #FEE500;
+  background: #FEE500 url("{% static 'accounts/kakao-svg-black.svg' %}") no-repeat scroll 10px 0px / 30px 50px padding-box border-box;
+  -webkit-transition: all .8s ease-out;
+  -moz-transition: all .3s ease;
+  -ms-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease-out;
+}
+
+#kakao-login span {
+  box-sizing: border-box;
+  color: #FEE500;
+  cursor: pointer;
+  text-align: center;
+  text-transform: uppercase;
+  border: 0px none rgb(255, 255, 255);
+  outline: rgb(255, 255, 255) none 0px;
+  -webkit-transition: all .3s ease;
+  -moz-transition: all .3s ease;
+  -ms-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease;
+}
+
+#email-login {
+  background: url("{% static 'accounts/email-svg-white.svg' %}") no-repeat scroll 10px 0px / 30px 50px padding-box border-box;
+  border: 1px solid rgb(255, 255, 255);
+}
+
+#email-login:hover {
+  border-color: rgb(255, 255, 255);
+  background: rgb(255, 255, 255) url("{% static 'accounts/email-svg-black.svg' %}") no-repeat scroll 10px 0px / 30px 50px padding-box border-box;
+  -webkit-transition: all .8s ease-out;
+  -moz-transition: all .3s ease;
+  -ms-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease-out;
+}
+
+#email-login span {
+  box-sizing: border-box;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  text-align: center;
+  text-transform: uppercase;
+  border: 0px none rgb(255, 255, 255);
+  outline: rgb(255, 255, 255) none 0px;
+  -webkit-transition: all .3s ease;
+  -moz-transition: all .3s ease;
+  -ms-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease;
+}
+
+#email-signup {
+  background: url("{% static 'accounts/join-svg-white.svg' %}") no-repeat scroll 10px 0px / 30px 50px padding-box border-box;
+  border: 1px solid rgb(255, 255, 255);
+}
+
+#email-signup:hover {
+  border-color: rgb(255, 255, 255);
+  background: rgb(255, 255, 255) url("{% static 'accounts/join-svg-black.svg' %}") no-repeat scroll 10px 0px / 30px 50px padding-box border-box;
+  -webkit-transition: all .8s ease-out;
+  -moz-transition: all .3s ease;
+  -ms-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease-out;
+}
+
+#email-signup span {
+  box-sizing: border-box;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  text-align: center;
+  text-transform: uppercase;
+  border: 0px none rgb(255, 255, 255);
+  outline: rgb(255, 255, 255) none 0px;
+  -webkit-transition: all .3s ease;
+  -moz-transition: all .3s ease;
+  -ms-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease;
+}
+{% endblock style %}
 
 {% block content %}
 <div class="login-box col-md-8 col-lg-8 mx-auto">
-  <h1>Login</h1>
-  <form action="{% url 'accounts:login' %}" method="POST">
-    {% csrf_token %}
-    {% bootstrap_form form %}
-    <div class="d-grid my-2">
-      <button class="btn btn-primary" type="submit">LOGIN</button>
-    </div>
-  </form>
-  <hr>
-  <a href="{% url 'movies:index' %}" class="btn btn-secondary">BACK</a>
+  <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.1.0/kakao.min.js"
+    integrity="sha384-dpu02ieKC6NUeKFoGMOKz6102CLEWi9+5RQjWSV0ikYSFFd8M3Wp2reIcquJOemx" crossorigin="anonymous"></script>
+  <script>
+    Kakao.init('1d56f0a9995ba43204d3f313d2bd7ba8');
+  </script>
+  <a href="{% url 'accounts:kakao_login' %}" class="social-button" id="kakao-login">
+    <span>카카오톡으로 로그인</span>
+  </a>
+  <a href="{% url 'accounts:email_login' %}" class="social-button" id="email-login"> 
+    <span>이메일로 로그인</span>
+  </a>
+  <a href="{% url 'accounts:signup' %}" class="social-button" id="email-signup"> 
+    <span>이메일로 회원가입</span>
+  </a>
 </div>
-
 {% endblock content %}

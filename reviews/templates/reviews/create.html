@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>CREATE REVIEW</h1>
+  <form action="{% url 'reviews:create' pk %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit">
+  </form>
+  <hr>
+  <a href="{% url 'movies:detail' pk%}">뒤로가기</a>
+{% endblock content %}

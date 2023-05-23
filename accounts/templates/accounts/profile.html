@@ -1,75 +1,689 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+.card {
+  border: none;
+  box-shadow: 0px 0px 80px -18px rgba(255, 183, 0, 0.273);
+}
+.card-header {
+  background-color: rgb(255, 204, 0); 
+  height:200px;
+  color: black;
+}
+.follow-btn button {
+  width: 150px;
+}
+.profile-image {
+  min-width: 150px;
+  max-width: 150px;
+  min-height: 150px;
+  max-height: 150px;
+  object-position: center;
+  object-fit: cover;
+  z-index: 1;
+  border-radius: 50%;
+  margin: auto;
+}
+.profile-email {
+  color: rgba(0, 0, 0, 0.326);
+  font-size: 12px;
+}
+.profile-info-container {
+  text-decoration: none;
+}
+
+.profile-contents-container {
+  width: 100%;
+  background-color: #f2f2f2;
+  color: #181818;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 15px 0;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+.content-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+}
+.content-count {
+  font-size: 20px;
+  color: #1e1e1e;
+}
+.content-label {
+  font-size: 14px;
+  color: #a7a7a7;
+}
+.other-profile-links-container {
+  width: 100%;
+  background-color: #f2f2f2;
+  color: #181818;
+  padding: 15px 0;
+  border-radius: 5px;
+  margin-bottom: 35px;
+}
+.other-link-wrap {
+  width: 100%;
+  padding: 0 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-decoration: none;
+  color: #1e1e1e;
+}
+
+.carousel {
+
+}
+.carousel h2 {
+  margin: 0;
+}
+.carousel a {
+  text-decoration: none;
+}
+.carousel__item {
+  width: 200px;
+}
+.carousel .item-front img {
+  aspect-ratio: 1/1;
+  width: 175px;
+  height: 350px;
+  object-fit: cover;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  margin-bottom: 16px;
+  border-radius: clamp(0px, ((100vw - 4px) - 100%) * 9999, 4px);
+}
+.carousel h3 {
+  font-size: 16px;
+  margin: 0;
+  margin-bottom: 4px;
+}
+.carousel span {
+  color: #a7a7a7;
+  font-size: 14px;
+}
+.carousel .dragging a {
+  pointer-events: none;
+}
+.carousel .carousel__wrapper {
+  position: relative;
+  margin-bottom: 24px;
+}
+@media only screen and (min-width: 1180px) {
+  .carousel .carousel__wrapper.has-arrows .carousel__content {
+    justify-content: space-between;
+  }
+}
+@media only screen and (min-width: 1180px) {
+  .carousel .carousel__wrapper.has-arrows .carousel__arrows {
+    display: flex;
+  }
+}
+.carousel .carousel__header {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: -40px;
+}
+.carousel .carousel__content {
+  overflow-y: hidden;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  display: grid;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  padding: 10px;
+  margin: 0;
+  grid-gap: 24px;
+  grid-auto-flow: column;
+  list-style: none;
+  padding-left: 10px;
+}
+.carousel .carousel__content::-webkit-scrollbar {
+  display: none;
+}
+.carousel .carousel__item .carousel__description {
+  width: 100%;
+}
+.carousel .carousel__item a {
+  display: flex;
+  justify-content: center;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  user-select: none;
+  margin: 10px 0px;
+  padding: 16px;
+  border-radius: clamp(0px, ((100vw - 4px) - 100%) * 9999, 8px);
+  cursor: pointer;
+  width: 200px;
+  height: 300px;
+  perspective: 1000px;
+  background: white;
+  color: black;
+  /* border: 1px solid rgb(145, 145, 145); */
+
+  box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.35);
+  -webkit-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.35);
+  -moz-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.35);
+}
+
+.item-inner {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  transform-style: preserve-3d;
+  transition: transform 0.8s;
+}
+
+.carousel__item:hover .item-inner {
+  transform: rotateY(180deg);
+}
+.item-front, .item-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+.item-front {
+  z-index:10;
+}
+.item-back {
+  position: relative;
+  z-index: 1;
+  transform: rotateY(180deg) translateY(-103%);
+  font-size: 14px;
+  text-align: left;
+}
+.item-back > div {
+  width: 100%;
+  margin-bottom: 10px;
+}
+.item-back .movie-info-top {
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+.item-back .movie-info-bottom {
+  margin-bottom: 10px;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  padding: 10px 0;
+}
+.item-back .movie-info-bottom p {
+  margin-bottom: 0;
+}
+.item-back .movie-info-bottom p:first-child {
+  font-size: 16px;
+  font-weight: bold;
+}
+.item-back .ticket-date {
+  font-size: 12px;
+}
+.item-back .ticket-barcode {
+  position: absolute;
+  text-align: center;
+  bottom: 10px;
+}
+
+.carousel .carousel__controls {
+  position: relative;
+  top: 170px;
+  left: -15px;
+  width: 105%;
+  display: flex;
+  justify-content: space-between;
+  z-index: 99;
+  pointer-events: none;
+}
+.carousel .carousel__arrow {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  border: 0;
+  padding: 18px 16px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.728);
+  pointer-events: auto;
+}
+.carousel .carousel__arrow:before {
+  content: "";
+  background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNSIgaGVpZ2h0PSI5IiB2aWV3Qm94PSIwIDAgMTUgOSI+Cgk8cGF0aCBmaWxsPSIjMzMzMzMzIiBkPSJNNy44NjcgOC41NzRsLTcuMjItNy4yMi43MDctLjcwOEw3Ljg2NyA3LjE2IDE0LjA1Ljk4bC43MDYuNzA3Ii8+Cjwvc3ZnPgo=");
+  background-size: contain;
+  filter: brightness(2);
+  display: block;
+  width: 18px;
+  height: 12px;
+  cursor: pointer;
+}
+.carousel .carousel__arrow.arrow-prev:before {
+  transform: rotate(90deg);
+}
+.carousel .carousel__arrow.arrow-next:before {
+  transform: rotate(-90deg);
+}
+.carousel .carousel__arrow.disabled::before {
+  background: transparent;
+}
+.carousel .carousel__arrow.disabled {
+  background: transparent;
+}
+{% endblock style %}
+
+
 
 {% block content %}
-  <div class="profile-header">
-    <div>
-      <h2><i>{{person.username}}</i></h2>
-      <div>
-        <b>팔로잉</b> {{person.followings.all|length}} 
-        | <b>팔로워</b> {{person.followers.all|length}}
+  <section class="h-100">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col col-lg-9 col-xl-7">
+          <div class="card">
+            <div class="card-header rounded-top text-white d-flex flex-row">
+              <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px; height:150px;">
+                <img src="{{ person.profile_image.url }}" alt="{{ person.profile_image }}"
+                  alt="{{ person.nickname }}" class="profile-image img-thumbnail mt-4 mb-2">
+
+                {% comment %} 팔로우 버튼 {% endcomment %}
+                <div class="follow-btn" style="z-index: 1;">
+                  {% if request.user != person %}
+                    <form action="{% url 'accounts:follow' person.pk%}" method="POST">
+                      {% csrf_token %}
+                      {% if request.user in person.followers.all %}
+                        <button type="submit" class="btn btn-outline-danger">
+                          언팔로우
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-frown-fill" viewBox="0 0 16 16">
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm-2.715 5.933a.5.5 0 0 1-.183-.683A4.498 4.498 0 0 1 8 9.5a4.5 4.5 0 0 1 3.898 2.25.5.5 0 0 1-.866.5A3.498 3.498 0 0 0 8 10.5a3.498 3.498 0 0 0-3.032 1.75.5.5 0 0 1-.683.183zM10 8c-.552 0-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5S10.552 8 10 8z"/>
+                          </svg>
+                        </button>
+                      {% else %}
+                        <button type="submit" class="btn btn-outline-primary">
+                          팔로우
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-smile-fill" viewBox="0 0 16 16">
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zM4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM10 8c-.552 0-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5S10.552 8 10 8z"/>
+                          </svg>
+                        </button>
+                      {% endif %}
+                    </form>
+                  {% else %}
+                  <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
+                    style="z-index: 1;">
+                    프로필 수정
+                  </button>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="ms-3" style="margin-top: 130px; color: black">
+                <h5>{{person.nickname}}</h5>
+                <p class="profile-email">{{person.email}}</p>
+              </div>
+            </div>
+            <div class="p-4 text-black profile-info-container" style="background-color: #f8f9fa;">
+              <div class="d-flex justify-content-end text-center py-1">
+                <div>
+                  <p class="mb-1 h5 text-black">253</p>
+                  <p class="small text-muted mb-0">총 감상 시간</p>
+                </div>
+                <a href="{% url 'accounts:followers' person.email %}"> 
+                  <div class="px-3">
+                    <p class="mb-1 h5 text-black">{{person.followers.all|length}}</p>
+                    <p class="small text-muted mb-0">팔로워</p>
+                  </div>
+                </a>
+                <a href="{% url 'accounts:followings' person.email %}">
+                  <div>
+                    <p class="mb-1 h5 text-black">{{person.followings.all|length}}</p>
+                    <p class="small text-muted mb-0">팔로잉</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+
+            <div class="card-body p-4">
+
+              <div class="profile-contents-container">
+                <a href="{% url 'accounts:interest' person.email %}" class="content-wrap" id="interestLabel">
+                  <span class="content-count">25</span>
+                  <span class="content-label">보고싶어요</span>
+                </a>
+                <a href="{% url 'accounts:watching' person.email %}" class="content-wrap" id="watchingLabel">
+                  <span class="content-count">0</span>
+                  <span class="content-label">보는 중</span>
+                </a>
+                <a href="{% url 'accounts:watched' person.email %}" class="content-wrap" id="watchedLabel">
+                  <span class="content-count">612</span>
+                  <span class="content-label">봤어요</span>
+                </a>
+              </div>
+              
+              <div class="other-profile-links-container">
+                <a href="{% url 'accounts:reviews' person.email %}" class="other-link-wrap" id="userReviewLabel">
+                  <div class="link-label-wrap">
+                    <span class="link-label">작성한 리뷰</span>
+                  </div>
+                  <div class="link-action-wrap">
+                    <span class="link-count">{{person.review_set.all|length}}</span>
+                    <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" preserveAspectRatio="none" class=""><path fill-rule="evenodd" clip-rule="evenodd" d="M5.293 3.05a1 1 0 000 1.415L8.828 8l-3.535 3.536a1 1 0 101.414 1.414l4.23-4.23a1 1 0 00.013-1.427L6.707 3.051a1 1 0 00-1.414 0z" fill="#586A85"></path></svg>
+                  </div>
+                </a>
+              </div>
+
+              <div class="carousel">
+              {% comment %} 포토카드 {% endcomment %}
+              <div class="carousel__wrapper">
+                <div class="carousel__header">
+                    <p class="carousel__headline lead fw-normal mb-0">최근 등록한 포토티켓</p>
+                    <div>
+                      <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
+                    </div>
+                </div>
+                <div class="carousel__controls">
+                  <button class="carousel__arrow disabled arrow-prev"></button>
+                  <button class="carousel__arrow arrow-next"></button>
+                </div>
+                <ul class="carousel__content">
+                  <li class="carousel__item">
+                    <div class="item-inner">
+                      <a class="item-front">
+                        <img class="carousel__item__image" src="https://picsum.photos/id/21/300/300" alt="" />
+                      </a>
+                      <a class="item-back">
+                          <div class="movie-info-top">
+                            <p>2D</p>
+                            <p>15세이상관람가</p>
+                          </div>
+                          <div class="movie-info-bottom">
+                            <p class="movie-title-ko">곡성</p>
+                            <p class="movie-title-en">The Wailing</p>
+                          </div>
+                          <div class="ticket-date">
+                            2023.05.22(월)
+                          </div>
+                          <div class="ticket-comment">
+                            짱재밌었다
+                          </div>
+                          <div class="ticket-people">
+                            2명
+                          </div>
+                          <div class="ticket-barcode">
+                            <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
+                          </div>
+                          {% comment %} <div class="ticket-logo">
+                            MOVIEONFIND
+                          </div> {% endcomment %}
+                      </a>
+                    </div>
+                  </li>
+                  <li class="carousel__item">
+                    <div class="item-inner">
+                      <a class="item-front">
+                        <img class="carousel__item__image" src="https://picsum.photos/id/21/300/300" alt="" />
+                      </a>
+                      <a class="item-back">
+                          <div class="movie-info-top">
+                            <p>2D</p>
+                            <p>15세이상관람가</p>
+                          </div>
+                          <div class="movie-info-bottom">
+                            <p class="movie-title-ko">곡성</p>
+                            <p class="movie-title-en">The Wailing</p>
+                          </div>
+                          <div class="ticket-date">
+                            2023.05.22(월)
+                          </div>
+                          <div class="ticket-comment">
+                            짱재밌었다
+                          </div>
+                          <div class="ticket-people">
+                            2명
+                          </div>
+                          <div class="ticket-barcode">
+                            <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
+                          </div>
+                          {% comment %} <div class="ticket-logo">
+                            MOVIEONFIND
+                          </div> {% endcomment %}
+                      </a>
+                    </div>
+                  </li>
+                  <li class="carousel__item">
+                    <div class="item-inner">
+                      <a class="item-front">
+                        <img class="carousel__item__image" src="https://picsum.photos/id/21/300/300" alt="" />
+                      </a>
+                      <a class="item-back">
+                          <div class="movie-info-top">
+                            <p>2D</p>
+                            <p>15세이상관람가</p>
+                          </div>
+                          <div class="movie-info-bottom">
+                            <p class="movie-title-ko">곡성</p>
+                            <p class="movie-title-en">The Wailing</p>
+                          </div>
+                          <div class="ticket-date">
+                            2023.05.22(월)
+                          </div>
+                          <div class="ticket-comment">
+                            짱재밌었다
+                          </div>
+                          <div class="ticket-people">
+                            2명
+                          </div>
+                          <div class="ticket-barcode">
+                            <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
+                          </div>
+                          {% comment %} <div class="ticket-logo">
+                            MOVIEONFIND
+                          </div> {% endcomment %}
+                      </a>
+                    </div>
+                  </li>
+                  <li class="carousel__item">
+                    <div class="item-inner">
+                      <a class="item-front">
+                        <img class="carousel__item__image" src="https://picsum.photos/id/21/300/300" alt="" />
+                      </a>
+                      <a class="item-back">
+                          <div class="movie-info-top">
+                            <p>2D</p>
+                            <p>15세이상관람가</p>
+                          </div>
+                          <div class="movie-info-bottom">
+                            <p class="movie-title-ko">곡성</p>
+                            <p class="movie-title-en">The Wailing</p>
+                          </div>
+                          <div class="ticket-date">
+                            2023.05.22(월)
+                          </div>
+                          <div class="ticket-comment">
+                            짱재밌었다
+                          </div>
+                          <div class="ticket-people">
+                            2명
+                          </div>
+                          <div class="ticket-barcode">
+                            <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
+                          </div>
+                          {% comment %} <div class="ticket-logo">
+                            MOVIEONFIND
+                          </div> {% endcomment %}
+                      </a>
+                    </div>
+                  </li>
+                  <li class="carousel__item">
+                    <div class="item-inner">
+                      <a class="item-front">
+                        <img class="carousel__item__image" src="https://picsum.photos/id/21/300/300" alt="" />
+                      </a>
+                      <a class="item-back">
+                          <div class="movie-info-top">
+                            <p>2D</p>
+                            <p>15세이상관람가</p>
+                          </div>
+                          <div class="movie-info-bottom">
+                            <p class="movie-title-ko">곡성</p>
+                            <p class="movie-title-en">The Wailing</p>
+                          </div>
+                          <div class="ticket-date">
+                            2023.05.22(월)
+                          </div>
+                          <div class="ticket-comment">
+                            짱재밌었다
+                          </div>
+                          <div class="ticket-people">
+                            2명
+                          </div>
+                          <div class="ticket-barcode">
+                            <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
+                          </div>
+                          {% comment %} <div class="ticket-logo">
+                            MOVIEONFIND
+                          </div> {% endcomment %}
+                      </a>
+                    </div>
+                  </li>
+                </ul>
+                </div>
+              </div>
+              {% comment %} 컬렉션 {% endcomment %}
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <p class="lead fw-normal mb-0">{{ person.nickname }}님의 포토티켓북</p>
+                <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
+              </div>
+              <div class="row g-2">
+                <div class="col mb-2">
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(112).webp"
+                    alt="image 1" class="w-100 rounded-3">
+                </div>
+                <div class="col mb-2">
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(107).webp"
+                    alt="image 1" class="w-100 rounded-3">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="follow-btn">
-      {% if request.user != person %}
-        <form action="{% url 'accounts:follow' person.pk%}" method="POST">
-          {% csrf_token %}
-          {% if request.user in person.followers.all %}
-            <button type="submit" class="btn btn-outline-danger">
-              언팔로우하기ㅠㅠ
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-frown-fill" viewBox="0 0 16 16">
-                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm-2.715 5.933a.5.5 0 0 1-.183-.683A4.498 4.498 0 0 1 8 9.5a4.5 4.5 0 0 1 3.898 2.25.5.5 0 0 1-.866.5A3.498 3.498 0 0 0 8 10.5a3.498 3.498 0 0 0-3.032 1.75.5.5 0 0 1-.683.183zM10 8c-.552 0-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5S10.552 8 10 8z"/>
-              </svg>
-            </button>
-          {% else %}
-            <button type="submit" class="btn btn-primary">
-              팔로우하기!
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-smile-fill" viewBox="0 0 16 16">
-                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zM4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM10 8c-.552 0-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5S10.552 8 10 8z"/>
-              </svg>
-            </button>
-          {% endif %}
-        </form>
-      {% endif %}
-    </div>
-  </div>
-  
-  <br>
-
-  <br>
-  <h5>{{person.username}}님이 작성한 게시글</h5>
-  <ul class="list-group col-md-11 mx-auto">
-    {% for movie in person.movie_set.all %}
-    <li class="list-group-item">
-      <a href="{% url 'movies:detail' movie.pk %}">{{movie.title}}</a>
-    </li>
-    {% endfor %}
-  </ul>
-
-  <hr>
-
-  <h5>{{person.username}}님이 작성한 댓글</h5>
-  <ul class="list-group col-md-11 mx-auto">
-    {% for comment in person.comment_set.all %}
-      <li class="list-group-item">
-        <a href="{% url 'movies:detail' comment.movie_id %}">{{comment.content}}</a>
-      </li>
-    {% endfor %}
-  </ul>
-
-  <hr>
-
-  <h5>{{person.username}}님이 좋아요한 게시글</h5>
-  <ul class="list-group col-md-11 mx-auto">
-    {% for movie in person.movie_like_users.all %}
-      <li class="list-group-item">
-        <a href="{% url 'movies:detail' movie.pk %}">{{movie.title}}</a>
-      </li>
-    {% endfor %}
-  </ul>
-  
-  <hr>
-
-  <a href="{% url 'movies:index' %}" class="btn btn-secondary">BACK</a>
-
+  </section>
 {% endblock content %}
 
+
+{% block script %}
+<script>
+window.addEventListener( 'load', () => {
+	const COMPONENT_SELECTOR = '.carousel__wrapper';
+	const CONTROLS_SELECTOR = '.carousel__controls';
+  const CONTENT_SELECTOR = '.carousel__content';
+
+	const components = document.querySelectorAll( COMPONENT_SELECTOR );
+
+	for ( let i = 0; i < components.length; i++ ) {
+		const component = components[ i ];
+		const content = component.querySelector( CONTENT_SELECTOR );
+		let x = 0;
+		let mx = 0;
+		const maxScrollWidth = content.scrollWidth - content.clientWidth / 2 - content.clientWidth / 2;
+		const nextButton = component.querySelector( '.arrow-next' );
+		const prevButton = component.querySelector( '.arrow-prev' );
+
+		if ( maxScrollWidth !== 0 ) {
+			component.classList.add( 'has-arrows' );
+		}
+
+		if ( nextButton ) {
+			nextButton.addEventListener( 'click', function ( event ) {
+				event.preventDefault();
+				x = content.clientWidth / 2 + content.scrollLeft + 0;
+				content.scroll( {
+					left: x,
+					behavior: 'smooth',
+				} );
+			} );
+		}
+
+		if ( prevButton ) {
+			prevButton.addEventListener( 'click', function ( event ) {
+				event.preventDefault();
+				x = content.clientWidth / 2 - content.scrollLeft + 0;
+				content.scroll( {
+					left: -x,
+					behavior: 'smooth',
+				} );
+			} );
+		}
+
+		/**
+		 * Mouse move handler.
+		 *
+		 * @param {object} e event object.
+		 */
+		const mousemoveHandler = ( e ) => {
+			const mx2 = e.pageX - content.offsetLeft;
+			if ( mx ) {
+				content.scrollLeft = content.sx + mx - mx2;
+			}
+		};
+
+		/**
+		 * Mouse down handler.
+		 *
+		 * @param {object} e event object.
+		 */
+		const mousedownHandler = ( e ) => {
+			content.sx = content.scrollLeft;
+			mx = e.pageX - content.offsetLeft;
+			content.classList.add( 'dragging' );
+		};
+
+		/**
+		 * Scroll handler.
+		 */
+		const scrollHandler = () => {
+			toggleArrows();
+		};
+
+		/**
+		 * Toggle arrow handler.
+		 */
+		const toggleArrows = () => {
+			if ( content.scrollLeft > maxScrollWidth - 10 ) {
+				nextButton.classList.add( 'disabled' );
+			} else if ( content.scrollLeft < 10 ) {
+				prevButton.classList.add( 'disabled' );
+			} else {
+				nextButton.classList.remove( 'disabled' );
+				prevButton.classList.remove( 'disabled' );
+			}
+		};
+
+		/**
+		 * Mouse up handler.
+		 */
+		const mouseupHandler = () => {
+			mx = 0;
+			content.classList.remove( 'dragging' );
+		};
+
+		content.addEventListener( 'mousemove', mousemoveHandler );
+		content.addEventListener( 'mousedown', mousedownHandler );
+		if ( component.querySelector( CONTROLS_SELECTOR ) !== undefined ) {
+			content.addEventListener( 'scroll', scrollHandler );
+		}
+		content.addEventListener( 'mouseup', mouseupHandler );
+		content.addEventListener( 'mouseleave', mouseupHandler );
+	}
+} );
+</script>
+{% endblock script %}
