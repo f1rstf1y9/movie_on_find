@@ -18,7 +18,7 @@ from django.db import transaction
 
 
 
-my_id='b4d8715368a27e1da703d584f643db18'
+my_id='f0ee4eefc21a888bf1229e2d951df4e6'
 def get_Genre_data():
     url='https://api.themoviedb.org/3/genre/movie/list?api_key='+my_id+'&language=ko'
     response=requests.get(url)

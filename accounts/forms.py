@@ -9,7 +9,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'profile_image', 'nickname', 'kakao_id',)
+        fields = ('email', 'profile_image', 'nickname', 'kakao_id','like_genre',)
 
         widgets={
             'nickname': forms.Textarea(attrs={"rows":"1"}),
@@ -34,7 +34,7 @@ class UserChangeForm(forms.ModelForm):
     email = forms.CharField(disabled=True)
     class Meta:
         model = User
-        fields = ('email', 'profile_image', 'nickname',)
+        fields = ('email', 'profile_image', 'nickname', 'like_genre',)
         widgets={
             'nickname': forms.Textarea(attrs={"rows":"1", "cols":"6"}),
         }
