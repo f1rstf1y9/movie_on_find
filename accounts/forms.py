@@ -6,13 +6,13 @@ from .models import User
 class UserCreationForm(forms.ModelForm):
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
-
     class Meta:
         model = User
-        fields = ('email', 'profile_image', 'nickname', 'kakao_id',)
+        fields = ('email', 'profile_image', 'nickname', 'kakao_id', 'like_genres')
 
         widgets={
             'nickname': forms.Textarea(attrs={"rows":"1"}),
+            'like_genres' : forms.CheckboxSelectMultiple()
         }
 
     def clean_password2(self):
@@ -34,7 +34,7 @@ class UserChangeForm(forms.ModelForm):
     email = forms.CharField(disabled=True)
     class Meta:
         model = User
-        fields = ('email', 'profile_image', 'nickname',)
+        fields = ('email', 'profile_image', 'nickname', 'like_genres')
         widgets={
             'nickname': forms.Textarea(attrs={"rows":"1", "cols":"6"}),
         }
