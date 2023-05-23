@@ -6,20 +6,13 @@ from movies.models import Movie
 # Create your models here.
 class Card(models.Model):
     user=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    title = models.CharField(max_length=100)
+    card_image = models.ImageField()
     content = models.TextField()
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_cards')
-    movie=models.ForeignKey(Movie, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    movie_type = models.CharField(max_length=5, choices=[('2D', '2D'), ('3D', '3D'), ('4D', '4D'),])
+    watched_location = models.CharField(max_length=10, choices=[('안방 1열', '안방 1열'), ('영화관', '영화관')])
+    watched_people = models.IntegerField()
+    watched_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-class Comment(models.Model):
-    card = models.ForeignKey(Card, on_delete=models.CASCADE)
-    user=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name='card_comment')
-    content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_cards_comment')
-
-    def __str__(self):
-        return self.content
