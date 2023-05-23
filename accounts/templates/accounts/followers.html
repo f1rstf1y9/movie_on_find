@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block style %}
+.container {
+  max-width: 700px;
+  margin: 75px auto;
+}
+li {
+  list-style: none;
+  margin: 10px;
+}
+button {
+  background: none;
+  border: none;
+  outline: 0;
+}
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-weight: 700;
+}
+.menu-area {
+  width: 100%;
+  border-bottom: 1px solid rgb(72, 72, 72);
+}
+.menu-list {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  align-content: center;
+  height: 48px;
+  margin: 0 auto;
+}
+.menu-item {
+  display: block;
+  flex-grow: 1;
+  flex: 1 1 33%;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  list-style: none;
+}
+.count {
+  color: rgb(79, 79, 79);
+}
+.active .count {
+  color: white;
+}
+.user-list-section {
+  margin-top: 20px;
+}
+.user-list-item {
+  display: flex;
+  width: 100%;
+}
+.image-wrap img {
+  width: 50px;
+  height: 50px;
+  object-position: center;
+  object-fit: cover;
+  z-index: 1;
+  border-radius: 50%;
+  margin: auto;
+}
+.info-wrap {
+  margin-left: 20px;
+}
+.info-wrap .name {
+  color: white;
+  margin-bottom: 0;
+}
+.follow-stats {
+  font-size: 12px;
+  color: rgb(147, 147, 147);
+}
+.button-wrap {
+  margin-left: auto;
+}
+{% endblock style %}
+
+{% block content %}
+  <div id="header" class="sub-header">
+    <div class="header-inner">
+      <div class="back-btn">
+        <a href="{% url 'accounts:profile' person.email %}">
+          <svg width="24" height="24" viewBox="0 0 1024 1024" fill="#ffffff" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M669.6 849.6c8.8 8 22.4 7.2 30.4-1.6s7.2-22.4-1.6-30.4l-309.6-280c-8-7.2-8-17.6 0-24.8l309.6-270.4c8.8-8 9.6-21.6 2.4-30.4-8-8.8-21.6-9.6-30.4-2.4L360.8 480.8c-27.2 24-28 64-0.8 88.8l309.6 280z" fill=""></path></g></svg>
+        </a>
+      </div>
+      <p>{{ person.nickname }}</p>
+      <div></div>
+    </div>
+  </div>
+  <nav class="menu-area">
+    <ul class="menu-list">
+      <li class="menu-item follower active">
+        <a class="menu-button" href="#">
+          <span class="count">팔로워</span>
+        </a>
+      </li>
+      <li class="menu-item following">
+        <a class="menu-button" href="{% url 'accounts:followings' person.email %}">
+          <span class="count">팔로잉</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <section class="user-list-section">
+    <ul>
+      <span>
+        {% for follower in followers_list %}
+        <li>
+          <div class="user-list-item">
+            <div class="image-wrap" style="border: none;">
+              <a href="{% url 'accounts:profile' follower.email %}" class="">
+                <img src="{{ follower.profile_image.url }}" alt="{{ follower.profile_image }}">
+              </a>
+            </div>
+            <div class="info-wrap">
+              <a href="{% url 'accounts:profile' follower.email %}" class="">
+                <p class="name">{{follower.nickname}}</p>
+              </a>
+              <p class="follow-stats">
+                팔로워 {{follower.followers.all|length}} · 팔로잉 {{follower.followings.all|length}}
+              </p>
+            </div>
+            {% if follower != user %}
+            <form action="{% url 'accounts:list_follow' person.email follower.pk 1%}" method="POST" class="button-wrap">
+              {% csrf_token %}
+              <div >
+                {% if follower in user.followings.all %}
+                <button class="btn btn-primary">
+                  <span class="button-container">
+                    <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" class=""><path fill-rule="evenodd" clip-rule="evenodd" d="M19.102 6.425a1.47 1.47 0 01.039 2.14l-8.526 8.473a1.611 1.611 0 01-1.18.461 1.603 1.603 0 01-1.151-.527L4.63 12.88a1.471 1.471 0 01.17-2.134 1.623 1.623 0 012.224.164L9.55 13.74l7.322-7.277a1.624 1.624 0 012.23-.037z" fill="#efefef"></path></svg>
+                  </span>
+                </button>
+                {% else %}
+                <button class="btn btn-secondary">
+                  <span class="button-container">
+                    팔로우
+                  </span>
+                </button>
+                {% endif %}
+              </div>
+            </form>
+            {% endif %}
+          </div>
+        </li>
+        {% empty %}
+        <li>아직 {{person.nickname}}님을 팔로우 중인 사용자가 없습니다.</li>
+        {% endfor %}
+      </span>
+    </ul>
+  </section>
+{% endblock content %}
+

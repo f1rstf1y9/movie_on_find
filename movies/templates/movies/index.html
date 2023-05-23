@@ -31,6 +31,27 @@ title:<a href="{% url 'movies:detail' resdata.id%}">{{resdata.title}}</a>
 {% endfor %}
 <h1>당신을 위한영화</h1>
 <hr>
+{% for resdata in rec%}
+id:{{resdata.id}}
+<br>
+title:<a href="{% url 'movies:detail' resdata.id%}">{{resdata.title}}</a>
+<br>
+평점:{{resdata.vote_average}}
+<br>
+포스터경로:{{resdata.poster_path}}
+<br>
+오버뷰:{{resdata.overview}}
+<br>
+장르:
+{% for genre_id in resdata.genres.all %}
+{% for data in datas %}
+{% ifequal genre_id.id data.id %}
+{{data.name}}
+{% endifequal %}
+{% endfor %}
+{% endfor %}
+<hr>
+{% endfor %}
 <h1>컬렉션</h1>
 {% for collection in collections %}
 {{collection.title}}

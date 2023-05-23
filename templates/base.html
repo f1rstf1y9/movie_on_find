@@ -26,7 +26,7 @@
         
         <div class="profile-box">
           <h3>Hello로, {{ user }}!</h3>
-          <a href="{% url 'accounts:profile' user.username %}">내 프로필</a>
+          <a href="{% url 'accounts:profile' user.email %}">내 프로필</a>
           |
           <a href="{% url 'accounts:update' %}">회원정보 수정</a>
         </div>
