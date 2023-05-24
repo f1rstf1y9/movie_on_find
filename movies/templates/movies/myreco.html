@@ -7,7 +7,7 @@
 <a href="{% url 'movies:sort' pk=2 num=1 %}">인기도순</a>
 <a href="{% url 'movies:sort' pk=3 num=1 %}">개봉일순</a>
 <br>
-<a href="" id="back">뒤로가기</a>
+<a href="{% url 'movies:index'%}">back</a>
 <hr>
 {% for resdata in resdatas%}
 id:{{resdata.id}}
@@ -30,31 +30,12 @@ title:<a href="{% url 'movies:detail' resdata.id%}">{{resdata.title}}</a>
 {% endfor %}
 <hr>
 {% endfor %}
-{% if G %}
-<nav>
-    <ul class="pagination">
-      {% for i in total %}
-      <li class="page-item"><a class="page-link" href="{% url 'movies:sort' pk=pk num=i %}">{{i}}</a></li>
-        {% endfor %}
-    </ul>
-  </nav>
-{% else %}
-<nav>
-    <ul class="pagination">
-      {% for i in total %}
-      <li class="page-item"><a class="page-link" href="{% url 'movies:genre_sort' genre_pk=genre_id n=i %}">{{i}}</a></li>
-        {% endfor %}
-    </ul>
-  </nav>
-{% endif %}
-{% endblock content %}
 
-{% block script %}
-<script>
-const back=document.querySelector('#back')
-    back.addEventListener('click',function (event) {
-      event.preventDefault()
-      history.back()
-    })
-</script>
-{% endblock script %}
+<nav>
+    <ul class="pagination">
+      {% for i in total %}
+      <li class="page-item"><a class="page-link" href="{% url 'movies:my_reco' num=i %}">{{i}}</a></li>
+        {% endfor %}
+    </ul>
+  </nav>
+{% endblock content %}

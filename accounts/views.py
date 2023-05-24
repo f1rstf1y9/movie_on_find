@@ -93,7 +93,6 @@ def signup(request):
         else:
             initial_data['kakao_id'] = '0'
         form = UserCreationForm(initial=initial_data)
-        print(form)
     context = {
         'form' : form,
     }
