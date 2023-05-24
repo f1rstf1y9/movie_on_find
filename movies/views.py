@@ -46,6 +46,7 @@ def get_top_rated_data():
                     "backdrop_path":i.get("backdrop_path"),
                     "release_date":i.get("release_date"),
                     "genres":i.get("genre_ids"),
+                    "runtime": i.get("runtime"),
                     "interest":[],
                     "watched":[],
                     "watching":[],
@@ -90,12 +91,9 @@ def recommend(id):
     for i in genre:
         G.append(i['name'])
     return set(G)
+
 @api_view(['GET'])
 def index(request):
-    # get_top_rated_data()
-    # data_sort()
-    # get_movie_video()
-    # get_movie_runtime()
     movie=Movie.objects.all().order_by('-vote_average')[:10]
     genre=Genre.objects.values()
     serializer=MovieListSerializer(movie,many=True)
@@ -139,9 +137,6 @@ def my_reco(request,num):
         A.append(i)
     genre=Genre.objects.values()
     return render(request,'movies/myreco.html',{'resdatas':L[20*(num-1):20*num],'datas':genre,'total':A})
-
-
-
 
 @require_safe
 @login_required

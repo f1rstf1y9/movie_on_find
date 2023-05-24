@@ -7,6 +7,7 @@ from cards.models import Card
 from django import forms
 from card_collections.forms import CollectionForm
 from django.http import JsonResponse
+import random
 # Create your views here.
 @require_safe
 def index(request):
@@ -24,6 +25,7 @@ def create(request):
             if form.is_valid():
                 card_collections = form.save(commit=False)
                 card_collections.user = request.user
+                card_collections.collection_color = "#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])
                 card_collections.save()
                 form.save_m2m()
                 return redirect('card_collections:detail', card_collections.pk)

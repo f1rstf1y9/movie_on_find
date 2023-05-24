@@ -5,29 +5,6 @@ li {
   list-style: none;
 }
 
-.container {
-  max-width: 700px;
-  margin: 130px auto;
-}
-
-.sub-header {
-  position: fixed;
-  z-index: 99;
-  top: 62px;
-  background-color: rgb(44, 44, 44);
-  width: 100%;
-  max-width: 700px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.header-inner {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  font-weight: 700;
-}
-
 .radio-wrapper {
   height: 50px;
   width: 360px;
@@ -251,40 +228,42 @@ li {
   <span class="marker"></span>
 </div>
 
-<ul class="movie-card-list">
-  <li>
-    <div class="movie_card" id="bright">
-      <div class="info_section">
-        <div class="movie_header">
-          <img class="locandina" src="https://movieplayer.net-cdn.it/t/images/2017/12/20/bright_jpg_191x283_crop_q85.jpg"/>
-          <h3>Bright</h3>
-          <h5>2017, David Ayer</h5>
-          <span class="minutes">117 min</span>
-          <p class="type">Action, Crime, Fantasy</p>
+<div class="container-area">
+  <ul class="movie-card-list">
+    <li>
+      <div class="movie_card" id="bright">
+        <div class="info_section">
+          <div class="movie_header">
+            <img class="locandina" src="https://movieplayer.net-cdn.it/t/images/2017/12/20/bright_jpg_191x283_crop_q85.jpg"/>
+            <h3>Bright</h3>
+            <h5>2017, David Ayer</h5>
+            <span class="minutes">117 min</span>
+            <p class="type">Action, Crime, Fantasy</p>
+          </div>
+        </div>
+        <div class="blur_back bright_back">
+          <img src="https://occ-0-2433-448.1.nflxso.net/art/cd5c9/3e192edf2027c536e25bb5d3b6ac93ced77cd5c9.jpg" alt="Bright"/>
         </div>
       </div>
-      <div class="blur_back bright_back">
-        <img src="https://occ-0-2433-448.1.nflxso.net/art/cd5c9/3e192edf2027c536e25bb5d3b6ac93ced77cd5c9.jpg" alt="Bright"/>
-      </div>
-    </div>
-  </li>
-  <li>
-    <div class="movie_card" id="bright">
-      <div class="info_section">
-        <div class="movie_header">
-          <img class="locandina" src="https://movieplayer.net-cdn.it/t/images/2017/12/20/bright_jpg_191x283_crop_q85.jpg"/>
-          <h3>Bright</h3>
-          <h5>2017, David Ayer</h5>
-          <span class="minutes">117 min</span>
-          <p class="type">Action, Crime, Fantasy</p>
+    </li>
+    <li>
+      <div class="movie_card" id="bright">
+        <div class="info_section">
+          <div class="movie_header">
+            <img class="locandina" src="https://movieplayer.net-cdn.it/t/images/2017/12/20/bright_jpg_191x283_crop_q85.jpg"/>
+            <h3>Bright</h3>
+            <h5>2017, David Ayer</h5>
+            <span class="minutes">117 min</span>
+            <p class="type">Action, Crime, Fantasy</p>
+          </div>
+        </div>
+        <div class="blur_back bright_back">
+          <img src="https://occ-0-2433-448.1.nflxso.net/art/cd5c9/3e192edf2027c536e25bb5d3b6ac93ced77cd5c9.jpg" alt="Bright"/>
         </div>
       </div>
-      <div class="blur_back bright_back">
-        <img src="https://occ-0-2433-448.1.nflxso.net/art/cd5c9/3e192edf2027c536e25bb5d3b6ac93ced77cd5c9.jpg" alt="Bright"/>
-      </div>
-    </div>
-  </li>
-</ul>
+    </li>
+  </ul>
+</div>
 
 {% endblock content %}
 

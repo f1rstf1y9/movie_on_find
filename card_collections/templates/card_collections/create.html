@@ -21,31 +21,6 @@ button {
   outline: 0;
   color: white;
 }
-.container {
-  max-width: 700px;
-  margin: 75px auto;
-}
-.sub-header {
-  position: fixed;
-  height: 50px;
-  z-index: 9999;
-  top: 62px;
-  background-color: rgb(44, 44, 44);
-  width: 100%;
-  max-width: 700px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.header-inner {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  font-weight: 700;
-}
-.create-form {
-  margin-top: 140px;
-}
-
 
 input {
   background-color: #494949;
@@ -243,30 +218,33 @@ label {
   </div>
 </div>
 
-<div class="create-form">
-  <form action="{% url 'card_collections:create'%}" method="POST">
-    {% csrf_token %}
-    <div class="form-group">
-      <label for="id_title">포토티켓북 이름</label> 
-      <input type="text" name="title" maxlength="100" required="" id="id_title" class="form-control">
-    </div>
-    <div class="form-group">
-      <label for="id_description">포토티켓북 설명</label>
-      <input type="text" name="description" maxlength="200" class="form-control" placeholder="포토티켓북에 대한 간단한 설명을 적어주세요!" title="" required="" id="id_description">
-    </div>
-    <label for="id_cards">카드 선택</label>
-    <br>
-    <select name="cards" required="" id="id_cards" multiple=""  multiselect-search="true">
-      {% for card in my_cards %}
-        <option value="{{ card.pk }}">
-          {{ card.movie_type }}, {{ card.watched_location }}, {{ card.movie.title }}, {{ card.movie.original_title }}, {{ card.watched_date }}, {{ card.content }}, {{ card.watched_people }}
-        </option>
-      {% endfor %}
-    </select>
-    <br>
-    <button class="create-btn" type="submit">생성하기</button>
-  </form>
+<div class="container-area">
+  <div class="create-form">
+    <form action="{% url 'card_collections:create'%}" method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="id_title">포토티켓북 이름</label> 
+        <input type="text" name="title" maxlength="100" required="" id="id_title" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="id_description">포토티켓북 설명</label>
+        <input type="text" name="description" maxlength="200" class="form-control" placeholder="포토티켓북에 대한 간단한 설명을 적어주세요!" title="" required="" id="id_description">
+      </div>
+      <label for="id_cards">카드 선택</label>
+      <br>
+      <select name="cards" required="" id="id_cards" multiple=""  multiselect-search="true">
+        {% for card in my_cards %}
+          <option value="{{ card.pk }}">
+            {{ card.movie_type }}, {{ card.watched_location }}, {{ card.movie.title }}, {{ card.movie.original_title }}, {{ card.watched_date }}, {{ card.content }}, {{ card.watched_people }}
+          </option>
+        {% endfor %}
+      </select>
+      <br>
+      <button class="create-btn" type="submit">생성하기</button>
+    </form>
+  </div>
 </div>
+
 
 {% endblock content %}
 

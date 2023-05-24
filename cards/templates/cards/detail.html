@@ -20,6 +20,7 @@ button, input {
   outline: 0;
   color: white;
 }
+
 .container {
   max-width: 700px;
   margin: 75px auto;
@@ -39,6 +40,7 @@ button, input {
 }
 .review-profile-image img {
   width: 35px;
+  height: 35px;
   border-radius: 50%;
 }
 .review-created-time {
@@ -178,6 +180,7 @@ button, input {
 {% endblock style %}
 
 {% block content %}
+<div class="container">
   <div class="user-header">
     <div>
       <div class="review-profile-image">
@@ -199,7 +202,6 @@ button, input {
       </a>
     </div>
   </div>
-
   <div class="photo_ticket">
     <div class="item-inner">
       <div class="ticket-item item-front">
@@ -263,6 +265,8 @@ button, input {
       {% endif %}
     </div>
   </div>
+</div>
+
 {% endblock content %}
 {% block script %}
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

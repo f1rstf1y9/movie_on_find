@@ -6,11 +6,160 @@
 .container {
   max-width: 100vw;
   padding: 0;
-  margin-top: 62px;
+  margin-top: 42px;
+}
+
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,700,800");
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.movie_card {
+  position: relative;
+  display: block;
+  width: 100vw;
+  height: 450px;
+  overflow: hidden;
+  transition: all 0.4s;
+}
+.movie_card:hover {
+  transform: scale(1.02);
+  transition: all 0.4s;
+}
+.movie_card .info_section {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-blend-mode: multiply;
+  z-index: 2;
+}
+.movie_card .info_section .movie_header {
+  position: relative;
+  padding: 25px;
+  height: 40%;
+}
+.movie_card .info_section .movie_header h1 {
+  color: #fff;
+  font-weight: 400;
+  font-size:26px;
+}
+.movie_card .info_section .movie_header h4 {
+  font-size:20px;
+  color: #ffc131;
+  font-weight: 400;
+}
+.movie_card .info_section .movie_header .minutes {
+  display: inline-block;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+}
+.movie_card .info_section .movie_header .type {
+  display: inline-block;
+  color: #fdeece;
+  margin-left: 10px;
+}
+.movie_card .info_section .movie_header .locandina {
+  position: relative;
+  float: left;
+  margin-right: 20px;
+  height: 120px;
+  box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.5);
+}
+.movie_card .info_section .movie_desc {
+  padding: 25px;
+  height: 50%;
+}
+.movie_card .info_section .movie_desc .text {
+  font-size: 14px;
+  color: #cfd6e1;
+}
+.movie_card .info_section .movie_social {
+  height: 10%;
+  padding-left: 15px;
+  padding-bottom: 20px;
+}
+.movie_card .info_section .movie_social ul {
+  list-style: none;
+  padding: 0;
+}
+.movie_card .info_section .movie_social ul li {
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.4);
+  transition: color 0.3s;
+  transition-delay: 0.15s;
+  margin: 0 10px;
+}
+.movie_card .info_section .movie_social ul li i {
+  font-size: 19px;
+  cursor: pointer;
+}
+.movie_card .blur_back {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  height: 100%;
+  right: 0;
+  background-size: cover;
+}
+
+@media screen and (min-width: 768px) {
+  .movie_header {
+    width: 60%;
+  }
+
+  .movie_desc {
+    width: 50%;
+  }
+
+  .info_section {
+    padding-top: 40px;
+    padding-left: 180px;
+    background: linear-gradient(to right, rgb(44, 44, 44) 50%, transparent 100%);
+  }
+
+  .blur_back {
+    width: 80%;
+  }
+}
+@media screen and (max-width: 768px) {
+  .movie_card {
+    width: 100%;
+    min-height: 280px;
+    height: auto;
+  }
+
+  .blur_back {
+    width: 100%;
+    background-position: 50% 50% !important;
+  }
+
+  .movie_header {
+    width: 100%;
+    margin-top: 30px !important;
+  }
+
+  .movie_desc {
+    width: 100%;
+  }
+
+  .info_section {
+    padding-left: 0 !important;
+    background: linear-gradient(to top, rgb(44, 44, 44) 50%, transparent 100%);
+    display: inline-grid;
+  }
+}
+
+.bright_back {
+  background: url("https://occ-0-2433-448.1.nflxso.net/art/cd5c9/3e192edf2027c536e25bb5d3b6ac93ced77cd5c9.jpg");
+  background-size: cover;
 }
 
 .carousel {
-  height: 400px;
+  height: 450px;
+  margin-top: 42px;
 }
 
 .carousel-item img {
@@ -36,11 +185,6 @@
 .carousel-control-prev,
 .carousel-control-next {
   width: 5%;
-}
-
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-  background-color: #000;
 }
 
 .carousel-control-prev-icon:before,
@@ -141,29 +285,46 @@ h1 {
     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3" aria-label="Slide 4"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="4" aria-label="Slide 5"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="5" aria-label="Slide 6"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="6" aria-label="Slide 7"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="7" aria-label="Slide 8"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="8" aria-label="Slide 9"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="9" aria-label="Slide 10"></button>
   </div>
   <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="https://www.themoviedb.org/t/p/original/nLBRD7UPR6GjmWQp6ASAfCTaWKX.jpg" class="d-block w-100" alt="Slide 1">
-      <div class="carousel-caption d-none d-md-block">
-        <h5>First slide label</h5>
-        <p>Some representative placeholder content for the first slide.</p>
+    {% for resdata in resdatas %}
+    <a href="{% url 'movies:detail' resdata.id %}">
+      <div class="carousel-item">
+        <div class="movie_card">
+          <div class="info_section">
+            <div class="movie_header">
+              <img class="locandina" src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/{{resdata.poster_path}}" alt="{{resdata.title}}"/>
+              <h1>{{resdata.title}}</h1>
+              <h4>{{resdata.release_date}}</h4>
+              <span class="minutes">★ {{ resdata.vote_average }}</span>
+              <p class="type">
+                {% for genre_id in resdata.genre_ids %}
+                {% for data in datas %}
+                  {% ifequal genre_id data.id %}
+                  {{data.name}}
+                  {% endifequal %}
+                {% endfor %}
+                {% endfor %}
+              </p>
+            </div>
+            <div class="movie_desc">
+              <p class="text">
+                {{resdata.overview}}
+              </p>
+            </div>
+          </div>
+          <div class="blur_back" style='background: url("https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces{{resdata.backdrop_path}}");'></div>
+        </div>
       </div>
-    </div>
-    <div class="carousel-item">
-      <img src="https://www.themoviedb.org/t/p/original/nLBRD7UPR6GjmWQp6ASAfCTaWKX.jpg" class="d-block w-100" alt="Slide 2">
-      <div class="carousel-caption d-none d-md-block">
-        <h5>Second slide label</h5>
-        <p>Some representative placeholder content for the second slide.</p>
-      </div>
-    </div>
-    <div class="carousel-item">
-      <img src="https://www.themoviedb.org/t/p/original/nLBRD7UPR6GjmWQp6ASAfCTaWKX.jpg" class="d-block w-100" alt="Slide 3">
-      <div class="carousel-caption d-none d-md-block">
-        <h5>Third slide label</h5>
-        <p>Some representative placeholder content for the third slide.</p>
-      </div>
-    </div>
+    </a>
+    {% endfor %}
   </div>
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -174,69 +335,74 @@ h1 {
     <span class="visually-hidden">Next</span>
   </button>
 </div>
-<br>
-<div>
-  <a href="{% url 'movies:sort' pk=1 num=1%}" class="btn btn-primary">평점순</a>
-  <a href="{% url 'movies:sort' pk=2 num=1%}" class="btn btn-primary">인기도순</a>
-  <a href="{% url 'movies:sort' pk=3 num=1%}" class="btn btn-primary">개봉일순</a>
-</div>
-<br>
-{% for genre_id in datas %}
-<a href="{% url 'movies:genre_sort' genre_pk=genre_id.id n=1 %}" class="btn btn-outline-primary">{{genre_id.name}}</a>
-{% endfor %}
-<div class="recommend">
-  <h1>최고평점</h1>
-  <div class="movie-list">
-    {% for resdata in resdatas %}
-    <a href="{% url 'movies:detail' resdata.id %}" class="movie-item">
-      <div class="poster-image">
-        <img src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/{{resdata.poster_path}}" alt="">
-      </div>
-      <div class="movie-info">
-        <div class="title">
-          <h3>{{ resdata.title }}</h3>
-        </div>
-        <div class="vote-average">{{ resdata.vote_average }}</div>
-        <div class="genre">
-          {% for genre_id in resdata.genre_ids %}
-          {% for data in datas %}
-            {% ifequal genre_id data.id %}
-            {{data.name}}
-            {% endifequal %}
-          {% endfor %}
-          {% endfor %}
-        </div>
-        <div class="overview">{{ resdata.overview }}</div>
-        <div class="movie-button">
-          <button class="like btn-like">보고싶어요</button>
-          <button class="comment">댓글</button>
-        </div>
-      </div>
-    </a>
-    {% endfor %}
-  </div>
-</div>
-<h1>당신을 위한영화</h1>
-<a href="{%url 'movies:my_reco' num=1%}">더보기</a>
 
-<hr>
-{% if rec %}
-{{rec}}
-{% else %}
-<h1>회원가입후 본인의 영화를 찾으세요</h1>
-{% endif %}
-<hr>
-<h1>컬렉션</h1>
-<hr>
-{% for collection in collections %}
-<h2>{{ collection.title }}</h2>
-<ul>
-  {% for card in collection.cards.all %}
-  <li>{{ card.movie_id }}-{{ card.title }}</li>
+<div class="container">
+  <div>
+    <a href="{% url 'movies:sort' pk=1 num=1%}" class="btn btn-primary">평점순</a>
+    <a href="{% url 'movies:sort' pk=2 num=1%}" class="btn btn-primary">인기도순</a>
+    <a href="{% url 'movies:sort' pk=3 num=1%}" class="btn btn-primary">개봉일순</a>
+  </div>
+  <br>
+  {% for genre_id in datas %}
+    <a href="{% url 'movies:genre_sort' genre_pk=genre_id.id n=1 %}" class="btn btn-outline-primary">{{genre_id.name}}</a>
   {% endfor %}
-</ul>
-{% endfor %}
+  <div class="recommend">
+    <h1>최고평점</h1>
+    <div class="movie-list">
+      {% for resdata in resdatas %}
+      <a href="{% url 'movies:detail' resdata.id %}" class="movie-item">
+        <div class="poster-image">
+          <img src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/{{resdata.poster_path}}" alt="">
+        </div>
+        <div class="movie-info">
+          <div class="title">
+            <h3>{{ resdata.title }}</h3>
+          </div>
+          <div class="vote-average">{{ resdata.vote_average }}</div>
+          <div class="genre">
+            {% for genre_id in resdata.genre_ids %}
+            {% for data in datas %}
+              {% ifequal genre_id data.id %}
+              {{data.name}}
+              {% endifequal %}
+            {% endfor %}
+            {% endfor %}
+          </div>
+          <div class="overview">{{ resdata.overview }}</div>
+          <div class="movie-button">
+            <button class="like btn-like">보고싶어요</button>
+            <button class="comment">댓글</button>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+  <h1>당신을 위한영화</h1>
+  <a href="{%url 'movies:my_reco' num=1%}">더보기</a>
+
+  <hr>
+  {% if rec %}
+  {{rec}}
+  {% else %}
+  <h1>회원가입후 본인의 영화를 찾으세요</h1>
+  {% endif %}
+  <hr>
+  <h1>컬렉션</h1>
+  <hr>
+  {% for collection in collections %}
+  <h2>{{ collection.title }}</h2>
+  <ul>
+    {% for card in collection.cards.all %}
+    <li>{{ card.movie_id }}-{{ card.title }}</li>
+    {% endfor %}
+  </ul>
+  {% endfor %}
+</div>
 {% endblock content %}
 
 {% block script %}
+<script>
+  document.querySelector('.carousel-item').classList.add('active');
+</script>
 {% endblock script %}

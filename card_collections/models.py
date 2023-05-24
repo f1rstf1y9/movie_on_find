@@ -11,3 +11,4 @@ class Card_collection(models.Model):
     cards=models.ManyToManyField(Card,related_name='collections')
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_collection')
     updated_at = models.DateTimeField(auto_now=True)
+    collection_color = models.CharField(max_length=10)

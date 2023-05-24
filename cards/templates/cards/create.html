@@ -20,27 +20,6 @@ button {
   outline: 0;
   color: white;
 }
-.container {
-  max-width: 700px;
-  margin: 75px auto;
-}
-.sub-header {
-  position: fixed;
-  height: 50px;
-  z-index: 99;
-  top: 62px;
-  background-color: rgb(44, 44, 44);
-  width: 100%;
-  max-width: 700px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.header-inner {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  font-weight: 700;
-}
 
 .photo_ticket {
   display: flex;
@@ -162,57 +141,60 @@ button {
     </div>
   </div>
 
-  <div class="photo_ticket">
-    <form action="{% url 'cards:create' movie.pk %}" method="POST" enctype="multipart/form-data">
-      {% csrf_token %}
-      <input type="file" name="card_image" accept="image/*" id="id_card_image">
-      <div class="item-inner">
-        <div class="ticket-item item-front">
-          <div class="image-insert-btn">
-            이미지 수정
+  <div class="container-area">
+    <div class="photo_ticket">
+      <form action="{% url 'cards:create' movie.pk %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="card_image" accept="image/*" id="id_card_image">
+        <div class="item-inner">
+          <div class="ticket-item item-front">
+            <div class="image-insert-btn">
+              이미지 수정
+            </div>
+            <img class="photo_ticket__image" src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/{{ movie.poster_path }}"/>
           </div>
-          <img class="photo_ticket__image" src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/{{ movie.poster_path }}"/>
-        </div>
-        <div class="ticket-item item-back">
-            <div class="movie-info-top">
-              <p>
-                <select name="movie_type" required="" id="id_movie_type">
-                  <option value="" selected="">영화 종류</option>
-                  <option value="2D">2D</option>
-                  <option value="3D">3D</option>
-                  <option value="4D">4D</option>
-                </select>
+          <div class="ticket-item item-back">
+              <div class="movie-info-top">
+                <p>
+                  <select name="movie_type" required="" id="id_movie_type">
+                    <option value="" selected="">영화 종류</option>
+                    <option value="2D">2D</option>
+                    <option value="3D">3D</option>
+                    <option value="4D">4D</option>
+                  </select>
+                </p>
+                <p>
+                  <select name="watched_location" required="" id="id_watched_location">
+                    <option value="" selected="">본 장소</option>
+                    <option value="안방 1열">안방 1열</option>
+                    <option value="영화관">영화관</option>
+                  </select>
               </p>
-              <p>
-                <select name="watched_location" required="" id="id_watched_location">
-                  <option value="" selected="">본 장소</option>
-                  <option value="안방 1열">안방 1열</option>
-                  <option value="영화관">영화관</option>
-                </select>
-            </p>
+              </div>
+              <div class="movie-info-bottom">
+                <p class="movie-title-ko">{{ movie.title }}</p>
+                <p class="movie-title-en">{{ movie.original_title }}</p>
+              </div>
+              <div class="ticket-date">
+                <input type="date" name="watched_date" value="" required="" id="id_watched_date">
+              </div>
+              <div class="ticket-comment">
+                <input type="text" name="content" value="" maxlength="20" required="" id="id_content" placeholder="간단한 코멘트를 남겨보세요!">
+              </div>
+              <div class="ticket-people">
+                <input type="number" min="1" max="10" name="watched_people" value="1" required="" id="id_watched_people" style="
+                width: 40px; margin-right:3px;"> 명
+              </div>
+              <div class="ticket-barcode">
+                <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
+              </div>
             </div>
-            <div class="movie-info-bottom">
-              <p class="movie-title-ko">{{ movie.title }}</p>
-              <p class="movie-title-en">{{ movie.original_title }}</p>
-            </div>
-            <div class="ticket-date">
-              <input type="date" name="watched_date" value="" required="" id="id_watched_date">
-            </div>
-            <div class="ticket-comment">
-              <input type="text" name="content" value="" maxlength="20" required="" id="id_content" placeholder="간단한 코멘트를 남겨보세요!">
-            </div>
-            <div class="ticket-people">
-              <input type="number" min="1" max="10" name="watched_people" value="1" required="" id="id_watched_people" style="
-              width: 40px; margin-right:3px;"> 명
-            </div>
-            <div class="ticket-barcode">
-              <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
-            </div>
-          </div>
-      </div>
-      <input type="submit">
-    </form>
+        </div>
+        <input type="submit">
+      </form>
+    </div>
   </div>
+
 {% endblock content %}
 
 {% block script %}
