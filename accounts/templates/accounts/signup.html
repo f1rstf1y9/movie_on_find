@@ -76,15 +76,16 @@ body > div > form > div:nth-child(3) {
 {% endblock style %}
 
 {% block content %}
-  <h1>Signup</h1>
-  <form action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {% bootstrap_form form %}
-    <div class="d-grid my-2 join-btn">
-      <button class="btn" type="submit">회원 가입</button>
-    </div>
-  </form>
-  <hr>
+  <div class="container-area">
+    <form action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      <div class="d-grid my-2 join-btn">
+        <button class="btn" type="submit">회원 가입</button>
+      </div>
+    </form>
+  </div>
+
 {% endblock content %}
 
 {% block script %}

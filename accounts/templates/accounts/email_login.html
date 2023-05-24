@@ -42,7 +42,8 @@ form > div {
 
 
 {% block content %}
-  <div class="col-8 col-md-8 col-lg-5 mx-auto">
+<div class="container-area">
+  <div class="col-lg-8 mx-auto">
     <form action="{% url 'accounts:email_login' %}" method="POST">
       {% csrf_token %}
         {% bootstrap_form form %}
@@ -51,4 +52,6 @@ form > div {
       </div>
     </form>
   </div>
+</div>
+
 {% endblock content %}

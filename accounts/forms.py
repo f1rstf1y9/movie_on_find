@@ -36,7 +36,7 @@ class UserChangeForm(forms.ModelForm):
     email = forms.CharField(disabled=True)
     class Meta:
         model = User
-        fields = ('email', 'profile_image', 'nickname', 'like_genre',)
+        fields = ('email', 'profile_image', 'nickname', 'like_genres',)
         widgets={
             'nickname': forms.Textarea(attrs={"rows":"1", "cols":"6"}),
         }

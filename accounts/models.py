@@ -2,29 +2,6 @@ from django.db import models
 from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser)
 from movies.models import Genre
 
-GENRE_CHOICES = [
-    ('19',"모험"),
-    ('18',"판타지"),
-    ('17',"애니메이션"),
-    ('16',"드라마"),
-    ('15',"공포"),
-    ('14',"액션"),
-    ('13',"코미디"),
-    ('12',"역사"),
-    ('11',"서부"),
-    ('10',"스릴러"),
-    ('9',"범죄"),
-    ('8',"다큐멘터리"),
-    ('7',"SF"),
-    ('6',"미스터리"),
-    ('5',"음악"),
-    ('4',"로맨스"),
-    ('3',"가족"),
-    ('2',"전쟁"),
-    ('1',"TV영화"),
-    (None, '선택')
-]
-
 # Create your models here.
 class UserManager(BaseUserManager):
     def create_user(self, email, profile_image, kakao_id, nickname, followings, like_genres, password):
@@ -69,8 +46,6 @@ class User(AbstractBaseUser):
     nickname = models.TextField()
     followings = models.ManyToManyField('self', symmetrical=False, related_name='followers')
     like_genres = models.ManyToManyField(Genre, symmetrical=False, related_name='like_users')
-
-    like_genre = models.TextField(choices=GENRE_CHOICES)
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)

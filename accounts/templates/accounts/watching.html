@@ -230,38 +230,34 @@ li {
 
 <div class="container-area">
   <ul class="movie-card-list">
+    {% for movie in person.watching_movies.all %}
     <li>
-      <div class="movie_card" id="bright">
+      <a href="{% url 'movies:detail' movie.id %}" class="movie-item">
+      <div class="movie_card">
         <div class="info_section">
           <div class="movie_header">
-            <img class="locandina" src="https://movieplayer.net-cdn.it/t/images/2017/12/20/bright_jpg_191x283_crop_q85.jpg"/>
-            <h3>Bright</h3>
-            <h5>2017, David Ayer</h5>
-            <span class="minutes">117 min</span>
-            <p class="type">Action, Crime, Fantasy</p>
+            <img class="locandina" src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/{{movie.poster_path}}" alt="">
+            <h3>{{movie.title}}</h3>
+            <h5>{{movie.release_date}}</h5>
+            <span class="minutes">★ {{ movie.vote_average }}</span>
+            <p class="type">
+              {% for genre_id in resdata.genre_ids %}
+              {% for data in datas %}
+                {% ifequal genre_id data.id %}
+                {{data.name}}
+                {% endifequal %}
+              {% endfor %}
+              {% endfor %}
+            </p>
           </div>
         </div>
         <div class="blur_back bright_back">
-          <img src="https://occ-0-2433-448.1.nflxso.net/art/cd5c9/3e192edf2027c536e25bb5d3b6ac93ced77cd5c9.jpg" alt="Bright"/>
+          <img src="https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces{{movie.backdrop_path}}" alt="{{movie.title}}"/>
         </div>
       </div>
+      </a>
     </li>
-    <li>
-      <div class="movie_card" id="bright">
-        <div class="info_section">
-          <div class="movie_header">
-            <img class="locandina" src="https://movieplayer.net-cdn.it/t/images/2017/12/20/bright_jpg_191x283_crop_q85.jpg"/>
-            <h3>Bright</h3>
-            <h5>2017, David Ayer</h5>
-            <span class="minutes">117 min</span>
-            <p class="type">Action, Crime, Fantasy</p>
-          </div>
-        </div>
-        <div class="blur_back bright_back">
-          <img src="https://occ-0-2433-448.1.nflxso.net/art/cd5c9/3e192edf2027c536e25bb5d3b6ac93ced77cd5c9.jpg" alt="Bright"/>
-        </div>
-      </div>
-    </li>
+    {% endfor %}
   </ul>
 </div>
 

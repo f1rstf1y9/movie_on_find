@@ -71,6 +71,7 @@ def get_movie_video():
             key=data[0]['key']
             i.video=key
             i.save()
+
 def get_movie_runtime():
     movie=get_list_or_404(Movie)
     for i in movie:
@@ -79,6 +80,7 @@ def get_movie_runtime():
         data1=response1['runtime']
         i.runtime=data1
         i.save()
+
 def data_sort():
     movie=Movie.objects.all()
     for i in movie:
@@ -111,9 +113,9 @@ def index(request):
                 L.append(i)
     else:
         L = []
-
-    collections=Card_collection.objects.all()
-    return render(request,'movies/index.html',{'resdatas':serialized_data,'datas':genre,'collections':collections,'rec':L})
+    collections=Card_collection.objects.all().order_by('updated_at')[:10]
+    cards=Card.objects.all().order_by('created_at')[:10]
+    return render(request,'movies/index.html',{'resdatas':serialized_data,'datas':genre,'collections':collections,'cards':cards,'rec':L})
 
 @api_view(['GET'])
 @login_required
@@ -162,15 +164,15 @@ def sort(request,pk,num):
     # 평점순
     if pk==1:
         print(pk)
-        movie=Movie.objects.all().order_by('-vote_average')[20*(num-1):20*num]
+        movie=Movie.objects.all().order_by('-vote_average')[5*(num-1):5*num]
     #인기도순
     elif pk==2:
         print(pk)
-        movie=Movie.objects.all().order_by('-popularity')[20*(num-1):20*num]
+        movie=Movie.objects.all().order_by('-popularity')[5*(num-1):5*num]
     #개봉일순
     elif pk==3:
         print(pk)
-        movie=Movie.objects.all().order_by('-release_date')[20*(num-1):20*num]
+        movie=Movie.objects.all().order_by('-release_date')[5*(num-1):5*num]
     genre=Genre.objects.values()
     serializer=MovieListSerializer(movie,many=True)
     serialized_data = serializer.data
@@ -246,7 +248,7 @@ def genre_sort(request,genre_pk,n):
     genre=Genre.objects.values()
     serializer=MovieListSerializer(movie.order_by('-vote_average'),many=True)
     serialized_data = serializer.data
-    return render(request,'movies/sort.html',{'resdatas':serialized_data[20*(n-1):20*n],'datas':genre,'total':A,'pk':n,'genre_id':genre_pk})
+    return render(request,'movies/sort.html',{'resdatas':serialized_data[5*(n-1):5*n],'datas':genre,'total':A,'pk':n,'genre_id':genre_pk})
 
 
 @api_view(['GET'])
