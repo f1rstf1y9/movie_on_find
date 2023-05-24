@@ -25,9 +25,10 @@ class UserCreationForm(forms.ModelForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])
-        user.like_genres.set(self.cleaned_data["like_genres"])
+        
         if commit:
             user.save()
+        user.like_genres.set(self.cleaned_data["like_genres"])
         return user
 
 class UserChangeForm(forms.ModelForm):

@@ -52,17 +52,17 @@ button {
   position: relative;
 }
 
-.hero { 
+.backdrop { 
+  display: flex;
   margin:0;
   position: relative;
   overflow: hidden;
-  z-index:1;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-    
+  height: 300px;
 }
 
-.hero:before {
+.backdrop::before {
   content:'';
   width:100%; height:100%;
   position:absolute;
@@ -74,7 +74,6 @@ button {
   filter: blur(8px);
   opacity: 0.3;
   -webkit-filter: blur(8px);
-  z-index:-1;
   transform: skewY(-2.2deg);
   transition: transform 2s;
   transform: scale(1);
@@ -82,19 +81,22 @@ button {
   -webkit-backface-visibility: hidden; 
 }
 
-.hero:hover:before {
+.backdrop:hover:before {
   transform: scale(1.1);
 }
 
+.hero {
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  transform: translateY(-60px);
+}
+
 .cover {
-  width: 187px;
-  position: absolute;
-  top: 160px;
-  left: calc(100vw/2.4 - 220px);
-  z-index: 2;
+  width: 200px;
 }
 .details {
-  padding: 190px 0 0 calc(100vw/2.4);
 }
 
 .details > div {
@@ -126,7 +128,7 @@ button {
 
 .create-review {
   font-size: 12px;
-  color: rgb(73, 70, 70);
+  color: rgb(228, 228, 228);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -271,7 +273,7 @@ a[data-tooltip][data-placement="top"]::after {
 .movie-card {
   max-width: 700px;
   margin: 0 auto;
-  margin-top: 50px;
+  margin-top: -30px;
   background-color: #27272c;
   padding: 30px;
   border-radius: 5px;
@@ -282,75 +284,78 @@ a[data-tooltip][data-placement="top"]::after {
 {% block content %}
 <div class="movie-header">
 	<div class="movie-card-container">
-		<div class="movie-poster">
-      <img src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2{{resdatas.poster_path}}" alt="cover" class="cover"/>
-    </div>
-		<div class="hero">
-			<div class="details">
-        <div>
-          <div class="title1">
-            {{resdatas.title}}
-          </div>
-          <div class="title2">
-            {{resdatas.original_title}} ({{ resdatas.release_date|split:"-" }})
-          </div>
-        </div>
-        <div class="movie-info">
-          {% for genre_id in resdatas.genre_ids %}
-            {% for data in datas %}
-              {% ifequal genre_id data.id %}
-                <span class="tag">{{data.name}}</span>
-              {% endifequal %}
-            {% endfor %}
-          {% endfor %}
-        </div>
-        <div class="movie-vote">
-          평균 ★{{resdatas.vote_average}} ({{resdatas.popularity}}%)
-        </div>
-        <div class="movie-tool">
-          <div class="create-review">
-            <p>평가하기</p>
-            <fieldset class="rating">
-              <input type="radio" id="star5" name="rating" value="10"/><label class="full" for="star5" title="Awesome - 5 stars"></label>
-              <input type="radio" id="star4half" name="rating" value="9"/><label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
-              <input type="radio" id="star4" name="rating" value="8" checked/><label class="full" for="star4" title="Pretty good - 4 stars"></label>
-              <input type="radio" id="star3half" name="rating" value="7"/><label class="half" for="star3half" title="Meh - 3.5 stars"></label>
-              <input type="radio" id="star3" name="rating" value="6"/><label class="full" for="star3" title="Meh - 3 stars"></label>
-              <input type="radio" id="star2half" name="rating" value="5"/><label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
-              <input type="radio" id="star2" name="rating" value="4"/><label class="full" for="star2" title="Kinda bad - 2 stars"></label>
-              <input type="radio" id="star1half" name="rating" value="3"/><label class="half" for="star1half" title="Meh - 1.5 stars"></label>
-              <input type="radio" id="star1" name="rating" value="2"/><label class="full" for="star1" title="Sucks big time - 1 star"></label>
-              <input type="radio" id="starhalf" name="rating" value="1"/><label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
-            </fieldset>
-          </div>
-          <div class="icon--group">
-            <button class="icon-btn">
-              <div class="icon">
-                <svg viewBox="0 0 24 24" width="24" height="24"  fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Edit / Add_Plus"> <path id="Vector" d="M6 12H12M12 12H18M12 12V18M12 12V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
-              </div>
-              <span>보고싶어요</span>
-            </button>
-            
-            <button class="icon-btn">
-              <div class="icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" class="injected-svg" data-src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDVDNyA1IDIuNzMgOC4xMSAxIDEyLjVDMi43MyAxNi44OSA3IDIwIDEyIDIwQzE3IDIwIDIxLjI3IDE2Ljg5IDIzIDEyLjVDMjEuMjcgOC4xMSAxNyA1IDEyIDVaTTEyIDE3LjVDOS4yNCAxNy41IDcgMTUuMjYgNyAxMi41QzcgOS43NCA5LjI0IDcuNSAxMiA3LjVDMTQuNzYgNy41IDE3IDkuNzQgMTcgMTIuNUMxNyAxNS4yNiAxNC43NiAxNy41IDEyIDE3LjVaTTEyIDkuNUMxMC4zNCA5LjUgOSAxMC44NCA5IDEyLjVDOSAxNC4xNiAxMC4zNCAxNS41IDEyIDE1LjVDMTMuNjYgMTUuNSAxNSAxNC4xNiAxNSAxMi41QzE1IDEwLjg0IDEzLjY2IDkuNSAxMiA5LjVaIiBmaWxsPSJjdXJyZW50Q29sb3IiLz4KPC9zdmc+Cg==" xmlns:xlink="http://www.w3.org/1999/xlink">
-                <path d="M12 5C7 5 2.73 8.11 1 12.5C2.73 16.89 7 20 12 20C17 20 21.27 16.89 23 12.5C21.27 8.11 17 5 12 5ZM12 17.5C9.24 17.5 7 15.26 7 12.5C7 9.74 9.24 7.5 12 7.5C14.76 7.5 17 9.74 17 12.5C17 15.26 14.76 17.5 12 17.5ZM12 9.5C10.34 9.5 9 10.84 9 12.5C9 14.16 10.34 15.5 12 15.5C13.66 15.5 15 14.16 15 12.5C15 10.84 13.66 9.5 12 9.5Z" fill="currentColor"></path>
-                </svg>
-              </div>
-              <span>보는중</span>
-            </button>
-              
-            <button class="icon-btn">
-              <div class="icon">
-                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Check"> <path id="Vector" d="M6 12L10.2426 16.2426L18.727 7.75732" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
-              </div>
-              <span>봤어요</span>
-            </button>
-          </div>
-        </div>
-			</div>
-			<!-- end details -->
+		<div class="backdrop">
+      
 		</div>
+    <div class="hero">
+      <div class="movie-poster">
+        <img src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2{{resdatas.poster_path}}" alt="cover" class="cover"/>
+    </div>
+    <div class="details">
+      <div>
+        <div class="title1">
+          {{resdatas.title}}
+        </div>
+        <div class="title2">
+          {{resdatas.original_title}} ({{ resdatas.release_date|split:"-" }})
+        </div>
+      </div>
+      <div class="movie-info">
+        {% for genre_id in resdatas.genre_ids %}
+          {% for data in datas %}
+            {% ifequal genre_id data.id %}
+              <span class="tag">{{data.name}}</span>
+            {% endifequal %}
+          {% endfor %}
+        {% endfor %}
+      </div>
+      <div class="movie-vote">
+        평균 ★{{resdatas.vote_average}} ({{resdatas.popularity}}%)
+      </div>
+      <div class="movie-tool">
+        <div class="create-review">
+          <p>평가하기</p>
+          <fieldset class="rating">
+            <input type="radio" id="star5" name="rating" value="10"/><label class="full" for="star5" title="Awesome - 5 stars"></label>
+            <input type="radio" id="star4half" name="rating" value="9"/><label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+            <input type="radio" id="star4" name="rating" value="8" checked/><label class="full" for="star4" title="Pretty good - 4 stars"></label>
+            <input type="radio" id="star3half" name="rating" value="7"/><label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+            <input type="radio" id="star3" name="rating" value="6"/><label class="full" for="star3" title="Meh - 3 stars"></label>
+            <input type="radio" id="star2half" name="rating" value="5"/><label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+            <input type="radio" id="star2" name="rating" value="4"/><label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+            <input type="radio" id="star1half" name="rating" value="3"/><label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+            <input type="radio" id="star1" name="rating" value="2"/><label class="full" for="star1" title="Sucks big time - 1 star"></label>
+            <input type="radio" id="starhalf" name="rating" value="1"/><label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+          </fieldset>
+        </div>
+        <div class="icon--group">
+          <button class="icon-btn">
+            <div class="icon">
+              <svg viewBox="0 0 24 24" width="24" height="24"  fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Edit / Add_Plus"> <path id="Vector" d="M6 12H12M12 12H18M12 12V18M12 12V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+            </div>
+            <span>보고싶어요</span>
+          </button>
+          
+          <button class="icon-btn">
+            <div class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" class="injected-svg" data-src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDVDNyA1IDIuNzMgOC4xMSAxIDEyLjVDMi43MyAxNi44OSA3IDIwIDEyIDIwQzE3IDIwIDIxLjI3IDE2Ljg5IDIzIDEyLjVDMjEuMjcgOC4xMSAxNyA1IDEyIDVaTTEyIDE3LjVDOS4yNCAxNy41IDcgMTUuMjYgNyAxMi41QzcgOS43NCA5LjI0IDcuNSAxMiA3LjVDMTQuNzYgNy41IDE3IDkuNzQgMTcgMTIuNUMxNyAxNS4yNiAxNC43NiAxNy41IDEyIDE3LjVaTTEyIDkuNUMxMC4zNCA5LjUgOSAxMC44NCA5IDEyLjVDOSAxNC4xNiAxMC4zNCAxNS41IDEyIDE1LjVDMTMuNjYgMTUuNSAxNSAxNC4xNiAxNSAxMi41QzE1IDEwLjg0IDEzLjY2IDkuNSAxMiA5LjVaIiBmaWxsPSJjdXJyZW50Q29sb3IiLz4KPC9zdmc+Cg==" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <path d="M12 5C7 5 2.73 8.11 1 12.5C2.73 16.89 7 20 12 20C17 20 21.27 16.89 23 12.5C21.27 8.11 17 5 12 5ZM12 17.5C9.24 17.5 7 15.26 7 12.5C7 9.74 9.24 7.5 12 7.5C14.76 7.5 17 9.74 17 12.5C17 15.26 14.76 17.5 12 17.5ZM12 9.5C10.34 9.5 9 10.84 9 12.5C9 14.16 10.34 15.5 12 15.5C13.66 15.5 15 14.16 15 12.5C15 10.84 13.66 9.5 12 9.5Z" fill="currentColor"></path>
+              </svg>
+            </div>
+            <span>보는중</span>
+          </button>
+            
+          <button class="icon-btn">
+            <div class="icon">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Check"> <path id="Vector" d="M6 12L10.2426 16.2426L18.727 7.75732" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+            </div>
+            <span>봤어요</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    </div>
+    
 		<!-- end hero -->
 	</div>
 	<!-- end container -->
@@ -431,11 +436,8 @@ a[data-tooltip][data-placement="top"]::after {
     {% endifequal %}
   {% endfor %}
 {% endfor %} {% endcomment %}
-
-<br>
 {% comment %} <a href="{% url 'movies:index' %}">뒤로가기</a> {% endcomment %}
 
-{% endblock content %}
 
 {% block script %}
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

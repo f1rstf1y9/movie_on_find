@@ -52,6 +52,7 @@ def delete(request, pk):
 @require_http_methods(['GET', 'POST'])
 def update(request, pk):
     card_collection = Card_collection.objects.get(pk=pk)
+    my_cards=Card.objects.filter(user=request.user)
     if request.user == card_collection.user:
         if request.method == 'POST':
             form = CollectionForm(request.POST,user=request.user,instance=card_collection)
@@ -62,10 +63,10 @@ def update(request, pk):
             form = CollectionForm(user=request.user,instance=card_collection)
     else:
         return redirect('card_collections:index')
-    print(form)
     context = {
         'form': form,
         'card_collection': card_collection,
+        'my_cards': my_cards,
     }
     return render(request, 'card_collections/update.html', context)
 

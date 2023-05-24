@@ -220,5 +220,10 @@ button {
   document.querySelector(".image-insert-btn").onclick = function() {
     document.getElementById("id_card_image").click();
   };
+
+  document.getElementById('id_card_image').onchange = function () {
+    var src = URL.createObjectURL(this.files[0])
+    document.querySelector('.photo_ticket__image').src = src
+  }
 </script>
 {% endblock script %}
