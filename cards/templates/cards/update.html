@@ -278,5 +278,10 @@ button {
   };
   const defaultDate = document.getElementById('id_watched_location').value
   document.getElementById('id_watched_location').valueAsDate = new Date(defaultDate);
+
+  document.getElementById('id_card_image').onchange = function () {
+    var src = URL.createObjectURL(this.files[0])
+    document.querySelector('.photo_ticket__image').src = src
+  }
 </script>
 {% endblock script %}

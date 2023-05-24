@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block style %}
-.card {
+.main-card {
   border: none;
   box-shadow: 0px 0px 80px -18px rgba(255, 183, 0, 0.273);
 }
@@ -155,7 +155,7 @@
 .carousel .carousel__item .carousel__description {
   width: 100%;
 }
-.carousel .carousel__item a {
+.carousel .carousel__item .item-front, .carousel .carousel__item .item-back {
   display: flex;
   justify-content: center;
   justify-content: flex-start;
@@ -179,7 +179,7 @@
   -moz-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.35);
 }
 
-.item-inner {
+.photo-ticket-inner {
   position: relative;
   width: 100%;
   height: 300px;
@@ -187,7 +187,7 @@
   transition: transform 0.8s;
 }
 
-.carousel__item:hover .item-inner {
+.carousel__item:hover .photo-ticket-inner {
   transform: rotateY(180deg);
 }
 .item-front, .item-back {
@@ -288,7 +288,7 @@
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col col-lg-9 col-xl-7">
-          <div class="card">
+          <div class="card main-card">
             <div class="card-header rounded-top text-white d-flex flex-row">
               <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px; height:150px;">
                 <img src="{{ person.profile_image.url }}" alt="{{ person.profile_image }}"
@@ -396,7 +396,7 @@
                 <ul class="carousel__content">
                   {% for card in person.card_set.all %}
                   <li class="carousel__item" onclick="moveTo({{card.pk}})">
-                    <div class="item-inner">
+                    <div class="item-inner photo-ticket-inner">
                       <a class="item-front" href="{% url 'cards:detail' card.pk %}">
                         <img class="carousel__item__image" src="{{ card.card_image.url }}" alt="{{ card.card_image }}" />
                       </a>
@@ -432,27 +432,53 @@
                   </div>
                   <div class="carousel__wrapper">
                     <ul class="carousel__content" style="cursor: default;">
-                      <li class="carousel__item" style="padding-top:50px;">
-                        등록한 포토카드가 없어요ㅠ.ㅠ
-                      </li>
+                      <p style="padding-top:50px;">
+                        등록한 포토티켓이 없어요ㅠ.ㅠ
+                      </p>
                     </ul>
                   </div>
                 {% endif %}
               </div>
               {% comment %} 컬렉션 {% endcomment %}
-              <div class="d-flex justify-content-between align-items-center mb-4">
-                <p class="lead fw-normal mb-0">{{ person.nickname }}님의 포토티켓북</p>
-                <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
-              </div>
-              <div class="row g-2">
-                <div class="col mb-2">
-                  <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(112).webp"
-                    alt="image 1" class="w-100 rounded-3">
+              <div class="carousel__wrapper">
+                {% if person.card_collection_set.all|length > 0 %}
+                <div class="carousel__header">
+                    <p class="carousel__headline lead fw-normal mb-0">{{person.nickname}}님의 포토티켓북</p>
+                    <div>
+                      <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
+                    </div>
                 </div>
-                <div class="col mb-2">
-                  <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(107).webp"
-                    alt="image 1" class="w-100 rounded-3">
+                <div class="carousel__controls">
+                  <button class="carousel__arrow disabled arrow-prev"></button>
+                  <button class="carousel__arrow arrow-next"></button>
                 </div>
+                <ul class="carousel__content">
+                  {% for collection in person.card_collection_set.all %}
+                  <li class="carousel__item" onclick="moveToCollection({{collection.pk}})">
+                    <div class="item-inner">
+                      <a class="ticket-collections" href="{% url 'card_collections:detail' collection.pk %}">
+                        <div class="card" style="width: 18rem;">
+                          <div class="card-body">
+                            <h5 class="card-title">{{collection.title}}</h5>
+                            <p class="card-text">{{collection.cards.all|length}}개의 카드가 수집되어있어요!</p>
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                {% else %}
+                  <div class="carousel__header">
+                    <p class="carousel__headline lead fw-normal mb-0">{{person.nickname}}님의 포토티켓북</p>
+                  </div>
+                  <div class="carousel__wrapper">
+                    <ul class="carousel__content" style="cursor: default;">
+                      <p style="padding-top:50px;">
+                        등록한 포토티켓북이 없어요ㅠ.ㅠ
+                      </p>
+                    </ul>
+                  </div>
+                {% endif %}
               </div>
             </div>
           </div>
@@ -468,6 +494,9 @@
 
   function moveTo(cardPk) {
     window.location.href = `/cards/${cardPk}`;
+  }
+  function moveToCollection(collectionPk) {
+    window.location.href = `/card_collections/${collectionPk}`;
   }
 
   window.addEventListener( 'load', () => {
