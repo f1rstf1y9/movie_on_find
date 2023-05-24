@@ -49,11 +49,12 @@ button {
   align-items: center;
   gap: 10px;
 }
-.review-profile-image img {
+.collection-profile-image img {
   width: 35px;
+  height: 35px;
   border-radius: 50%;
 }
-.review-created-time {
+.collection-updated-time {
   color: rgb(173, 173, 173);
   font-size: 12px;
 }
@@ -256,7 +257,7 @@ button {
 {% block content %}
 <div class="user-header">
   <div>
-    <div class="review-profile-image">
+    <div class="collection-profile-image">
       <a href="{% url 'accounts:profile' card_collection.user.email %}">
         <img src="{{ card_collection.user.profile_image.url }}" alt="{{ card_collection.user.profile_image }}">
       </a>
@@ -265,10 +266,11 @@ button {
       <p class="card_collection-profile-nickname">{{ card_collection.user.nickname }}</p>
     </a>
   </div>
+  <p class="collection-updated-time">최종 수정 : {{ card_collection.updated_at }}</p>
 </div>
 <div class="collection-title">
   <h1>{{card_collection.title}}</h1>
-  <h2>{{card_collection.user.nickname}}님이 {{card_collection.cards.all|length}}개의 포토티켓을 수집하였습니다.</h2>
+  <h2>{{card_collection.description}}</h2>
   <p>좋아요 <span id="like-count">{{ card_collection.like_users.all|length }}</span>개</p>
 </div>
 

@@ -176,16 +176,16 @@ h1 {
 </div>
 <br>
 <div>
-  <a href="{% url 'movies:sort' pk=1%}" class="btn btn-primary">평점순</a>
-  <a href="{% url 'movies:sort' pk=2%}" class="btn btn-primary">인기도순</a>
-  <a href="{% url 'movies:sort' pk=3%}" class="btn btn-primary">개봉일순</a>
+  <a href="{% url 'movies:sort' pk=1 num=1%}" class="btn btn-primary">평점순</a>
+  <a href="{% url 'movies:sort' pk=2 num=1%}" class="btn btn-primary">인기도순</a>
+  <a href="{% url 'movies:sort' pk=3 num=1%}" class="btn btn-primary">개봉일순</a>
 </div>
 <br>
 {% for genre_id in datas %}
-<a href="{% url 'movies:genre_sort' genre_id.id%}" class="btn btn-outline-primary">{{genre_id.name}}</a>
+<a href="{% url 'movies:genre_sort' genre_pk=genre_id.id n=1 %}" class="btn btn-outline-primary">{{genre_id.name}}</a>
 {% endfor %}
 <div class="recommend">
-  <h1>추천영화</h1>
+  <h1>최고평점</h1>
   <div class="movie-list">
     {% for resdata in resdatas %}
     <a href="{% url 'movies:detail' resdata.id %}" class="movie-item">
@@ -217,8 +217,17 @@ h1 {
   </div>
 </div>
 <h1>당신을 위한영화</h1>
+<a href="{%url 'movies:my_reco' num=1%}">더보기</a>
+
+<hr>
+{% if rec %}
+{{rec}}
+{% else %}
+<h1>회원가입후 본인의 영화를 찾으세요</h1>
+{% endif %}
 <hr>
 <h1>컬렉션</h1>
+<hr>
 {% for collection in collections %}
 <h2>{{ collection.title }}</h2>
 <ul>

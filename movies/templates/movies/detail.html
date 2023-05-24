@@ -329,28 +329,65 @@ a[data-tooltip][data-placement="top"]::after {
           </fieldset>
         </div>
         <div class="icon--group">
-          <button class="icon-btn">
-            <div class="icon">
-              <svg viewBox="0 0 24 24" width="24" height="24"  fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Edit / Add_Plus"> <path id="Vector" d="M6 12H12M12 12H18M12 12V18M12 12V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
-            </div>
-            <span>보고싶어요</span>
-          </button>
+          <form class="watched-forms" data-movie-id="{{ resdatas.id }}">
+            {% csrf_token %}
+            {% if request.user.id in resdatas.watched %}
+            <button class="icon-btn">
+              <div class="icon">
+                <svg viewBox="0 0 24 24" width="24" height="24"  fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Edit / Add_Plus"> <path id="Vector" d="M6 12H12M12 12H18M12 12V18M12 12V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+              </div>
+              <span id="watched-{{ resdatas.id }}">안봤어요</span>
+            </button>
+            {% else %}
+            <button class="icon-btn">
+              <div class="icon">
+                <svg viewBox="0 0 24 24" width="24" height="24"  fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Edit / Add_Plus"> <path id="Vector" d="M6 12H12M12 12H18M12 12V18M12 12V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+              </div>
+              <span id="watched-{{ resdatas.id }}">봤어요</span>
+            </button>
+            {% endif %}
+          </form>
+          <form class="watching-forms" data-movie-id="{{ resdatas.id }}">
+            {% csrf_token %}
+            {% if request.user.id in resdatas.watching %}
+            <button class="icon-btn" >
+              <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" class="injected-svg" data-src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDVDNyA1IDIuNzMgOC4xMSAxIDEyLjVDMi43MyAxNi44OSA3IDIwIDEyIDIwQzE3IDIwIDIxLjI3IDE2Ljg5IDIzIDEyLjVDMjEuMjcgOC4xMSAxNyA1IDEyIDVaTTEyIDE3LjVDOS4yNCAxNy41IDcgMTUuMjYgNyAxMi41QzcgOS43NCA5LjI0IDcuNSAxMiA3LjVDMTQuNzYgNy41IDE3IDkuNzQgMTcgMTIuNUMxNyAxNS4yNiAxNC43NiAxNy41IDEyIDE3LjVaTTEyIDkuNUMxMC4zNCA5LjUgOSAxMC44NCA5IDEyLjVDOSAxNC4xNiAxMC4zNCAxNS41IDEyIDE1LjVDMTMuNjYgMTUuNSAxNSAxNC4xNiAxNSAxMi41QzE1IDEwLjg0IDEzLjY2IDkuNSAxMiA5LjVaIiBmaWxsPSJjdXJyZW50Q29sb3IiLz4KPC9zdmc+Cg==" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <path d="M12 5C7 5 2.73 8.11 1 12.5C2.73 16.89 7 20 12 20C17 20 21.27 16.89 23 12.5C21.27 8.11 17 5 12 5ZM12 17.5C9.24 17.5 7 15.26 7 12.5C7 9.74 9.24 7.5 12 7.5C14.76 7.5 17 9.74 17 12.5C17 15.26 14.76 17.5 12 17.5ZM12 9.5C10.34 9.5 9 10.84 9 12.5C9 14.16 10.34 15.5 12 15.5C13.66 15.5 15 14.16 15 12.5C15 10.84 13.66 9.5 12 9.5Z" fill="currentColor"></path>
+                </svg>
+              </div>
+              <span id="watching-{{ resdatas.id }}">안보는중</span>
+            </button>
           
-          <button class="icon-btn">
-            <div class="icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" class="injected-svg" data-src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDVDNyA1IDIuNzMgOC4xMSAxIDEyLjVDMi43MyAxNi44OSA3IDIwIDEyIDIwQzE3IDIwIDIxLjI3IDE2Ljg5IDIzIDEyLjVDMjEuMjcgOC4xMSAxNyA1IDEyIDVaTTEyIDE3LjVDOS4yNCAxNy41IDcgMTUuMjYgNyAxMi41QzcgOS43NCA5LjI0IDcuNSAxMiA3LjVDMTQuNzYgNy41IDE3IDkuNzQgMTcgMTIuNUMxNyAxNS4yNiAxNC43NiAxNy41IDEyIDE3LjVaTTEyIDkuNUMxMC4zNCA5LjUgOSAxMC44NCA5IDEyLjVDOSAxNC4xNiAxMC4zNCAxNS41IDEyIDE1LjVDMTMuNjYgMTUuNSAxNSAxNC4xNiAxNSAxMi41QzE1IDEwLjg0IDEzLjY2IDkuNSAxMiA5LjVaIiBmaWxsPSJjdXJyZW50Q29sb3IiLz4KPC9zdmc+Cg==" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <path d="M12 5C7 5 2.73 8.11 1 12.5C2.73 16.89 7 20 12 20C17 20 21.27 16.89 23 12.5C21.27 8.11 17 5 12 5ZM12 17.5C9.24 17.5 7 15.26 7 12.5C7 9.74 9.24 7.5 12 7.5C14.76 7.5 17 9.74 17 12.5C17 15.26 14.76 17.5 12 17.5ZM12 9.5C10.34 9.5 9 10.84 9 12.5C9 14.16 10.34 15.5 12 15.5C13.66 15.5 15 14.16 15 12.5C15 10.84 13.66 9.5 12 9.5Z" fill="currentColor"></path>
-              </svg>
-            </div>
-            <span>보는중</span>
-          </button>
-            
-          <button class="icon-btn">
-            <div class="icon">
-              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Check"> <path id="Vector" d="M6 12L10.2426 16.2426L18.727 7.75732" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
-            </div>
-            <span>봤어요</span>
-          </button>
+            {% else %}
+            <button class="icon-btn" >
+              <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" class="injected-svg" data-src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDVDNyA1IDIuNzMgOC4xMSAxIDEyLjVDMi43MyAxNi44OSA3IDIwIDEyIDIwQzE3IDIwIDIxLjI3IDE2Ljg5IDIzIDEyLjVDMjEuMjcgOC4xMSAxNyA1IDEyIDVaTTEyIDE3LjVDOS4yNCAxNy41IDcgMTUuMjYgNyAxMi41QzcgOS43NCA5LjI0IDcuNSAxMiA3LjVDMTQuNzYgNy41IDE3IDkuNzQgMTcgMTIuNUMxNyAxNS4yNiAxNC43NiAxNy41IDEyIDE3LjVaTTEyIDkuNUMxMC4zNCA5LjUgOSAxMC44NCA5IDEyLjVDOSAxNC4xNiAxMC4zNCAxNS41IDEyIDE1LjVDMTMuNjYgMTUuNSAxNSAxNC4xNiAxNSAxMi41QzE1IDEwLjg0IDEzLjY2IDkuNSAxMiA5LjVaIiBmaWxsPSJjdXJyZW50Q29sb3IiLz4KPC9zdmc+Cg==" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <path d="M12 5C7 5 2.73 8.11 1 12.5C2.73 16.89 7 20 12 20C17 20 21.27 16.89 23 12.5C21.27 8.11 17 5 12 5ZM12 17.5C9.24 17.5 7 15.26 7 12.5C7 9.74 9.24 7.5 12 7.5C14.76 7.5 17 9.74 17 12.5C17 15.26 14.76 17.5 12 17.5ZM12 9.5C10.34 9.5 9 10.84 9 12.5C9 14.16 10.34 15.5 12 15.5C13.66 15.5 15 14.16 15 12.5C15 10.84 13.66 9.5 12 9.5Z" fill="currentColor"></path>
+                </svg>
+              </div>
+              <span id="watching-{{ resdatas.id }}">보는중</span>
+            </button>
+            {% endif %}
+          </form>
+          <form class="interest-forms" data-movie-id="{{ resdatas.id }}">
+            {% csrf_token %}
+            {% if request.user.id in resdatas.interest %}
+            <button class="icon-btn">
+              <div class="icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Check"> <path id="Vector" d="M6 12L10.2426 16.2426L18.727 7.75732" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+              </div>
+              <span id="interest-{{ resdatas.id }}">보기싫어요</span>
+            </button>
+            {% else %}
+            <button class="icon-btn">
+              <div class="icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Check"> <path id="Vector" d="M6 12L10.2426 16.2426L18.727 7.75732" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+              </div>
+              <span id="interest-{{ resdatas.id }}">보고싶어요</span>
+            </button>
+            {% endif %}
+          </form>
         </div>
       </div>
     </div>
@@ -467,7 +504,6 @@ a[data-tooltip][data-placement="top"]::after {
     form.addEventListener('submit', function (event) {
       event.preventDefault()
       const reviewId = event.target.dataset.reviewId
-      // headers: {'X-CSRFToken': csrftoken},
       axios({
         method: 'post',
         url: `http://127.0.0.1:8000/reviews/${reviewId}/likes/`,
@@ -488,6 +524,84 @@ a[data-tooltip][data-placement="top"]::after {
       })
     })
   })
+
+  // watching
+  const watching_forms = document.querySelectorAll('.watching-forms');
+ 
+
+  watching_forms.forEach((form) => {
+    form.addEventListener('click', function (event) {
+      event.preventDefault()
+      const movieId = document.querySelector('.watching-forms').dataset.movieId;
+      axios({
+        method: 'post',
+        url: `http://127.0.0.1:8000/movies/${movieId}/watching/`,
+        headers: {'X-CSRFToken': csrftoken},
+      })
+      .then((response) => {
+        const isWatching = response.data.is_watching
+        const WatchingBtn = document.querySelector(`#watching-${movieId}`);
+        if (isWatching === true) {  
+          WatchingBtn.innerText = '안보는중'
+        } else {
+          WatchingBtn.innerText = '보는중'
+      }
+    })
+    })
+  })
+  // watched
+  const watched_forms = document.querySelectorAll('.watched-forms');
+
+  watched_forms.forEach((form) => {
+    form.addEventListener('click', function (event) {
+      event.preventDefault()
+      const movieId = document.querySelector('.watched-forms').dataset.movieId;
+
+      axios({
+        method: 'post',
+        url: `http://127.0.0.1:8000/movies/${movieId}/watched/`,
+        headers: {'X-CSRFToken': csrftoken},
+      })
+      .then((response) => {
+        const isWatched = response.data.is_watched
+        const WatchedBtn = document.querySelector(`#watched-${movieId}`);
+        if (isWatched === true) {  
+          WatchedBtn.innerText = '안봤어요'
+        } else {
+          WatchedBtn.innerText = '봤어요'
+      }
+    })
+    })
+  })
+    // interest
+    const interest_forms = document.querySelectorAll('.interest-forms');
+  
+    interest_forms.forEach((form) => {
+      form.addEventListener('click', function (event) {
+        event.preventDefault()
+        const movieId = document.querySelector('.interest-forms').dataset.movieId;
+      
+        axios({
+          method: 'post',
+          url: `http://127.0.0.1:8000/movies/${movieId}/interest/`,
+          headers: {'X-CSRFToken': csrftoken},
+        })
+        .then((response) => {
+          const isInterest = response.data.is_interest
+          const InterestBtn = document.querySelector(`#interest-${movieId}`);
+          if (isInterest === true) {  
+            InterestBtn.innerText = '보기싫어요'
+          } else {
+            InterestBtn.innerText = '보고싶어요'
+        }
+      })
+      })
+    })
+    const back=document.querySelector('#back')
+    back.addEventListener('click',function (event) {
+      event.preventDefault()
+      history.back()
+    })
 </script>
 <script>
   window.addEventListener( 'load', () => {
