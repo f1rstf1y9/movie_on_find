@@ -20,7 +20,7 @@ from django.db import transaction
 from movies.forms import Searchform
 
 
-my_id='4d159f322795f49ab1e9bb06b61577fb'
+my_id=''
 def get_top_rated_data():
     result=[]
     for page in range(1,51):
@@ -63,6 +63,17 @@ def get_movie_video():
             key=data1[0]['key']
             i.video=key
             i.save()
+def get_movie_runtime():
+    movie=Movie.objects.all()
+    for i in movie:
+        url1='https://api.themoviedb.org/3/movie/'+str(i.pk)+'?api_key='+my_id+'&language=ko'
+        response1=requests.get(url1).json()
+        data1=response1['reuntime']
+        if len(data1)==0:
+            pass
+        else:
+            i.runtime=data1
+            i.save()
 def data_sort():
     movie=Movie.objects.all()
     for i in movie:
@@ -81,6 +92,7 @@ def index(request):
     # get_top_rated_data()
     # data_sort()
     # get_movie_video()
+    # get_movie_runtime()
     movie=Movie.objects.all().order_by('-vote_average')[:10]
     genre=Genre.objects.values()
     serializer=MovieListSerializer(movie,many=True)
@@ -96,6 +108,8 @@ def index(request):
             a=set.intersection(set(D),rec)
             if abs(len(rec)-len(a))<2:
                 L.append(i)
+    else:
+        L=[]
 
     collections=Card_collection.objects.all()
     return render(request,'movies/index.html',{'resdatas':serialized_data,'datas':genre,'collections':collections,'rec':L})
