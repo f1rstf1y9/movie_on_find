@@ -1,0 +1,283 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+p {
+  margin-bottom: 0;
+}
+a {
+  color: white;
+}
+ul {
+  padding-left: 0;
+}
+li {
+  list-style: none;
+}
+button {
+  background: none;
+  border: none;
+  outline: 0;
+  color: white;
+}
+.container {
+  max-width: 700px;
+  margin: 75px auto;
+}
+.sub-header {
+  position: fixed;
+  height: 50px;
+  z-index: 99;
+  top: 62px;
+  background-color: rgb(44, 44, 44);
+  width: 100%;
+  max-width: 700px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-weight: 700;
+}
+.user-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  margin-top: 140px;
+}
+.user-header > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.review-profile-image img {
+  width: 35px;
+  border-radius: 50%;
+}
+.review-created-time {
+  color: rgb(173, 173, 173);
+  font-size: 12px;
+}
+.movie-header {
+  border-bottom: 1px solid #5f5f5f;
+  padding-bottom: 10px;
+}
+.movie-header > div > a {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.movie-poster img {
+  width: 60px;
+  border-radius: 6px;
+}
+
+.photo_ticket {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.photo_ticket .ticket-item {
+  display: flex;
+  justify-content: center;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  user-select: none;
+  margin: 10px 0px;
+  padding: 16px;
+  border-radius: clamp(0px, ((100vw - 4px) - 100%) * 9999, 8px);
+  cursor: pointer;
+  width: 200px;
+  height: 300px;
+  background: white;
+  color: black;
+
+  box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.35);
+  -webkit-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.35);
+  -moz-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.35);
+}
+
+.item-inner {
+  position: relative;
+  transition: transform 0.8s;
+  display: flex;
+  gap: 20px;
+}
+.item-front img {
+  aspect-ratio: 1/1;
+  width: 175px;
+  height: 350px;
+  object-fit: cover;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  margin-bottom: 16px;
+  border-radius: clamp(0px, ((100vw - 4px) - 100%) * 9999, 4px);
+}
+.item-back {
+  position: relative;
+  font-size: 14px;
+  text-align: left;
+}
+.item-back > div {
+  width: 100%;
+  margin-bottom: 10px;
+}
+.item-back .movie-info-top {
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+.item-back .movie-info-bottom {
+  margin-bottom: 10px;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  padding: 10px 0;
+}
+.item-back .movie-info-bottom p {
+  margin-bottom: 0;
+}
+.item-back .movie-info-bottom p:first-child {
+  font-size: 16px;
+  font-weight: bold;
+}
+.item-back .ticket-comment input {
+  width: 100%;
+}
+.item-back .ticket-date {
+  font-size: 12px;
+}
+.item-back .ticket-barcode {
+  position: absolute;
+  text-align: center;
+  bottom: 10px;
+}
+#id_card_image {
+  display: none;
+} 
+.ticket-item {
+  position: relative;
+}
+.image-insert-btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  cursor: pointer;
+}
+{% endblock style %}
+
+{% block content %}
+  <div id="header" class="sub-header">
+    <div class="header-inner">
+      <div class="back-btn">
+        <a href="{% url 'cards:detail' card.pk %}">
+          <svg width="24" height="24" viewBox="0 0 1024 1024" fill="#ffffff" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M669.6 849.6c8.8 8 22.4 7.2 30.4-1.6s7.2-22.4-1.6-30.4l-309.6-280c-8-7.2-8-17.6 0-24.8l309.6-270.4c8.8-8 9.6-21.6 2.4-30.4-8-8.8-21.6-9.6-30.4-2.4L360.8 480.8c-27.2 24-28 64-0.8 88.8l309.6 280z" fill=""></path></g></svg>
+        </a>
+      </div>
+      <p>{{ movie.title }} 포토티켓 수정</p>
+      <div></div>
+    </div>
+  </div>
+  <div class="user-header">
+    <div>
+      <div class="review-profile-image">
+        <a href="{% url 'accounts:profile' user.email %}">
+          <img src="{{ user.profile_image.url }}" alt="{{ user.profile_image }}">
+        </a>
+      </div>
+      <a href="{% url 'accounts:profile' user.email %}">
+        <p class="review-profile-nickname">{{ user.nickname }}</p>
+      </a>
+    </div>
+    <p class="review-created-time">{{ card.created_at }}</p>
+  </div>
+  <div class="movie-header">
+    <div class="movie-poster">
+      <a href="{% url 'movies:detail' card.movie.pk %}">
+        <img src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/{{ card.movie.poster_path }}" alt="">
+        <p>{{ card.movie.title }}</p>
+      </a>
+    </div>
+  </div>
+
+  <div class="photo_ticket">
+    <form action="{% url 'cards:update' card.pk %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="file" name="card_image" accept="image/*" id="id_card_image"></p>
+      </p>
+      
+      <div class="item-inner">
+        <div class="ticket-item item-front">
+          <div class="image-insert-btn">
+            이미지 수정
+          </div>
+          <img class="photo_ticket__image" src="{{ card.card_image.url }}" alt="{{ card.card_image }}" />
+        </div>
+        <div class="ticket-item item-back">
+            <div class="movie-info-top">
+              <p>
+                <select name="movie_type" required="" id="id_movie_type">
+                  <option value="">---------</option>
+                  <option value="2D" {% if card.movie_type == '2D' %}selected=""{% endif %}>2D</option>
+                  <option value="3D" {% if card.movie_type == '3D' %}selected=""{% endif %}>3D</option>
+                  <option value="4D" {% if card.movie_type == '4D' %}selected=""{% endif %}>4D</option>
+                </select>
+              </p>
+              <p>
+                <select name="watched_location" required="" id="id_watched_location">
+                  <option value="">---------</option>
+                  <option value="안방 1열" {% if card.watched_location == '안방 1열' %}selected=""{% endif %}>안방 1열</option>
+                  <option value="영화관" {% if card.watched_location == '영화관' %}selected=""{% endif %}>영화관</option>
+                </select>
+            </p>
+            </div>
+            <div class="movie-info-bottom">
+              <p class="movie-title-ko">{{ card.movie.title }}</p>
+              <p class="movie-title-en">{{ card.movie.original_title }}</p>
+            </div>
+            <div class="ticket-date">
+              <input type="date" name="watched_date" value="{{ card.watched_date|date:'Y-m-d'}}" required="" id="id_watched_date">
+            </div>
+            <div class="ticket-comment">
+              <input type="text" name="content" value="{{ card.content }}" maxlength="20" required="" id="id_content"  placeholder="간단한 코멘트를 남겨보세요!">
+            </div>
+            <div class="ticket-people">
+              <input type="number" min="1" max="10" name="watched_people" value="{{ card.watched_people }}" required="" id="id_watched_people" style="
+              width: 40px; margin-right:3px;"> 명
+            </div>
+            <div class="ticket-barcode">
+              <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
+            </div>
+          </div>
+      </div>
+      <input type="submit">
+    </form>
+  </div>
+{% endblock content %}
+
+{% block script %}
+<script>
+  document.querySelector(".image-insert-btn").onclick = function() {
+    document.getElementById("id_card_image").click();
+  };
+  const defaultDate = document.getElementById('id_watched_location').value
+  document.getElementById('id_watched_location').valueAsDate = new Date(defaultDate);
+</script>
+{% endblock script %}

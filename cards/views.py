@@ -34,20 +34,19 @@ def index(request):
 @require_http_methods(['GET', 'POST'])
 def create(request, movie_pk):
     if request.user.is_authenticated:
+        movie = Movie.objects.get(pk=movie_pk)
         if request.method == 'POST':
-            form = CardForm(request.POST)
-            movie = Movie.objects.get(pk=movie_pk)
+            form = CardForm(request.POST, request.FILES)
+            
             if form.is_valid():
-                print(1)
                 card = form.save(commit=False)
                 card.user = request.user
                 card.movie = movie
                 card.save()
                 return redirect('cards:detail', card.pk)
         else:
-            print(2)
             form = CardForm()
-        return render(request, 'cards/create.html', {'pk':movie_pk,'form': form})
+        return render(request, 'cards/create.html', {'movie':movie,'form': form})
     return redirect('accounts:login')
 
 @require_safe
@@ -76,7 +75,7 @@ def update(request, pk):
     card = Card.objects.get(pk=pk)
     if request.user == card.user:
         if request.method == 'POST':
-            form = CardForm(request.POST, instance=card)
+            form = CardForm(request.POST, request.FILES, instance=card)
             if form.is_valid():
                 form.save()
                 return redirect('cards:detail', card.pk)
