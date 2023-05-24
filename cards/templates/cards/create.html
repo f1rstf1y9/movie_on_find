@@ -184,19 +184,19 @@ button {
                 </select>
               </p>
               <p>
-                <select name="movie_location" required="" id="id_movie_location">
+                <select name="watched_location" required="" id="id_watched_location">
                   <option value="" selected="">본 장소</option>
-                  <option value="방구석 1열">방구석 1열</option>
+                  <option value="안방 1열">안방 1열</option>
                   <option value="영화관">영화관</option>
                 </select>
             </p>
             </div>
             <div class="movie-info-bottom">
               <p class="movie-title-ko">{{ movie.title }}</p>
-              <p class="movie-title-en">The Wailing</p>
+              <p class="movie-title-en">{{ movie.original_title }}</p>
             </div>
             <div class="ticket-date">
-              <input type="date" name="watched_at" value="" required="" id="id_watched_at">
+              <input type="date" name="watched_date" value="" required="" id="id_watched_date">
             </div>
             <div class="ticket-comment">
               <input type="text" name="content" value="" maxlength="20" required="" id="id_content" placeholder="간단한 코멘트를 남겨보세요!">
@@ -222,4 +222,3 @@ button {
   };
 </script>
 {% endblock script %}
-

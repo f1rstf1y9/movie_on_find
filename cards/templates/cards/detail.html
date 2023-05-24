@@ -175,20 +175,20 @@ button {
       <div class="ticket-item item-back">
           <div class="movie-info-top">
             <p>{{ card.movie_type }}</p>
-            <p>{{ card.movie_location }}</p>
+            <p>{{ card.watched_location }}</p>
           </div>
           <div class="movie-info-bottom">
             <p class="movie-title-ko">{{ movie.title }}</p>
-            <p class="movie-title-en">The Wailing</p>
+            <p class="movie-title-en">{{ movie.original_title }}</p>
           </div>
           <div class="ticket-date">
-            {{ card.watched_at }}
+            {{ card.watched_date }}
           </div>
           <div class="ticket-comment">
             {{ card.content }}
           </div>
           <div class="ticket-people">
-            2명
+            {{ card.watched_people }}명
           </div>
           <div class="ticket-barcode">
             <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">

@@ -382,37 +382,34 @@
               <div class="carousel">
               {% comment %} 포토카드 {% endcomment %}
               <div class="carousel__wrapper">
-                {% if person.card_set.all|length > 0 %}
-                  <div class="carousel__header">
-                      <p class="carousel__headline lead fw-normal mb-0">최근 등록한 포토티켓</p>
-                      <div>
-                        <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
-                      </div>
-                  </div>
-                  {% if person.card_set.all|length >= 2 %}
-                  <div class="carousel__controls">
-                    <button class="carousel__arrow disabled arrow-prev"></button>
-                    <button class="carousel__arrow arrow-next"></button>
-                  </div>
-                  {% endif %}
-                  <ul class="carousel__content">
-                    {% for card in person.card_set.all %}
-                    <li class="carousel__item" onclick="moveTo({{card.pk}})">
-                      <div class="item-inner">
-                        <a class="item-front" href="{% url 'cards:detail' card.pk %}">
-                          <img class="carousel__item__image" src="{{ card.card_image.url }}" alt="{{ card.card_image }}" />
-                        </a>
-                        <a class="item-back" href="{% url 'cards:detail' card.pk %}">
+                <div class="carousel__header">
+                    <p class="carousel__headline lead fw-normal mb-0">최근 등록한 포토티켓</p>
+                    <div>
+                      <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
+                    </div>
+                </div>
+                <div class="carousel__controls">
+                  <button class="carousel__arrow disabled arrow-prev"></button>
+                  <button class="carousel__arrow arrow-next"></button>
+                </div>
+                <ul class="carousel__content">
+                  {% for card in person.card_set.all %}
+                  <li class="carousel__item" onclick="moveTo({{card.pk}})">
+                    <div class="item-inner">
+                      <a class="item-front" href="{% url 'cards:detail' card.pk %}">
+                        <img class="carousel__item__image" src="{{ card.card_image.url }}" alt="{{ card.card_image }}" />
+                      </a>
+                      <a class="item-back" href="{% url 'cards:detail' card.pk %}">
                           <div class="movie-info-top">
                             <p>{{ card.movie_type }}</p>
-                            <p>{{ card.movie_location }}</p>
+                            <p>{{ card.watched_location }}</p>
                           </div>
                           <div class="movie-info-bottom">
                             <p class="movie-title-ko">{{ card.movie.title }}</p>
-                            <p class="movie-title-en">The Wailing</p>
+                            <p class="movie-title-en">{{ card.movie.original_title }}</p>
                           </div>
                           <div class="ticket-date">
-                            {{ card.watched_at }}
+                            {{ card.watched_date }}
                           </div>
                           <div class="ticket-comment">
                             {{ card.content }}
@@ -440,9 +437,6 @@
                     </ul>
                   </div>
                 {% endif %}
-              </div>
-              
-
               </div>
               {% comment %} 컬렉션 {% endcomment %}
               <div class="d-flex justify-content-between align-items-center mb-4">

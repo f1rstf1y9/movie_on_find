@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser)
+from movies.models import Genre
 
 GENRE_CHOICES = [
     ('19',"모험"),
@@ -26,7 +27,7 @@ GENRE_CHOICES = [
 
 # Create your models here.
 class UserManager(BaseUserManager):
-    def create_user(self, email, profile_image, kakao_id, nickname, followings, password, like_genre):
+    def create_user(self, email, profile_image, kakao_id, nickname, followings, like_genres, password):
         if not email:
             raise ValueError('Users must have an email address')
 
@@ -36,14 +37,13 @@ class UserManager(BaseUserManager):
             kakao_id = kakao_id,
             nickname = nickname,
             followings = followings,
-            like_genre = like_genre,
+            like_genres = like_genres,
         )
-
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, profile_image, kakao_id, nickname, followings, password, like_genre):
+    def create_superuser(self, email, profile_image, kakao_id, nickname, followings, like_genres, password):
         user = self.create_user(
             email,
             password=password,
@@ -51,7 +51,7 @@ class UserManager(BaseUserManager):
             kakao_id = kakao_id,
             nickname = nickname,
             followings = followings,
-            like_genre = like_genre,
+            like_genres = like_genres
         )
         user.is_admin = True
         user.save(using=self._db)
@@ -68,6 +68,7 @@ class User(AbstractBaseUser):
     kakao_id = models.TextField(null=True)
     nickname = models.TextField()
     followings = models.ManyToManyField('self', symmetrical=False, related_name='followers')
+    like_genres = models.ManyToManyField(Genre, symmetrical=False, related_name='like_users')
 
     like_genre = models.TextField(choices=GENRE_CHOICES)
 
@@ -77,7 +78,7 @@ class User(AbstractBaseUser):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['profile_image', 'nickname', 'followings',]
+    REQUIRED_FIELDS = ['profile_image', 'nickname', 'followings','like_genres']
 
     def __str__(self):
         return self.email

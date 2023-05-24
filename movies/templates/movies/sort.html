@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h1>분류영화</h1>
+<a href="{% url 'movies:index'%}">홈</a>
+<a href="{% url 'movies:sort' pk=1%}">평점순</a>
+<a href="{% url 'movies:sort' pk=2%}">인기도순</a>
+<a href="{% url 'movies:sort' pk=3%}">개봉일순</a>
+<br>
+<a href="{% url 'movies:index'%}">back</a>
+<hr>
+{% for resdata in resdatas%}
+id:{{resdata.id}}
+<br>
+title:<a href="{% url 'movies:detail' resdata.id%}">{{resdata.title}}</a>
+<br>
+평점:{{resdata.vote_average}}
+<br>
+포스터경로:{{resdata.poster_path}}
+<br>
+오버뷰:{{resdata.overview}}
+<br>
+장르:
+{% for genre_id in resdata.genre_ids %}
+{% for data in datas %}
+{% ifequal genre_id data.id %}
+{{data.name}}
+{% endifequal %}
+{% endfor %}
+{% endfor %}
+<hr>
+{% endfor %}
+{% endblock content %}

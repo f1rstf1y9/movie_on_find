@@ -240,19 +240,19 @@ button {
                 </select>
               </p>
               <p>
-                <select name="movie_location" required="" id="id_movie_location">
+                <select name="watched_location" required="" id="id_watched_location">
                   <option value="">---------</option>
-                  <option value="방구석 1열" {% if card.movie_location == '방구석 1열' %}selected=""{% endif %}>방구석 1열</option>
-                  <option value="영화관" {% if card.movie_location == '영화관' %}selected=""{% endif %}>영화관</option>
+                  <option value="안방 1열" {% if card.watched_location == '안방 1열' %}selected=""{% endif %}>안방 1열</option>
+                  <option value="영화관" {% if card.watched_location == '영화관' %}selected=""{% endif %}>영화관</option>
                 </select>
             </p>
             </div>
             <div class="movie-info-bottom">
               <p class="movie-title-ko">{{ card.movie.title }}</p>
-              <p class="movie-title-en">The Wailing</p>
+              <p class="movie-title-en">{{ card.movie.original_title }}</p>
             </div>
             <div class="ticket-date">
-              <input type="date" name="watched_at" value="{{ card.watched_at|date:'Y-m-d'}}" required="" id="id_watched_at">
+              <input type="date" name="watched_date" value="{{ card.watched_date|date:'Y-m-d'}}" required="" id="id_watched_date">
             </div>
             <div class="ticket-comment">
               <input type="text" name="content" value="{{ card.content }}" maxlength="20" required="" id="id_content"  placeholder="간단한 코멘트를 남겨보세요!">
@@ -276,7 +276,7 @@ button {
   document.querySelector(".image-insert-btn").onclick = function() {
     document.getElementById("id_card_image").click();
   };
-  const defaultDate = document.getElementById('id_watched_at').value
-  document.getElementById('id_watched_at').valueAsDate = new Date(defaultDate);
+  const defaultDate = document.getElementById('id_watched_location').value
+  document.getElementById('id_watched_location').valueAsDate = new Date(defaultDate);
 </script>
 {% endblock script %}

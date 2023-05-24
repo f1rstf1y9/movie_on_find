@@ -9,7 +9,7 @@ class CardForm(forms.ModelForm):
         model=Card
         exclude=('user', 'like_users', 'movie',)
 
-        watched_at = forms.DateField(widget=DatePickerInput)
+        watched_date = forms.DateField(widget=DatePickerInput)
         widgets = {
-            'watched_at': DatePickerInput(),
+            'watched_date': DatePickerInput(),
         }
