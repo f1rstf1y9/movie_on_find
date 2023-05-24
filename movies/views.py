@@ -100,6 +100,8 @@ def index(request):
             a=set.intersection(set(D),rec)
             if abs(len(rec)-len(a))<2:
                 L.append(i)
+    else:
+        L = []
 
     collections=Card_collection.objects.all()
     return render(request,'movies/index.html',{'resdatas':serialized_data,'datas':genre,'collections':collections,'rec':L})
