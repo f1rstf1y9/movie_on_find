@@ -393,166 +393,37 @@
                   <button class="carousel__arrow arrow-next"></button>
                 </div>
                 <ul class="carousel__content">
-                  <li class="carousel__item">
+                  {% for card in person.card_set.all %}
+                  <li class="carousel__item" onclick="moveTo({{card.pk}})">
                     <div class="item-inner">
-                      <a class="item-front">
-                        <img class="carousel__item__image" src="https://picsum.photos/id/21/300/300" alt="" />
+                      <a class="item-front" href="{% url 'cards:detail' card.pk %}">
+                        <img class="carousel__item__image" src="{{ card.card_image.url }}" alt="{{ card.card_image }}" />
                       </a>
-                      <a class="item-back">
+                      <a class="item-back" href="{% url 'cards:detail' card.pk %}">
                           <div class="movie-info-top">
-                            <p>2D</p>
-                            <p>15세이상관람가</p>
+                            <p>{{ card.movie_type }}</p>
+                            <p>{{ card.watched_location }}</p>
                           </div>
                           <div class="movie-info-bottom">
-                            <p class="movie-title-ko">곡성</p>
+                            <p class="movie-title-ko">{{ card.movie.original_title }}</p>
                             <p class="movie-title-en">The Wailing</p>
                           </div>
                           <div class="ticket-date">
-                            2023.05.22(월)
+                            {{ card.watched_date }}
                           </div>
                           <div class="ticket-comment">
-                            짱재밌었다
+                            {{ card.content }}
                           </div>
                           <div class="ticket-people">
-                            2명
+                            {{ card.watched_people }}명
                           </div>
                           <div class="ticket-barcode">
                             <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
                           </div>
-                          {% comment %} <div class="ticket-logo">
-                            MOVIEONFIND
-                          </div> {% endcomment %}
                       </a>
                     </div>
                   </li>
-                  <li class="carousel__item">
-                    <div class="item-inner">
-                      <a class="item-front">
-                        <img class="carousel__item__image" src="https://picsum.photos/id/21/300/300" alt="" />
-                      </a>
-                      <a class="item-back">
-                          <div class="movie-info-top">
-                            <p>2D</p>
-                            <p>15세이상관람가</p>
-                          </div>
-                          <div class="movie-info-bottom">
-                            <p class="movie-title-ko">곡성</p>
-                            <p class="movie-title-en">The Wailing</p>
-                          </div>
-                          <div class="ticket-date">
-                            2023.05.22(월)
-                          </div>
-                          <div class="ticket-comment">
-                            짱재밌었다
-                          </div>
-                          <div class="ticket-people">
-                            2명
-                          </div>
-                          <div class="ticket-barcode">
-                            <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
-                          </div>
-                          {% comment %} <div class="ticket-logo">
-                            MOVIEONFIND
-                          </div> {% endcomment %}
-                      </a>
-                    </div>
-                  </li>
-                  <li class="carousel__item">
-                    <div class="item-inner">
-                      <a class="item-front">
-                        <img class="carousel__item__image" src="https://picsum.photos/id/21/300/300" alt="" />
-                      </a>
-                      <a class="item-back">
-                          <div class="movie-info-top">
-                            <p>2D</p>
-                            <p>15세이상관람가</p>
-                          </div>
-                          <div class="movie-info-bottom">
-                            <p class="movie-title-ko">곡성</p>
-                            <p class="movie-title-en">The Wailing</p>
-                          </div>
-                          <div class="ticket-date">
-                            2023.05.22(월)
-                          </div>
-                          <div class="ticket-comment">
-                            짱재밌었다
-                          </div>
-                          <div class="ticket-people">
-                            2명
-                          </div>
-                          <div class="ticket-barcode">
-                            <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
-                          </div>
-                          {% comment %} <div class="ticket-logo">
-                            MOVIEONFIND
-                          </div> {% endcomment %}
-                      </a>
-                    </div>
-                  </li>
-                  <li class="carousel__item">
-                    <div class="item-inner">
-                      <a class="item-front">
-                        <img class="carousel__item__image" src="https://picsum.photos/id/21/300/300" alt="" />
-                      </a>
-                      <a class="item-back">
-                          <div class="movie-info-top">
-                            <p>2D</p>
-                            <p>15세이상관람가</p>
-                          </div>
-                          <div class="movie-info-bottom">
-                            <p class="movie-title-ko">곡성</p>
-                            <p class="movie-title-en">The Wailing</p>
-                          </div>
-                          <div class="ticket-date">
-                            2023.05.22(월)
-                          </div>
-                          <div class="ticket-comment">
-                            짱재밌었다
-                          </div>
-                          <div class="ticket-people">
-                            2명
-                          </div>
-                          <div class="ticket-barcode">
-                            <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
-                          </div>
-                          {% comment %} <div class="ticket-logo">
-                            MOVIEONFIND
-                          </div> {% endcomment %}
-                      </a>
-                    </div>
-                  </li>
-                  <li class="carousel__item">
-                    <div class="item-inner">
-                      <a class="item-front">
-                        <img class="carousel__item__image" src="https://picsum.photos/id/21/300/300" alt="" />
-                      </a>
-                      <a class="item-back">
-                          <div class="movie-info-top">
-                            <p>2D</p>
-                            <p>15세이상관람가</p>
-                          </div>
-                          <div class="movie-info-bottom">
-                            <p class="movie-title-ko">곡성</p>
-                            <p class="movie-title-en">The Wailing</p>
-                          </div>
-                          <div class="ticket-date">
-                            2023.05.22(월)
-                          </div>
-                          <div class="ticket-comment">
-                            짱재밌었다
-                          </div>
-                          <div class="ticket-people">
-                            2명
-                          </div>
-                          <div class="ticket-barcode">
-                            <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
-                          </div>
-                          {% comment %} <div class="ticket-logo">
-                            MOVIEONFIND
-                          </div> {% endcomment %}
-                      </a>
-                    </div>
-                  </li>
+                  {% endfor %}
                 </ul>
                 </div>
               </div>
@@ -582,108 +453,113 @@
 
 {% block script %}
 <script>
-window.addEventListener( 'load', () => {
-	const COMPONENT_SELECTOR = '.carousel__wrapper';
-	const CONTROLS_SELECTOR = '.carousel__controls';
-  const CONTENT_SELECTOR = '.carousel__content';
 
-	const components = document.querySelectorAll( COMPONENT_SELECTOR );
+  function moveTo(cardPk) {
+    window.location.href = `/cards/${cardPk}`;
+  }
 
-	for ( let i = 0; i < components.length; i++ ) {
-		const component = components[ i ];
-		const content = component.querySelector( CONTENT_SELECTOR );
-		let x = 0;
-		let mx = 0;
-		const maxScrollWidth = content.scrollWidth - content.clientWidth / 2 - content.clientWidth / 2;
-		const nextButton = component.querySelector( '.arrow-next' );
-		const prevButton = component.querySelector( '.arrow-prev' );
+  window.addEventListener( 'load', () => {
+    const COMPONENT_SELECTOR = '.carousel__wrapper';
+    const CONTROLS_SELECTOR = '.carousel__controls';
+    const CONTENT_SELECTOR = '.carousel__content';
 
-		if ( maxScrollWidth !== 0 ) {
-			component.classList.add( 'has-arrows' );
-		}
+    const components = document.querySelectorAll( COMPONENT_SELECTOR );
 
-		if ( nextButton ) {
-			nextButton.addEventListener( 'click', function ( event ) {
-				event.preventDefault();
-				x = content.clientWidth / 2 + content.scrollLeft + 0;
-				content.scroll( {
-					left: x,
-					behavior: 'smooth',
-				} );
-			} );
-		}
+    for ( let i = 0; i < components.length; i++ ) {
+      const component = components[ i ];
+      const content = component.querySelector( CONTENT_SELECTOR );
+      let x = 0;
+      let mx = 0;
+      const maxScrollWidth = content.scrollWidth - content.clientWidth / 2 - content.clientWidth / 2;
+      const nextButton = component.querySelector( '.arrow-next' );
+      const prevButton = component.querySelector( '.arrow-prev' );
 
-		if ( prevButton ) {
-			prevButton.addEventListener( 'click', function ( event ) {
-				event.preventDefault();
-				x = content.clientWidth / 2 - content.scrollLeft + 0;
-				content.scroll( {
-					left: -x,
-					behavior: 'smooth',
-				} );
-			} );
-		}
+      if ( maxScrollWidth !== 0 ) {
+        component.classList.add( 'has-arrows' );
+      }
 
-		/**
-		 * Mouse move handler.
-		 *
-		 * @param {object} e event object.
-		 */
-		const mousemoveHandler = ( e ) => {
-			const mx2 = e.pageX - content.offsetLeft;
-			if ( mx ) {
-				content.scrollLeft = content.sx + mx - mx2;
-			}
-		};
+      if ( nextButton ) {
+        nextButton.addEventListener( 'click', function ( event ) {
+          event.preventDefault();
+          x = content.clientWidth / 2 + content.scrollLeft + 0;
+          content.scroll( {
+            left: x,
+            behavior: 'smooth',
+          } );
+        } );
+      }
 
-		/**
-		 * Mouse down handler.
-		 *
-		 * @param {object} e event object.
-		 */
-		const mousedownHandler = ( e ) => {
-			content.sx = content.scrollLeft;
-			mx = e.pageX - content.offsetLeft;
-			content.classList.add( 'dragging' );
-		};
+      if ( prevButton ) {
+        prevButton.addEventListener( 'click', function ( event ) {
+          event.preventDefault();
+          x = content.clientWidth / 2 - content.scrollLeft + 0;
+          content.scroll( {
+            left: -x,
+            behavior: 'smooth',
+          } );
+        } );
+      }
 
-		/**
-		 * Scroll handler.
-		 */
-		const scrollHandler = () => {
-			toggleArrows();
-		};
+      /**
+      * Mouse move handler.
+      *
+      * @param {object} e event object.
+      */
+      const mousemoveHandler = ( e ) => {
+        const mx2 = e.pageX - content.offsetLeft;
+        if ( mx ) {
+          content.scrollLeft = content.sx + mx - mx2;
+        }
+      };
 
-		/**
-		 * Toggle arrow handler.
-		 */
-		const toggleArrows = () => {
-			if ( content.scrollLeft > maxScrollWidth - 10 ) {
-				nextButton.classList.add( 'disabled' );
-			} else if ( content.scrollLeft < 10 ) {
-				prevButton.classList.add( 'disabled' );
-			} else {
-				nextButton.classList.remove( 'disabled' );
-				prevButton.classList.remove( 'disabled' );
-			}
-		};
+      /**
+      * Mouse down handler.
+      *
+      * @param {object} e event object.
+      */
+      const mousedownHandler = ( e ) => {
+        content.sx = content.scrollLeft;
+        mx = e.pageX - content.offsetLeft;
+        content.classList.add( 'dragging' );
+      };
 
-		/**
-		 * Mouse up handler.
-		 */
-		const mouseupHandler = () => {
-			mx = 0;
-			content.classList.remove( 'dragging' );
-		};
+      /**
+      * Scroll handler.
+      */
+      const scrollHandler = () => {
+        toggleArrows();
+      };
 
-		content.addEventListener( 'mousemove', mousemoveHandler );
-		content.addEventListener( 'mousedown', mousedownHandler );
-		if ( component.querySelector( CONTROLS_SELECTOR ) !== undefined ) {
-			content.addEventListener( 'scroll', scrollHandler );
-		}
-		content.addEventListener( 'mouseup', mouseupHandler );
-		content.addEventListener( 'mouseleave', mouseupHandler );
-	}
-} );
+      /**
+      * Toggle arrow handler.
+      */
+      const toggleArrows = () => {
+        if ( content.scrollLeft > maxScrollWidth - 10 ) {
+          nextButton.classList.add( 'disabled' );
+        } else if ( content.scrollLeft < 10 ) {
+          prevButton.classList.add( 'disabled' );
+        } else {
+          nextButton.classList.remove( 'disabled' );
+          prevButton.classList.remove( 'disabled' );
+        }
+      };
+
+      /**
+      * Mouse up handler.
+      */
+      const mouseupHandler = () => {
+        mx = 0;
+        content.classList.remove( 'dragging' );
+      };
+
+      content.addEventListener( 'mousemove', mousemoveHandler );
+      content.addEventListener( 'mousedown', mousedownHandler );
+      if ( component.querySelector( CONTROLS_SELECTOR ) !== undefined ) {
+        content.addEventListener( 'scroll', scrollHandler );
+      }
+      content.addEventListener( 'mouseup', mouseupHandler );
+      content.addEventListener( 'mouseleave', mouseupHandler );
+    }
+  });
 </script>
 {% endblock script %}
