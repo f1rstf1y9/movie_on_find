@@ -13,6 +13,9 @@ body {
   background-color: rgb(44, 44, 44);
   color: white;
 }
+img {
+  object-fit: cover;
+}
 .navbar {
   position: fixed;
   top: 0;

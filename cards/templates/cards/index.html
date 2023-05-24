@@ -14,3 +14,13 @@
     <hr>
   {% endfor %}
 {% endblock content %}
+
+{% block script %}
+<script>
+  const back = document.querySelector('#back');
+  back.addEventListener('click',function (event) {
+    event.preventDefault()
+    history.back()
+  });
+</script>
+{% endblock script %}

@@ -254,6 +254,12 @@ button {
 
 {% block script %}
 <script>
+  const back = document.querySelector('#back');
+  back.addEventListener('click',function (event) {
+    event.preventDefault()
+    history.back()
+  });
+  
   document.querySelector(".image-insert-btn").onclick = function() {
     document.getElementById("id_card_image").click();
   };
