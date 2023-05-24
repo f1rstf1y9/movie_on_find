@@ -86,10 +86,10 @@ def signup(request):
     else:
         initial_data = {}
         if request.session.get('user_info'):
-          user_info = request.session.get('user_info')
-          initial_data['kakao_id'] = user_info.get('id', None)
-          initial_data['email'] = user_info['kakao_account'].get('email', None)
-          initial_data['nickname'] = user_info['properties'].get('nickname', None)
+            user_info = request.session.get('user_info')
+            initial_data['kakao_id'] = user_info.get('id', None)
+            initial_data['email'] = user_info['kakao_account'].get('email', None)
+            initial_data['nickname'] = user_info['properties'].get('nickname', None)
         else:
             initial_data['kakao_id'] = '0'
         form = UserCreationForm(initial=initial_data)
@@ -101,7 +101,7 @@ def signup(request):
 @require_http_methods(['GET', 'POST'])
 def update(request):
     if request.method == 'POST':
-        form = UserChangeForm(request.POST,  request.FILES, instance=request.user)
+        form = UserChangeForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
             return redirect('movies:index')

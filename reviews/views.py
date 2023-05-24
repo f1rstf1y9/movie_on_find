@@ -7,26 +7,6 @@ from cards.models import Card
 from django import forms
 from reviews.forms import ReviewForm,CommentForm
 from django.http import JsonResponse
-# Create your views here.
-# @require_safe
-# def index(request):
-#     cards=Card.objects.all()
-#     poster=[]
-#     for i in cards:
-#         m=Movie.objects.get(id=i.movie_id).poster_path
-#         data = {
-#             'pk':i.id,
-#             'user':i.user,
-#             'title':i.title,
-#             'content' :i.content,
-#             'like_users':i.like_users,
-#             'movie':i.movie,
-#             'created_at' :i.created_at, 
-#             'updated_at' :i.updated_at,
-#             'poster_path' :m
-#     }
-#         poster.append(data)
-#     return render(request,'cards/index.html',{'poster':poster})
 
 @login_required
 @require_http_methods(['GET', 'POST'])
@@ -120,9 +100,9 @@ def comments_update(request, review_pk, comment_pk):
     if request.user.is_authenticated:
         comment = Comment.objects.get(pk=comment_pk)  
         if request.user == comment.user:
-          form = CommentForm(request.POST, instance=comment)
-          if form.is_valid():
-              form.save()
+            form = CommentForm(request.POST, instance=comment)
+            if form.is_valid():
+                form.save()
     return redirect('reviews:detail', review_pk)
 
 @require_POST

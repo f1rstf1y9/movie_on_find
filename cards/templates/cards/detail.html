@@ -179,7 +179,7 @@ button {
           </div>
           <div class="movie-info-bottom">
             <p class="movie-title-ko">{{ movie.title }}</p>
-            <p class="movie-title-en">{{ movie.original_title}}</p>
+            <p class="movie-title-en">{{ movie.original_title }}</p>
           </div>
           <div class="ticket-date">
             {{ card.watched_date }}
@@ -188,7 +188,7 @@ button {
             {{ card.content }}
           </div>
           <div class="ticket-people">
-            2명
+            {{ card.watched_people }}명
           </div>
           <div class="ticket-barcode">
             <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">

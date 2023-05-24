@@ -32,7 +32,6 @@
 .profile-info-container {
   text-decoration: none;
 }
-
 .profile-contents-container {
   width: 100%;
   background-color: #f2f2f2;
@@ -144,6 +143,7 @@
   cursor: grab;
   padding: 10px;
   margin: 0;
+  justify-content: start;
   grid-gap: 24px;
   grid-auto-flow: column;
   list-style: none;
@@ -405,8 +405,8 @@
                             <p>{{ card.watched_location }}</p>
                           </div>
                           <div class="movie-info-bottom">
-                            <p class="movie-title-ko">{{ card.movie.original_title }}</p>
-                            <p class="movie-title-en">The Wailing</p>
+                            <p class="movie-title-ko">{{ card.movie.title }}</p>
+                            <p class="movie-title-en">{{ card.movie.original_title }}</p>
                           </div>
                           <div class="ticket-date">
                             {{ card.watched_date }}
@@ -420,12 +420,23 @@
                           <div class="ticket-barcode">
                             <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
                           </div>
-                      </a>
-                    </div>
-                  </li>
-                  {% endfor %}
-                </ul>
-                </div>
+                        </a>
+                      </div>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                {% else %}
+                  <div class="carousel__header">
+                    <p class="carousel__headline lead fw-normal mb-0">최근 등록한 포토티켓</p>
+                  </div>
+                  <div class="carousel__wrapper">
+                    <ul class="carousel__content" style="cursor: default;">
+                      <li class="carousel__item" style="padding-top:50px;">
+                        등록한 포토카드가 없어요ㅠ.ㅠ
+                      </li>
+                    </ul>
+                  </div>
+                {% endif %}
               </div>
               {% comment %} 컬렉션 {% endcomment %}
               <div class="d-flex justify-content-between align-items-center mb-4">

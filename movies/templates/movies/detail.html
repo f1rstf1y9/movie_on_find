@@ -424,10 +424,39 @@ a[data-tooltip][data-placement="top"]::after {
 </div>
 {% endblock content %}
 
+{% comment %} {% for genre_id in resdatas.genre_ids %}
+  {% for data in datas %}
+    {% ifequal genre_id data.id %}
+      {{data.name}}
+    {% endifequal %}
+  {% endfor %}
+{% endfor %} {% endcomment %}
 
+<br>
+{% comment %} <a href="{% url 'movies:index' %}">뒤로가기</a> {% endcomment %}
+
+{% endblock content %}
 
 {% block script %}
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script type="module">
+  const moviePk = location.href.split('/')[4]
+  const options = {
+    method: 'GET',
+    url: `https://api.themoviedb.org/3/movie/${moviePk}?api_key=f0ee4eefc21a888bf1229e2d951df4e6&language=ko`,
+    headers: {
+      accept: 'application/json',
+    }
+  };
+  axios
+    .request(options)
+    .then(function (response) {
+      console.log(response.data.backdrop_path);
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
+</script>
 <script>
   const forms = document.querySelectorAll('.like-forms');
   const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
@@ -458,5 +487,109 @@ a[data-tooltip][data-placement="top"]::after {
     })
   })
 </script>
+<script>
+  window.addEventListener( 'load', () => {
+    const COMPONENT_SELECTOR = '.carousel__wrapper';
+    const CONTROLS_SELECTOR = '.carousel__controls';
+    const CONTENT_SELECTOR = '.carousel__content';
 
+    const components = document.querySelectorAll( COMPONENT_SELECTOR );
+
+    for ( let i = 0; i < components.length; i++ ) {
+      const component = components[ i ];
+      const content = component.querySelector( CONTENT_SELECTOR );
+      let x = 0;
+      let mx = 0;
+      const maxScrollWidth = content.scrollWidth - content.clientWidth / 2 - content.clientWidth / 2;
+      const nextButton = component.querySelector( '.arrow-next' );
+      const prevButton = component.querySelector( '.arrow-prev' );
+
+      if ( maxScrollWidth !== 0 ) {
+        component.classList.add( 'has-arrows' );
+      }
+
+      if ( nextButton ) {
+        nextButton.addEventListener( 'click', function ( event ) {
+          event.preventDefault();
+          x = content.clientWidth / 2 + content.scrollLeft + 0;
+          content.scroll( {
+            left: x,
+            behavior: 'smooth',
+          } );
+        } );
+      }
+
+      if ( prevButton ) {
+        prevButton.addEventListener( 'click', function ( event ) {
+          event.preventDefault();
+          x = content.clientWidth / 2 - content.scrollLeft + 0;
+          content.scroll( {
+            left: -x,
+            behavior: 'smooth',
+          } );
+        } );
+      }
+
+      /**
+      * Mouse move handler.
+      *
+      * @param {object} e event object.
+      */
+      const mousemoveHandler = ( e ) => {
+        const mx2 = e.pageX - content.offsetLeft;
+        if ( mx ) {
+          content.scrollLeft = content.sx + mx - mx2;
+        }
+      };
+
+      /**
+      * Mouse down handler.
+      *
+      * @param {object} e event object.
+      */
+      const mousedownHandler = ( e ) => {
+        content.sx = content.scrollLeft;
+        mx = e.pageX - content.offsetLeft;
+        content.classList.add( 'dragging' );
+      };
+
+      /**
+      * Scroll handler.
+      */
+      const scrollHandler = () => {
+        toggleArrows();
+      };
+
+      /**
+      * Toggle arrow handler.
+      */
+      const toggleArrows = () => {
+        if ( content.scrollLeft > maxScrollWidth - 10 ) {
+          nextButton.classList.add( 'disabled' );
+        } else if ( content.scrollLeft < 10 ) {
+          prevButton.classList.add( 'disabled' );
+        } else {
+          nextButton.classList.remove( 'disabled' );
+          prevButton.classList.remove( 'disabled' );
+        }
+      };
+
+      /**
+      * Mouse up handler.
+      */
+      const mouseupHandler = () => {
+        mx = 0;
+        content.classList.remove( 'dragging' );
+      };
+
+      content.addEventListener( 'mousemove', mousemoveHandler );
+      content.addEventListener( 'mousedown', mousedownHandler );
+      if ( component.querySelector( CONTROLS_SELECTOR ) !== undefined ) {
+        content.addEventListener( 'scroll', scrollHandler );
+      }
+      content.addEventListener( 'mouseup', mouseupHandler );
+      content.addEventListener( 'mouseleave', mouseupHandler );
+    }
+  } );
+</script>
 {% endblock script %}
