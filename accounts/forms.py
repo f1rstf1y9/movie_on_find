@@ -32,14 +32,21 @@ class UserCreationForm(forms.ModelForm):
         return user
 
 class UserChangeForm(forms.ModelForm):
-    password = ReadOnlyPasswordHashField()
     email = forms.CharField(disabled=True)
+
     class Meta:
         model = User
         fields = ('email', 'profile_image', 'nickname', 'like_genres',)
         widgets={
-            'nickname': forms.Textarea(attrs={"rows":"1", "cols":"6"}),
+            'nickname': forms.Textarea(attrs={"rows":"1"}),
+            'like_genres' : forms.CheckboxSelectMultiple()
         }
 
-    def clean_password(self):
-        return self.initial["password"]
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.profile_image = self.cleaned_data["profile_image"]
+
+        if commit:
+            user.save()
+        user.like_genres.set(self.cleaned_data["like_genres"])
+        return user

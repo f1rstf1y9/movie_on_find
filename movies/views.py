@@ -25,7 +25,9 @@ from django.db.models.functions import Cast
 
 @register.filter(name='split')
 def split(value, key): 
-    return value.split(key)[0]
+    if value:
+        return value.split(key)[0]
+    return ''
 
 my_id='f0ee4eefc21a888bf1229e2d951df4e6'
 def get_top_rated_data():
@@ -115,10 +117,11 @@ def index(request):
             for j in i.genres.all().values():
                 D.append(j['name'])
             a=set.intersection(set(D),rec)
-            if len(a)>=len(D)-1 and len(a)!=0:
+            if len(a)>=2 and len(a)!=0:
                 L.append(i)
     else:
         L = []
+    L.sort(key=lambda x: x.vote_average, reverse=True)
     collections=Card_collection.objects.all().order_by('updated_at')[:10]
     cards=Card.objects.all().order_by('created_at')[:10]
     return render(request,'movies/index.html',{'resdatas':serialized_data,'datas':genre,'collections':collections,'cards':cards,'rec':L})
@@ -142,10 +145,10 @@ def my_reco(request,num):
         L = []
     A=[]
     L.sort(key=lambda x: x.vote_average, reverse=True)
-    for i in range(1,len(L)//20+2):
+    for i in range(1,len(L)//6+2):
         A.append(i)
     genre=Genre.objects.values()
-    return render(request,'movies/myreco.html',{'resdatas':L[20*(num-1):20*num],'datas':genre,'total':A})
+    return render(request,'movies/myreco.html',{'resdatas':L[6*(num-1):6*num],'datas':genre,'total':A})
 
 @require_safe
 @login_required

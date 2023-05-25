@@ -401,7 +401,7 @@
                   {% else %}
                   <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
                     style="z-index: 1;">
-                    프로필 수정
+                    <a href="{% url 'accounts:update' %}">프로필 수정</a>
                   </button>
                   {% endif %}
                 </div>
@@ -467,7 +467,7 @@
                 <div class="carousel__wrapper">
                   {% if person.card_set.all|length > 0 %}
                   <div class="carousel__header">
-                      <p class="carousel__headline lead fw-normal mb-0 section-title">{{person.nickname}}님의 포토티켓</p>
+                      <p class="carousel__headline lead fw-bold mb-0 section-title">{{person.nickname}}님의 포토티켓</p>
                   </div>
                   <div class="carousel__controls">
                     <button class="carousel__arrow disabled arrow-prev"></button>

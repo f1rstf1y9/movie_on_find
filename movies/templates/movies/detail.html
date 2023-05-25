@@ -523,7 +523,6 @@ a[data-tooltip][data-placement="top"]::after {
               </div>
               <span>봤어요</span>
             </button>
-
           </form>
           <form class="watching-forms" data-movie-id="{{ resdatas.id }}">
             {% csrf_token %}
@@ -538,7 +537,7 @@ a[data-tooltip][data-placement="top"]::after {
           </form>
           <form class="interest-forms" data-movie-id="{{ resdatas.id }}">
             {% csrf_token %}
-            <button class="icon-btn" id="interest-{{ resdatas.id }}" {% if request.user.id in resdatas.watching %} style="color:#ffc700;" {% endif %}>
+            <button class="icon-btn" id="interest-{{ resdatas.id }}" {% if request.user.id in resdatas.interest %} style="color:#ffc700;" {% endif %}>
               <div class="icon">
                 <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Check"> <path id="Vector" d="M6 12L10.2426 16.2426L18.727 7.75732" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
               </div>
