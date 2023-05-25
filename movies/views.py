@@ -254,14 +254,14 @@ def genre_sort(request,genre_pk,n,m):
         A.append(i)
     genre=Genre.objects.values()
     if m==1:
-        serializer=MovieListSerializer(movie.order_by('-vote_average'),many=True)
+        serializer=MovieListSerializer(movie.order_by('-vote_average')[5*(n-1):5*n],many=True)
     elif m==2:
-        serializer=MovieListSerializer(movie.order_by(Cast('popularity', FloatField()).desc()),many=True)
+        serializer=MovieListSerializer(movie.order_by(Cast('popularity', FloatField()).desc())[5*(n-1):5*n],many=True)
     elif m==3:
-        serializer=MovieListSerializer(movie.order_by('-release_date'),many=True)
+        serializer=MovieListSerializer(movie.order_by('-release_date')[5*(n-1):5*n],many=True)
     serialized_data = serializer.data
     # print(serialized_data)
-    return render(request,'movies/sort.html',{'resdatas':serialized_data[5*(n-1):5*n],'datas':genre,'total':A,'pk':n,'genre_id':genre_pk,'m':m})
+    return render(request,'movies/sort.html',{'resdatas':serialized_data,'datas':genre,'total':A,'pk':n,'genre_id':genre_pk,'m':m})
 
 
 @api_view(['GET'])
