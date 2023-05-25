@@ -1,10 +1,6 @@
 {% extends 'base.html' %}
 
 {% block style %}
-.container {
-  max-width: 700px;
-  margin: 75px auto;
-}
 li {
   list-style: none;
   margin: 10px;
@@ -13,12 +9,6 @@ button {
   background: none;
   border: none;
   outline: 0;
-}
-.header-inner {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  font-weight: 700;
 }
 .menu-area {
   width: 100%;
@@ -91,66 +81,68 @@ button {
       <div></div>
     </div>
   </div>
-  <nav class="menu-area">
-    <ul class="menu-list">
-      <li class="menu-item follower">
-        <a class="menu-button" href="{% url 'accounts:followers' person.email %}">
-          <span class="count">팔로워</span>
-        </a>
-      </li>
-      <li class="menu-item following active">
-        <a class="menu-button" href="#">
-          <span class="count">팔로잉</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
-  <section class="user-list-section">
-    <ul>
-      <span>
-        {% for following in followings_list %}
-        <li>
-          <div class="user-list-item">
-            <div class="image-wrap" style="border: none;">
-              <a href="{% url 'accounts:profile' following.email %}" class="">
-                <img src="{{ following.profile_image.url }}" alt="{{ following.profile_image }}">
-              </a>
-            </div>
-            <div class="info-wrap">
-              <a href="{% url 'accounts:profile' following.email %}" class="">
-                <p class="name">{{following.nickname}}</p>
-              </a>
-              <p class="follow-stats">
-                팔로워 {{following.followers.all|length}} · 팔로잉 {{following.followings.all|length}}
-              </p>
-            </div>
-            {% if following != user %}
-            <form action="{% url 'accounts:list_follow' person.email following.pk 2%}" method="POST" class="button-wrap">
-              {% csrf_token %}
-              <div >
-                {% if following in user.followings.all %}
-                <button class="btn btn-primary">
-                  <span class="button-container">
-                    <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" class=""><path fill-rule="evenodd" clip-rule="evenodd" d="M19.102 6.425a1.47 1.47 0 01.039 2.14l-8.526 8.473a1.611 1.611 0 01-1.18.461 1.603 1.603 0 01-1.151-.527L4.63 12.88a1.471 1.471 0 01.17-2.134 1.623 1.623 0 012.224.164L9.55 13.74l7.322-7.277a1.624 1.624 0 012.23-.037z" fill="#efefef"></path></svg>
-                  </span>
-                </button>
-                {% else %}
-                <button class="btn btn-secondary">
-                  <span class="button-container">
-                    팔로우
-                  </span>
-                </button>
-                {% endif %}
-              </div>
-            </form>
-            {% endif %}
-          </div>
+  <div class="container-area">
+    <nav class="menu-area">
+      <ul class="menu-list">
+        <li class="menu-item follower">
+          <a class="menu-button" href="{% url 'accounts:followers' person.email %}">
+            <span class="count">팔로워</span>
+          </a>
         </li>
-        {% empty %}
-        <li>아직 {{person.nickname}}님이 팔로우하고 있는 사용자가 없습니다.</li>
-        {% endfor %}
-      </span>
-    </ul>
-  </section>
+        <li class="menu-item following active">
+          <a class="menu-button" href="#">
+            <span class="count">팔로잉</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <section class="user-list-section">
+      <ul>
+        <span>
+          {% for following in followings_list %}
+          <li>
+            <div class="user-list-item">
+              <div class="image-wrap" style="border: none;">
+                <a href="{% url 'accounts:profile' following.email %}" class="">
+                  <img src="{{ following.profile_image.url }}" alt="{{ following.profile_image }}">
+                </a>
+              </div>
+              <div class="info-wrap">
+                <a href="{% url 'accounts:profile' following.email %}" class="">
+                  <p class="name">{{following.nickname}}</p>
+                </a>
+                <p class="follow-stats">
+                  팔로워 {{following.followers.all|length}} · 팔로잉 {{following.followings.all|length}}
+                </p>
+              </div>
+              {% if following != user %}
+              <form action="{% url 'accounts:list_follow' person.email following.pk 2%}" method="POST" class="button-wrap">
+                {% csrf_token %}
+                <div >
+                  {% if following in user.followings.all %}
+                  <button class="btn btn-primary">
+                    <span class="button-container">
+                      <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" class=""><path fill-rule="evenodd" clip-rule="evenodd" d="M19.102 6.425a1.47 1.47 0 01.039 2.14l-8.526 8.473a1.611 1.611 0 01-1.18.461 1.603 1.603 0 01-1.151-.527L4.63 12.88a1.471 1.471 0 01.17-2.134 1.623 1.623 0 012.224.164L9.55 13.74l7.322-7.277a1.624 1.624 0 012.23-.037z" fill="#efefef"></path></svg>
+                    </span>
+                  </button>
+                  {% else %}
+                  <button class="btn btn-secondary">
+                    <span class="button-container">
+                      팔로우
+                    </span>
+                  </button>
+                  {% endif %}
+                </div>
+              </form>
+              {% endif %}
+            </div>
+          </li>
+          {% empty %}
+          <li>아직 {{person.nickname}}님이 팔로우하고 있는 사용자가 없습니다.</li>
+          {% endfor %}
+        </span>
+      </ul>
+    </section>
+  </div>
 {% endblock content %}
 

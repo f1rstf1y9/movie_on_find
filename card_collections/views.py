@@ -7,6 +7,7 @@ from cards.models import Card
 from django import forms
 from card_collections.forms import CollectionForm
 from django.http import JsonResponse
+import random
 # Create your views here.
 @require_safe
 def index(request):
@@ -24,6 +25,7 @@ def create(request):
             if form.is_valid():
                 card_collections = form.save(commit=False)
                 card_collections.user = request.user
+                card_collections.collection_color = "#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])
                 card_collections.save()
                 form.save_m2m()
                 return redirect('card_collections:detail', card_collections.pk)
@@ -52,6 +54,7 @@ def delete(request, pk):
 @require_http_methods(['GET', 'POST'])
 def update(request, pk):
     card_collection = Card_collection.objects.get(pk=pk)
+    my_cards=Card.objects.filter(user=request.user)
     if request.user == card_collection.user:
         if request.method == 'POST':
             form = CollectionForm(request.POST,user=request.user,instance=card_collection)
@@ -62,10 +65,10 @@ def update(request, pk):
             form = CollectionForm(user=request.user,instance=card_collection)
     else:
         return redirect('card_collections:index')
-    print(form)
     context = {
         'form': form,
         'card_collection': card_collection,
+        'my_cards': my_cards,
     }
     return render(request, 'card_collections/update.html', context)
 

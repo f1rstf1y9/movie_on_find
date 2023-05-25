@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block style %}
-.card {
+.main-card {
   border: none;
   box-shadow: 0px 0px 80px -18px rgba(255, 183, 0, 0.273);
 }
@@ -32,7 +32,6 @@
 .profile-info-container {
   text-decoration: none;
 }
-
 .profile-contents-container {
   width: 100%;
   background-color: #f2f2f2;
@@ -144,6 +143,7 @@
   cursor: grab;
   padding: 10px;
   margin: 0;
+  justify-content: start;
   grid-gap: 24px;
   grid-auto-flow: column;
   list-style: none;
@@ -155,7 +155,7 @@
 .carousel .carousel__item .carousel__description {
   width: 100%;
 }
-.carousel .carousel__item a {
+.carousel .carousel__item .item-front, .carousel .carousel__item .item-back {
   display: flex;
   justify-content: center;
   justify-content: flex-start;
@@ -179,7 +179,7 @@
   -moz-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.35);
 }
 
-.item-inner {
+.photo-ticket-inner {
   position: relative;
   width: 100%;
   height: 300px;
@@ -187,7 +187,7 @@
   transition: transform 0.8s;
 }
 
-.carousel__item:hover .item-inner {
+.carousel__item:hover .photo-ticket-inner {
   transform: rotateY(180deg);
 }
 .item-front, .item-back {
@@ -279,16 +279,99 @@
 .carousel .carousel__arrow.disabled {
   background: transparent;
 }
+
+/**/
+.o-wrapper {
+  margin: auto;
+  margin-top: 36px;
+  overflow: hidden;
+  padding-bottom: 50px;
+}
+
+.c-slider {
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+  width: 770px;
+}
+
+.c-slide {
+  font-weight: normal;
+  margin-right: 20px;
+  background: #FFFFFF;
+  border-radius: 3px;
+  border-left: 10px solid #FCEDB7;
+  padding: 20px; 
+  box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.15);
+  
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  overflow: hidden;
+  width: 180px;
+  height: 200px;
+}
+
+.c-slide__title {
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.c-slide__content {
+  width: 100%;
+}
+
+.c-slide__actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.c-slide__image-wrapper {
+  margin: 0;
+  padding: 0;
+  border-radius: 3px;
+  overflow: hidden;
+  height: 0;
+  padding-top: 80%;
+  position: relative;
+}
+
+.c-slide__image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  max-width: 100%;
+  min-height: 100%;
+  margin: auto;
+  padding: 0;
+  transform: translate3d(-50%, -50%, 0);
+}
+
+.c-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: bold;
+}
 {% endblock style %}
 
 
 
 {% block content %}
   <section class="h-100">
-    <div class="container py-5 h-100">
+    <div class="container py-5 h-100 mt-5">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col col-lg-9 col-xl-7">
-          <div class="card">
+          <div class="card main-card">
             <div class="card-header rounded-top text-white d-flex flex-row">
               <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px; height:150px;">
                 <img src="{{ person.profile_image.url }}" alt="{{ person.profile_image }}"
@@ -354,15 +437,15 @@
 
               <div class="profile-contents-container">
                 <a href="{% url 'accounts:interest' person.email %}" class="content-wrap" id="interestLabel">
-                  <span class="content-count">25</span>
+                  <span class="content-count">{{person.interest_movies.all|length}}</span>
                   <span class="content-label">보고싶어요</span>
                 </a>
                 <a href="{% url 'accounts:watching' person.email %}" class="content-wrap" id="watchingLabel">
-                  <span class="content-count">0</span>
+                  <span class="content-count">{{person.watching_movies.all|length}}</span>
                   <span class="content-label">보는 중</span>
                 </a>
                 <a href="{% url 'accounts:watched' person.email %}" class="content-wrap" id="watchedLabel">
-                  <span class="content-count">612</span>
+                  <span class="content-count">{{person.watched_movies.all|length}}</span>
                   <span class="content-label">봤어요</span>
                 </a>
               </div>
@@ -378,200 +461,100 @@
                   </div>
                 </a>
               </div>
-
-              <div class="carousel">
+              
               {% comment %} 포토카드 {% endcomment %}
-              <div class="carousel__wrapper">
-                <div class="carousel__header">
-                    <p class="carousel__headline lead fw-normal mb-0">최근 등록한 포토티켓</p>
-                    <div>
-                      <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
-                    </div>
-                </div>
-                <div class="carousel__controls">
-                  <button class="carousel__arrow disabled arrow-prev"></button>
-                  <button class="carousel__arrow arrow-next"></button>
-                </div>
-                <ul class="carousel__content">
-                  <li class="carousel__item">
-                    <div class="item-inner">
-                      <a class="item-front">
-                        <img class="carousel__item__image" src="https://picsum.photos/id/21/300/300" alt="" />
-                      </a>
-                      <a class="item-back">
+              <div class="carousel mx-md-2">
+                <div class="carousel__wrapper">
+                  {% if person.card_set.all|length > 0 %}
+                  <div class="carousel__header">
+                      <p class="carousel__headline lead fw-normal mb-0 section-title">{{person.nickname}}님의 포토티켓</p>
+                  </div>
+                  <div class="carousel__controls">
+                    <button class="carousel__arrow disabled arrow-prev"></button>
+                    <button class="carousel__arrow arrow-next"></button>
+                  </div>
+                  <ul class="carousel__content">
+                    {% for card in person.card_set.all %}
+                    <li class="carousel__item" onclick="moveTo({{card.pk}})">
+                      <div class="item-inner photo-ticket-inner">
+                        <a class="item-front" href="{% url 'cards:detail' card.pk %}">
+                          <img class="carousel__item__image" src="{{ card.card_image.url }}" alt="{{ card.card_image }}" />
+                        </a>
+                        <a class="item-back" href="{% url 'cards:detail' card.pk %}">
                           <div class="movie-info-top">
-                            <p>2D</p>
-                            <p>15세이상관람가</p>
+                            <p>{{ card.movie_type }}</p>
+                            <p>{{ card.watched_location }}</p>
                           </div>
                           <div class="movie-info-bottom">
-                            <p class="movie-title-ko">곡성</p>
-                            <p class="movie-title-en">The Wailing</p>
+                            <p class="movie-title-ko">{{ card.movie.title }}</p>
+                            <p class="movie-title-en">{{ card.movie.original_title }}</p>
                           </div>
                           <div class="ticket-date">
-                            2023.05.22(월)
+                            {{ card.watched_date }}
                           </div>
                           <div class="ticket-comment">
-                            짱재밌었다
+                            {{ card.content }}
                           </div>
                           <div class="ticket-people">
-                            2명
+                            {{ card.watched_people }}명
                           </div>
                           <div class="ticket-barcode">
                             <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
                           </div>
-                          {% comment %} <div class="ticket-logo">
-                            MOVIEONFIND
-                          </div> {% endcomment %}
-                      </a>
+                        </a>
+                      </div>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                  {% else %}
+                    <div class="carousel__header">
+                      <p class="carousel__headline lead fw-normal mb-0 section-title">{{person.nickname}}님의 포토티켓</p>
                     </div>
-                  </li>
-                  <li class="carousel__item">
-                    <div class="item-inner">
-                      <a class="item-front">
-                        <img class="carousel__item__image" src="https://picsum.photos/id/21/300/300" alt="" />
-                      </a>
-                      <a class="item-back">
-                          <div class="movie-info-top">
-                            <p>2D</p>
-                            <p>15세이상관람가</p>
-                          </div>
-                          <div class="movie-info-bottom">
-                            <p class="movie-title-ko">곡성</p>
-                            <p class="movie-title-en">The Wailing</p>
-                          </div>
-                          <div class="ticket-date">
-                            2023.05.22(월)
-                          </div>
-                          <div class="ticket-comment">
-                            짱재밌었다
-                          </div>
-                          <div class="ticket-people">
-                            2명
-                          </div>
-                          <div class="ticket-barcode">
-                            <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
-                          </div>
-                          {% comment %} <div class="ticket-logo">
-                            MOVIEONFIND
-                          </div> {% endcomment %}
-                      </a>
+                    <div class="carousel__wrapper">
+                      <ul class="carousel__content" style="cursor: default;">
+                        <p style="padding-top:50px;">
+                          등록한 포토티켓이 없어요ㅠ.ㅠ
+                        </p>
+                      </ul>
                     </div>
-                  </li>
-                  <li class="carousel__item">
-                    <div class="item-inner">
-                      <a class="item-front">
-                        <img class="carousel__item__image" src="https://picsum.photos/id/21/300/300" alt="" />
-                      </a>
-                      <a class="item-back">
-                          <div class="movie-info-top">
-                            <p>2D</p>
-                            <p>15세이상관람가</p>
-                          </div>
-                          <div class="movie-info-bottom">
-                            <p class="movie-title-ko">곡성</p>
-                            <p class="movie-title-en">The Wailing</p>
-                          </div>
-                          <div class="ticket-date">
-                            2023.05.22(월)
-                          </div>
-                          <div class="ticket-comment">
-                            짱재밌었다
-                          </div>
-                          <div class="ticket-people">
-                            2명
-                          </div>
-                          <div class="ticket-barcode">
-                            <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
-                          </div>
-                          {% comment %} <div class="ticket-logo">
-                            MOVIEONFIND
-                          </div> {% endcomment %}
-                      </a>
-                    </div>
-                  </li>
-                  <li class="carousel__item">
-                    <div class="item-inner">
-                      <a class="item-front">
-                        <img class="carousel__item__image" src="https://picsum.photos/id/21/300/300" alt="" />
-                      </a>
-                      <a class="item-back">
-                          <div class="movie-info-top">
-                            <p>2D</p>
-                            <p>15세이상관람가</p>
-                          </div>
-                          <div class="movie-info-bottom">
-                            <p class="movie-title-ko">곡성</p>
-                            <p class="movie-title-en">The Wailing</p>
-                          </div>
-                          <div class="ticket-date">
-                            2023.05.22(월)
-                          </div>
-                          <div class="ticket-comment">
-                            짱재밌었다
-                          </div>
-                          <div class="ticket-people">
-                            2명
-                          </div>
-                          <div class="ticket-barcode">
-                            <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
-                          </div>
-                          {% comment %} <div class="ticket-logo">
-                            MOVIEONFIND
-                          </div> {% endcomment %}
-                      </a>
-                    </div>
-                  </li>
-                  <li class="carousel__item">
-                    <div class="item-inner">
-                      <a class="item-front">
-                        <img class="carousel__item__image" src="https://picsum.photos/id/21/300/300" alt="" />
-                      </a>
-                      <a class="item-back">
-                          <div class="movie-info-top">
-                            <p>2D</p>
-                            <p>15세이상관람가</p>
-                          </div>
-                          <div class="movie-info-bottom">
-                            <p class="movie-title-ko">곡성</p>
-                            <p class="movie-title-en">The Wailing</p>
-                          </div>
-                          <div class="ticket-date">
-                            2023.05.22(월)
-                          </div>
-                          <div class="ticket-comment">
-                            짱재밌었다
-                          </div>
-                          <div class="ticket-people">
-                            2명
-                          </div>
-                          <div class="ticket-barcode">
-                            <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
-                          </div>
-                          {% comment %} <div class="ticket-logo">
-                            MOVIEONFIND
-                          </div> {% endcomment %}
-                      </a>
-                    </div>
-                  </li>
-                </ul>
+                  {% endif %}
                 </div>
               </div>
+
               {% comment %} 컬렉션 {% endcomment %}
-              <div class="d-flex justify-content-between align-items-center mb-4">
-                <p class="lead fw-normal mb-0">{{ person.nickname }}님의 포토티켓북</p>
-                <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
-              </div>
-              <div class="row g-2">
-                <div class="col mb-2">
-                  <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(112).webp"
-                    alt="image 1" class="w-100 rounded-3">
+              <div class="o-wrapper mx-md-2">
+                <header class="c-header">
+                  <h2 class="section-title">{{person.nickname}}님의 포토티켓북</h2>
+                </header>
+                
+                <div class="c-slider">
+                  {% for collection in person.card_collection_set.all %}
+                  <div class="c-slide c-slide--{{collection.pk}}" style="border-left: 10px solid {{collection.collection_color}};" onclick="moveToCollection({{collection.pk}})">
+                    <div class="c-slide__content">
+                      <figure class="c-slide__image-wrapper">
+                        {% with collection.cards.all|first as first_card %}{{ first_card.movie.poster_path }}{% endwith %}
+                        {{collection.cards.all.0}}
+                        <img class="c-slide__image" src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/{{collection.cards.all.0.movie.poster_path}}" alt="">
+                      </figure>
+                      <h3 class="c-slide__title">{{ collection.title }}</h3>
+                    </div>
+                    
+                    <div class="c-slide__actions">
+                      <div class="c-slide__heart">
+                        {% comment %} <svg width="23" height="20" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M11.991 18.802a.668.668 0 0 1-.491.2.668.668 0 0 1-.491-.2l-6.964-6.719a3.684 3.684 0 0 1-.307-.29c-.13-.134-.337-.378-.62-.731a9.876 9.876 0 0 1-.759-1.088 6.76 6.76 0 0 1-.597-1.35 4.889 4.889 0 0 1-.262-1.54c0-1.638.472-2.917 1.417-3.84.945-.923 2.251-1.384 3.918-1.384.461 0 .932.08 1.412.24.48.16.926.376 1.339.647.413.272.768.527 1.066.765.297.238.58.49.848.759.268-.268.55-.521.848-.76a14.28 14.28 0 0 1 1.066-.764c.413-.271.86-.487 1.34-.647.48-.16.95-.24 1.411-.24 1.667 0 2.973.461 3.918 1.384.945.923 1.417 2.202 1.417 3.84 0 1.644-.852 3.318-2.556 5.022l-6.953 6.696z" stroke="#000" stroke-width="2" fill="none" fill-rule="evenodd"/>
+                        </svg> {% endcomment %}
+                      </div>
+                      <a href="{% url 'card_collections:detail' collection.pk %}" class="c-slide__link">
+                        <svg width="11" height="18" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M10.328 9.036a.543.543 0 0 1 .172.395c0 .15-.057.281-.172.396L2.324  17.83a.543.543 0 0 1-.395.172.543.543 0 0 1-.396-.172l-.858-.859a.543.543 0 0 1-.172-.395c0-.149.057-.28.172-.395l6.75-6.75L.675 2.68a.543.543 0 0 1-.172-.395c0-.15.057-.28.172-.395l.858-.86A.543.543 0 0 1 1.93.86c.148 0 .28.057.395.172l8.004 8.004z" fill="#000" fill-rule="evenodd"/>
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+                  {% endfor %}
                 </div>
-                <div class="col mb-2">
-                  <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(107).webp"
-                    alt="image 1" class="w-100 rounded-3">
-                </div>
               </div>
-            </div>
           </div>
         </div>
       </div>
@@ -582,108 +565,225 @@
 
 {% block script %}
 <script>
-window.addEventListener( 'load', () => {
-	const COMPONENT_SELECTOR = '.carousel__wrapper';
-	const CONTROLS_SELECTOR = '.carousel__controls';
-  const CONTENT_SELECTOR = '.carousel__content';
+  function moveTo(cardPk) {
+    window.location.href = `/cards/${cardPk}`;
+  }
+  function moveToCollection(collectionPk) {
+    window.location.href = `/card_collections/${collectionPk}`;
+  }
 
-	const components = document.querySelectorAll( COMPONENT_SELECTOR );
+  window.addEventListener( 'load', () => {
+    const COMPONENT_SELECTOR = '.carousel__wrapper';
+    const CONTROLS_SELECTOR = '.carousel__controls';
+    const CONTENT_SELECTOR = '.carousel__content';
 
-	for ( let i = 0; i < components.length; i++ ) {
-		const component = components[ i ];
-		const content = component.querySelector( CONTENT_SELECTOR );
-		let x = 0;
-		let mx = 0;
-		const maxScrollWidth = content.scrollWidth - content.clientWidth / 2 - content.clientWidth / 2;
-		const nextButton = component.querySelector( '.arrow-next' );
-		const prevButton = component.querySelector( '.arrow-prev' );
+    const components = document.querySelectorAll( COMPONENT_SELECTOR );
 
-		if ( maxScrollWidth !== 0 ) {
-			component.classList.add( 'has-arrows' );
-		}
+    for ( let i = 0; i < components.length; i++ ) {
+      const component = components[ i ];
+      const content = component.querySelector( CONTENT_SELECTOR );
+      let x = 0;
+      let mx = 0;
+      const maxScrollWidth = content.scrollWidth - content.clientWidth / 2 - content.clientWidth / 2;
+      const nextButton = component.querySelector( '.arrow-next' );
+      const prevButton = component.querySelector( '.arrow-prev' );
 
-		if ( nextButton ) {
-			nextButton.addEventListener( 'click', function ( event ) {
-				event.preventDefault();
-				x = content.clientWidth / 2 + content.scrollLeft + 0;
-				content.scroll( {
-					left: x,
-					behavior: 'smooth',
-				} );
-			} );
-		}
+      if ( maxScrollWidth !== 0 ) {
+        component.classList.add( 'has-arrows' );
+      }
 
-		if ( prevButton ) {
-			prevButton.addEventListener( 'click', function ( event ) {
-				event.preventDefault();
-				x = content.clientWidth / 2 - content.scrollLeft + 0;
-				content.scroll( {
-					left: -x,
-					behavior: 'smooth',
-				} );
-			} );
-		}
+      if ( nextButton ) {
+        nextButton.addEventListener( 'click', function ( event ) {
+          event.preventDefault();
+          x = content.clientWidth / 2 + content.scrollLeft + 0;
+          content.scroll( {
+            left: x,
+            behavior: 'smooth',
+          } );
+        } );
+      }
 
-		/**
-		 * Mouse move handler.
-		 *
-		 * @param {object} e event object.
-		 */
-		const mousemoveHandler = ( e ) => {
-			const mx2 = e.pageX - content.offsetLeft;
-			if ( mx ) {
-				content.scrollLeft = content.sx + mx - mx2;
-			}
-		};
+      if ( prevButton ) {
+        prevButton.addEventListener( 'click', function ( event ) {
+          event.preventDefault();
+          x = content.clientWidth / 2 - content.scrollLeft + 0;
+          content.scroll( {
+            left: -x,
+            behavior: 'smooth',
+          } );
+        } );
+      }
 
-		/**
-		 * Mouse down handler.
-		 *
-		 * @param {object} e event object.
-		 */
-		const mousedownHandler = ( e ) => {
-			content.sx = content.scrollLeft;
-			mx = e.pageX - content.offsetLeft;
-			content.classList.add( 'dragging' );
-		};
+      /**
+      * Mouse move handler.
+      *
+      * @param {object} e event object.
+      */
+      const mousemoveHandler = ( e ) => {
+        const mx2 = e.pageX - content.offsetLeft;
+        if ( mx ) {
+          content.scrollLeft = content.sx + mx - mx2;
+        }
+      };
 
-		/**
-		 * Scroll handler.
-		 */
-		const scrollHandler = () => {
-			toggleArrows();
-		};
+      /**
+      * Mouse down handler.
+      *
+      * @param {object} e event object.
+      */
+      const mousedownHandler = ( e ) => {
+        content.sx = content.scrollLeft;
+        mx = e.pageX - content.offsetLeft;
+        content.classList.add( 'dragging' );
+      };
 
-		/**
-		 * Toggle arrow handler.
-		 */
-		const toggleArrows = () => {
-			if ( content.scrollLeft > maxScrollWidth - 10 ) {
-				nextButton.classList.add( 'disabled' );
-			} else if ( content.scrollLeft < 10 ) {
-				prevButton.classList.add( 'disabled' );
-			} else {
-				nextButton.classList.remove( 'disabled' );
-				prevButton.classList.remove( 'disabled' );
-			}
-		};
+      /**
+      * Scroll handler.
+      */
+      const scrollHandler = () => {
+        toggleArrows();
+      };
 
-		/**
-		 * Mouse up handler.
-		 */
-		const mouseupHandler = () => {
-			mx = 0;
-			content.classList.remove( 'dragging' );
-		};
+      /**
+      * Toggle arrow handler.
+      */
+      const toggleArrows = () => {
+        if ( content.scrollLeft > maxScrollWidth - 10 ) {
+          nextButton.classList.add( 'disabled' );
+        } else if ( content.scrollLeft < 10 ) {
+          prevButton.classList.add( 'disabled' );
+        } else {
+          nextButton.classList.remove( 'disabled' );
+          prevButton.classList.remove( 'disabled' );
+        }
+      };
 
-		content.addEventListener( 'mousemove', mousemoveHandler );
-		content.addEventListener( 'mousedown', mousedownHandler );
-		if ( component.querySelector( CONTROLS_SELECTOR ) !== undefined ) {
-			content.addEventListener( 'scroll', scrollHandler );
-		}
-		content.addEventListener( 'mouseup', mouseupHandler );
-		content.addEventListener( 'mouseleave', mouseupHandler );
-	}
-} );
+      /**
+      * Mouse up handler.
+      */
+      const mouseupHandler = () => {
+        mx = 0;
+        content.classList.remove( 'dragging' );
+      };
+
+      content.addEventListener( 'mousemove', mousemoveHandler );
+      content.addEventListener( 'mousedown', mousedownHandler );
+      if ( component.querySelector( CONTROLS_SELECTOR ) !== undefined ) {
+        content.addEventListener( 'scroll', scrollHandler );
+      }
+      content.addEventListener( 'mouseup', mouseupHandler );
+      content.addEventListener( 'mouseleave', mouseupHandler );
+    }
+  });
+
+  const slider = document.getElementsByClassName('c-slider')[0];
+  const timeline = new TimelineLite();
+
+  let canMove = false;
+  let touchDown = 0;
+  let prevX = 0;
+  let slides = document.getElementsByClassName('c-slide');
+  const slideWidth = slides[0].offsetWidth + 20;
+
+
+  const init = () => {
+    slider.addEventListener('mousedown', handleMouse);
+    slider.addEventListener('mouseup', handleMouse);
+    slider.addEventListener('mousemove', handleMove);
+    
+    slider.addEventListener('touchstart', handleTouch);
+    slider.addEventListener('touchmove', handleTouchMove);
+  };
+
+  /* Mouse handlers */
+  const handleMouse = e => {
+    if (e.type === 'mouseup') {
+      canMove = false;
+    } else {
+      canMove = true;
+    }
+  };
+
+  const handleMove = e => {
+    if (e.pageX < prevX && canMove) {
+      /* to left */
+      handleSwipeLeft();
+      canMove = false;
+    } else if (e.pageX > prevX && canMove) {
+      /* to right */
+      handleSwipeRight();
+      canMove = false;
+    }
+
+    prevX = e.pageX;
+  };
+
+  /* Touch handlers */
+  const handleTouch = e => {
+    touchDown = e.touches[0].clientX
+  }
+
+  const handleTouchMove = e => {
+    if (!touchDown) {
+      return
+    }
+
+    const touchUp = e.touches[0].clientX
+    const touchDiff = touchDown - touchUp
+
+    if (touchDiff > 0) {
+      handleSwipeLeft();
+    } else {
+      handleSwipeRight();
+    }
+
+    touchDown = null
+  };
+
+  /* Swipe handlers */
+  const handleSwipeLeft = () => {  
+    timeline.fromTo(slider, 1, 
+      {
+        x: '0px'
+      },
+      {
+        x: `-${slideWidth}px`,
+        ease: Power4.easeOut
+      }
+    );
+    
+    timeline.to(slider, 0.001, 
+      {
+        x: '0px',
+        onComplete: () => {
+          slider.appendChild(slides[0]);
+          slides = document.getElementsByClassName('c-slide');
+        }
+      }
+    );
+  };
+
+  const handleSwipeRight = () => {  
+    timeline.to(slider, 0.001, 
+      {
+        x: `-${slideWidth}px`,
+        onComplete: () => {
+          const first = slides[0];
+          const last = slides[slides.length - 1];
+          slider.insertBefore(last, first);
+          slides = document.getElementsByClassName('c-slide');
+        }
+      }
+    );
+    
+    timeline.to(slider, 1, 
+      {
+        x: `0px`,
+        ease: Power4.easeOut
+      }
+    );
+  };
+
+init();
 </script>
 {% endblock script %}

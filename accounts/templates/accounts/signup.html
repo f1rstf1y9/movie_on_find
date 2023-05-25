@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
+{% load static %}
 
 {% block nav %}
 <a href="{% url 'accounts:login' %}" class="btn btn-secondary">BACK</a>
@@ -41,17 +42,63 @@ form > div {
   border: none;
   color: black;
 }
+body > div > form > div:nth-child(3) {
+
+}
+.profile-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+  object-fit: cover;
+}
+
+#id_like_genres {
+  background: #494949;
+  padding: 20px;
+}
+.checkbox {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 15px;
+  border-radius: 5px;
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+}
+
+.form-check-label {
+  margin-bottom: 0;
+}
 {% endblock style %}
 
 {% block content %}
-  <h1>Signup</h1>
-  <form action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {% bootstrap_form form %}
-    <div class="d-grid my-2 join-btn">
-      <button class="btn" type="submit">회원 가입</button>
-    </div>
-  </form>
-  <hr>
+  <div class="container-area">
+    <form action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      <div class="d-grid my-2 join-btn">
+        <button class="btn" type="submit">회원 가입</button>
+      </div>
+    </form>
+  </div>
+
 {% endblock content %}
+
+{% block script %}
+<script>
+  const profileImage = document.createElement('img')
+  profileImage.src = "{% static 'accounts/avatar.png' %}"
+  profileImage.setAttribute('class', 'profile-image');
+  document.querySelector('form > div:nth-child(3)').insertBefore(profileImage, document.querySelector('#id_profile_image'));
+
+  document.getElementById('id_profile_image').onchange = function () {
+    var src = URL.createObjectURL(this.files[0])
+    document.querySelector('.profile-image').src = src
+  }
+</script>
+{% endblock script %}
 

@@ -1,72 +1,392 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+body{
+  
+}
+body:after {
+  content : "";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-image: url("{% static 'accounts/tile_background.png' %}");
+  width: 100%;
+  height: auto;
+  min-height: 100vh;
+  opacity : 0.5;
+  z-index: -1;
+  background-size: cover;
+}
+
+p {
+  margin-bottom: 0;
+}
+a {
+  color: white;
+}
+ul {
+  padding-left: 0;
+}
+li {
+  list-style: none;
+}
+button {
+  background: none;
+  border: none;
+  outline: 0;
+  color: white;
+}
+.user-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.user-header > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.collection-profile-image img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+.collection-updated-time {
+  color: rgb(173, 173, 173);
+  font-size: 12px;
+}
+
+.container {
+  background-color: rgb(36, 35, 34);
+  padding: 30px;
+  border-radius: 10px;
+  margin: 80px auto 30px auto;
+  max-width: 700px;
+}
+
+.collection-title h1 {
+  font-size: 22px;
+}
+.collection-title h2 {
+  font-size: 16px;
+}
+.collection-title p {
+  font-size: 14px;
+  margin-top: 20px;
+  color: #9e9e9e;
+}
+.like-forms {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+.like-forms button {
+  display: flex;
+  gap: 10px;
+}
+
+.collection-content-header {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 30px 0;
+}
+.collection-content-header a {
+  font-size: 22px;
+}
+.collection-content-header span {
+  font-size: 16px;
+  color: #9e9e9e;
+}
+
+
+/**/
+.carousel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+.carousel h2 {
+  margin: 0;
+}
+.carousel a {
+  text-decoration: none;
+}
+.carousel__item {
+  width: 200px;
+}
+.carousel .item-front img {
+  aspect-ratio: 1/1;
+  width: 175px;
+  height: 350px;
+  object-fit: cover;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  margin-bottom: 16px;
+  border-radius: clamp(0px, ((100vw - 4px) - 100%) * 9999, 4px);
+}
+
+.carousel .carousel__content {
+  overflow-y: hidden;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  display: grid;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  padding: 10px;
+  margin: 0;
+  justify-content: start;
+  grid-gap: 24px;
+  grid-auto-flow: column;
+  list-style: none;
+  padding-left: 10px;
+}
+
+.carousel .carousel__item .carousel__description {
+  width: 100%;
+}
+
+.carousel .carousel__item a {
+  display: flex;
+  justify-content: center;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  user-select: none;
+  margin: 10px 0px;
+  padding: 16px;
+  border-radius: clamp(0px, ((100vw - 4px) - 100%) * 9999, 8px);
+  cursor: pointer;
+  width: 200px;
+  height: 300px;
+  perspective: 1000px;
+  background: white;
+  color: black;
+  /* border: 1px solid rgb(145, 145, 145); */
+
+  box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.35);
+  -webkit-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.35);
+  -moz-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.35);
+}
+
+.item-inner {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  transform-style: preserve-3d;
+  transition: transform 0.8s;
+}
+
+.carousel__item:hover .item-inner {
+  transform: rotateY(180deg);
+}
+.item-front, .item-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+.item-front {
+  z-index:10;
+}
+.item-back {
+  position: relative;
+  z-index: 1;
+  transform: rotateY(180deg) translateY(-103%);
+  font-size: 14px;
+  text-align: left;
+}
+.item-back > div {
+  width: 100%;
+  margin-bottom: 10px;
+}
+.item-back .movie-info-top {
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+.item-back .movie-info-bottom {
+  margin-bottom: 10px;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  padding: 10px 0;
+}
+.item-back .movie-info-bottom p {
+  margin-bottom: 0;
+}
+.item-back .movie-info-bottom p:first-child {
+  font-size: 16px;
+  font-weight: bold;
+}
+.item-back .ticket-date {
+  font-size: 12px;
+}
+.item-back .ticket-barcode {
+  position: absolute;
+  text-align: center;
+  bottom: 10px;
+}
+.update-icon {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+.update-icon a, .update-icon button {
+  padding: 5px 10px;
+}
+.like-forms button.active:hover, .update-icon a:hover, .update-icon button:hover {
+  background-color: #444444;
+  border-radius: 5px;
+}
+
+.update-icon a:hover {
+  color: rgb(124, 122, 255);
+}
+.like-forms button.active:hover, .update-icon button:hover {
+  color:rgb(235, 58, 58);
+}
+{% endblock style %}
 
 {% block content %}
-{{card_collection.id}}
-<hr>
-{{card_collection.title}}
-<hr>
-{% for i in card_collection.cards.all %}
-{{i.id}}
-{% endfor %}
-<br>
-{{likes}}
-<hr>
-<p>좋아요 : <p id="likes">{{ card_collection.like_users.all|length }}</p></p>
-<div>
-  <form class="like-forms" data-collection-id="{{ card_collection.id }}">
-    {% csrf_token %}
-    {% if request.user != card_collection.user%}
-    {% if request.user in card_collection.like_users.all %}
-      <input type="submit" value="좋아요 취소" id="like-{{ card_collection.id }}">
-    {% else %}
-      <input type="submit" value="좋아요" id="like-{{ card_collection.pk }}">
-    {% endif %}
-    {% endif %}
-  </form>
-</div>
-<hr>
- {% if request.user == card_collection.user %}
-    <a href="{% url 'card_collections:update' card_collection.id %}">UPDATE</a>
-    <form action="{% url 'card_collections:delete' card_collection.id %}" method="POST">
+
+<div class="container">
+  <div class="user-header">
+    <div>
+      <div class="collection-profile-image">
+        <a href="{% url 'accounts:profile' card_collection.user.email %}">
+          <img src="{{ card_collection.user.profile_image.url }}" alt="{{ card_collection.user.profile_image }}">
+        </a>
+      </div>
+      <a href="{% url 'accounts:profile' card_collection.user.email %}">
+        <p class="card_collection-profile-nickname">{{ card_collection.user.nickname }}</p>
+      </a>
+    </div>
+    <p class="collection-updated-time">최종 수정 : {{ card_collection.updated_at }}</p>
+  </div>
+  <div class="collection-title">
+    <h1>{{card_collection.title}}</h1>
+    <h2>{{card_collection.description}}</h2>
+    <p>좋아요 <span id="like-count">{{ card_collection.like_users.all|length }}</span>개</p>
+  </div>
+  <div>
+    <form class="like-forms" data-collection-id="{{ card_collection.id }}">
       {% csrf_token %}
-      <input type="submit" value="DELETE">
+        <button class="like" id="like-{{ card_collection.id }}"{% if not user.is_authenticated or user == card_collection.user %}disabled{% endif %}>
+          {% if request.user in card_collection.like_users.all %}
+            <p class="icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="#ff4d4d" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ff4d4d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+            </p>
+          {% else %}
+            <p class="icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+            </p>
+          {% endif %}
+          <p>좋아요</p>
+        </button>
     </form>
-  {% endif %}
+  </div>
+  <hr>
+  <div class="collection-content-header">
+    <a>수집된 포토티켓</a>
+    <span>{{card_collection.cards.all|length}}개</span>
+  </div>
+  <div class="carousel">
+    {% for card in card_collection.cards.all %}
+      <li class="carousel__item" onclick="moveTo({{card.pk}})">
+        <div class="item-inner">
+          <a class="item-front" href="{% url 'cards:detail' card.pk %}">
+            <img class="carousel__item__image" src="{{ card.card_image.url }}" alt="{{ card.card_image }}" />
+          </a>
+          <a class="item-back" href="{% url 'cards:detail' card.pk %}">
+            <div class="movie-info-top">
+              <p>{{ card.movie_type }}</p>
+              <p>{{ card.watched_location }}</p>
+            </div>
+            <div class="movie-info-bottom">
+              <p class="movie-title-ko">{{ card.movie.title }}</p>
+              <p class="movie-title-en">{{ card.movie.original_title }}</p>
+            </div>
+            <div class="ticket-date">
+              {{ card.watched_date }}
+            </div>
+            <div class="ticket-comment">
+              {{ card.content }}
+            </div>
+            <div class="ticket-people">
+              {{ card.watched_people }}명
+            </div>
+            <div class="ticket-barcode">
+              <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
+            </div>
+          </a>
+        </div>
+      </li>
+    {% endfor %}
+  </div>
+  <br>
+  <div class="update-icon">
+    {% if request.user == card_collection.user %}
+      <hr>
+      <a href="{% url 'card_collections:update' card_collection.id %}">
+        <svg width="20px" height="20px" fill="currentColor" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect id="Icons" x="-1024" y="0" width="1280" height="800" style="fill:none;"></rect> <g id="Icons1" serif:id="Icons"> <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g> <g id="H3"> </g> <g id="list-ul"> </g> <g id="hamburger-1"> </g> <g id="hamburger-2"> </g> <g id="list-ol"> </g> <g id="list-task"> </g> <g id="trash"> </g> <g id="vertical-menu"> </g> <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g> <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> <path d="M55.944,51.712l0,4.201l-33.652,-0.027l4.71,-4.174l28.942,0Zm-7.555,-43.712c1.649,0 2.505,0.128 4.752,2.011c2.294,1.921 2.707,3.419 2.803,5.087c0.102,1.795 -0.504,3.976 -2.188,5.681l-31.961,31.961c-0.52,0.475 -0.629,0.45 -0.977,0.553l-10.226,2.557c-1.472,0.299 -2.854,-1.049 -2.55,-2.55l2.557,-10.226c0.1,-0.334 0.133,-0.517 0.553,-0.976c10.696,-10.697 21.195,-21.594 32.09,-32.087c1.421,-1.335 3.497,-2.011 5.147,-2.011Zm-32.375,35.182l-1.477,1.477l-1.566,6.262l6.262,-1.566c0.493,-0.492 0.985,-0.983 1.479,-1.474l-4.698,-4.699Zm30.176,-20.573l-4.802,-4.801l-22.493,22.493l4.712,4.713c7.549,-7.448 15.196,-14.801 22.583,-22.405Zm2.826,-2.936c0.618,-0.648 1.234,-1.298 1.848,-1.951c1.673,-1.826 0.443,-5.454 -2.307,-5.578c-0.056,-0.002 -0.112,-0.002 -0.168,-0.002c-0.861,0.016 -1.699,0.372 -2.312,0.977l-1.807,1.808l4.746,4.746Z" style="fill-rule:nonzero;"></path> </g> <g id="clock"> </g> <g id="external-link"> </g> <g id="hr"> </g> <g id="info"> </g> <g id="warning"> </g> <g id="plus-circle"> </g> <g id="minus-circle"> </g> <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g> <g id="radio-check"> </g> <g id="eye-slash"> </g> <g id="eye"> </g> <g id="toggle-off"> </g> <g id="shredder"> </g> <g id="spinner--loading--dots-" serif:id="spinner [loading, dots]"> </g> <g id="react"> </g> <g id="check-selected"> </g> <g id="turn-off"> </g> <g id="code-block"> </g> <g id="user"> </g> <g id="coffee-bean"> </g> <g id="coffee-beans"> <g id="coffee-bean1" serif:id="coffee-bean"> </g> </g> <g id="coffee-bean-filled"> </g> <g id="coffee-beans-filled"> <g id="coffee-bean2" serif:id="coffee-bean"> </g> </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g> <g id="clipboard-copy"> </g> <g id="Layer1"> </g> </g> </g></svg>
+        수정하기
+      </a>
+      <form action="{% url 'card_collections:delete' card_collection.id %}" method="POST">
+        {% csrf_token %}
+        <button>
+          <svg  width="20px" height="20px" fill="currentColor" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect id="Icons" x="-64" y="-64" width="1280" height="800" style="fill:none;"></rect> <g id="Icons1" serif:id="Icons"> <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g> <g id="H3"> </g> <g id="list-ul"> </g> <g id="hamburger-1"> </g> <g id="hamburger-2"> </g> <g id="list-ol"> </g> <g id="list-task"> </g> <g id="trash"> <path d="M19.186,16.493l0,-1.992c0.043,-3.346 2.865,-6.296 6.277,-6.427c3.072,-0.04 10.144,-0.04 13.216,0c3.346,0.129 6.233,3.012 6.277,6.427l0,1.992l9.106,0l0,4l-4.442,0l0,29.11c-0.043,3.348 -2.865,6.296 -6.278,6.428c-7.462,0.095 -14.926,0.002 -22.39,0.002c-3.396,-0.044 -6.385,-2.96 -6.429,-6.43l0,-29.11l-4.443,0l0,-4l9.106,0Zm26.434,4l-27.099,0c-0.014,9.72 -0.122,19.441 0.002,29.16c0.049,1.25 1.125,2.33 2.379,2.379c7.446,0.095 14.893,0.095 22.338,0c1.273,-0.049 2.363,-1.163 2.38,-2.455l0,-29.084Zm-4.701,-4c-0.014,-0.83 0,-1.973 0,-1.973c0,0 -0.059,-2.418 -2.343,-2.447c-3.003,-0.039 -10.007,-0.039 -13.01,0c-1.273,0.049 -2.363,1.162 -2.38,2.454l0,1.966l17.733,0Z" style="fill-rule:nonzero;"></path> <rect x="22.58" y="28.099" width="3" height="16.327" style="fill-rule:nonzero;"></rect> <rect x="30.571" y="28.099" width="3" height="16.327" style="fill-rule:nonzero;"></rect> <rect x="38.58" y="28.099" width="3" height="16.327" style="fill-rule:nonzero;"></rect> </g> <g id="vertical-menu"> </g> <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g> <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g> <g id="clock"> </g> <g id="external-link"> </g> <g id="hr"> </g> <g id="info"> </g> <g id="warning"> </g> <g id="plus-circle"> </g> <g id="minus-circle"> </g> <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g> <g id="radio-check"> </g> <g id="eye-slash"> </g> <g id="eye"> </g> <g id="toggle-off"> </g> <g id="shredder"> </g> <g id="spinner--loading--dots-" serif:id="spinner [loading, dots]"> </g> <g id="react"> </g> <g id="check-selected"> </g> <g id="turn-off"> </g> <g id="code-block"> </g> <g id="user"> </g> <g id="coffee-bean"> </g> <g id="coffee-beans"> <g id="coffee-bean1" serif:id="coffee-bean"> </g> </g> <g id="coffee-bean-filled"> </g> <g id="coffee-beans-filled"> <g id="coffee-bean2" serif:id="coffee-bean"> </g> </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g> <g id="clipboard-copy"> </g> <g id="Layer1"> </g> </g> </g></svg>
+          삭제하기
+        </button>
+      </form>
+    {% endif %}
+  </div>
+</div>
+
+
 {% endblock content %}
 {% block script %}
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
+
+  function moveTo(cardPk) {
+    window.location.href = `/cards/${cardPk}`;
+  }
+
   const forms = document.querySelectorAll('.like-forms');
   const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
 
   forms.forEach((form) => {
     form.addEventListener('submit', function (event) {
       event.preventDefault()
-      const collectionId = event.target.dataset.collectionId
-      // headers: {'X-CSRFToken': csrftoken},
+      const itemId = event.target.dataset.collectionId
       axios({
         method: 'post',
-        url: `http://127.0.0.1:8000/card_collections/${collectionId}/likes/`,
+        url: `http://127.0.0.1:8000/card_collections/${itemId}/likes/`,
         headers: {'X-CSRFToken': csrftoken},
       })
       .then((response) => {
-        // like 버튼을 이전에 눌렀는가? 좋아요 / 좋아요 취소를 할지 결정 (서버로 좋아요 여부 받기)
         const isLiked = response.data.is_liked
-        const likeBtn = document.querySelector(`#like-${collectionId}`)
-        const likes=document.querySelector("#likes")
-
+        const likeBtn = document.querySelector(`#like-${itemId}`)
+        const likes = document.querySelector("#like-count")
+        console.log(likes)
+        const likeIcon = likeBtn.querySelector('.icon')
         if (isLiked === true) {
-          likeBtn.value = '좋아요 취소'
+          likeIcon.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="#ff4d4d" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ff4d4d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>'
           likes.textContent=Number(likes.textContent) + 1
-        
         } else {
-          likeBtn.value = '좋아요',
+          likeIcon.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>'
           likes.textContent=Number(likes.textContent) - 1
-
         }
       })
-
-
     })
   })
 

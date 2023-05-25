@@ -41,7 +41,7 @@ class User(AbstractBaseUser):
         max_length=255,
         unique=True,
     )
-    profile_image = models.ImageField()
+    profile_image = models.ImageField(default='accounts/avatar.png',)
     kakao_id = models.TextField(null=True)
     nickname = models.TextField()
     followings = models.ManyToManyField('self', symmetrical=False, related_name='followers')

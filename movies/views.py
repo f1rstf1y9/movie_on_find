@@ -19,12 +19,15 @@ from accounts.models import User
 from django.db import transaction
 from movies.forms import Searchform
 from django.template.defaulttags import register
+from django.db.models import FloatField
+from django.db.models.functions import Cast
+
 
 @register.filter(name='split')
 def split(value, key): 
     return value.split(key)[0]
 
-my_id=''
+my_id='f0ee4eefc21a888bf1229e2d951df4e6'
 def get_top_rated_data():
     result=[]
     for page in range(1,51):
@@ -46,6 +49,7 @@ def get_top_rated_data():
                     "backdrop_path":i.get("backdrop_path"),
                     "release_date":i.get("release_date"),
                     "genres":i.get("genre_ids"),
+                    "runtime": i.get("runtime"),
                     "interest":[],
                     "watched":[],
                     "watching":[],
@@ -59,7 +63,7 @@ def get_top_rated_data():
 
 # get_object_or_404, get_list_or_404(Movie)
 def get_movie_video():
-    movie=get_list_or_404(Movie)
+    movie=Movie.objects.all()
     for i in movie:
         url='https://api.themoviedb.org/3/movie/'+str(i.pk)+'/videos?api_key='+my_id+'&language=ko'
         response=requests.get(url).json()
@@ -70,14 +74,16 @@ def get_movie_video():
             key=data[0]['key']
             i.video=key
             i.save()
+
 def get_movie_runtime():
-    movie=get_list_or_404(Movie)
+    movie=Movie.objects.all()
     for i in movie:
         url1='https://api.themoviedb.org/3/movie/'+str(i.pk)+'?api_key='+my_id+'&language=ko'
         response1=requests.get(url1).json()
         data1=response1['runtime']
         i.runtime=data1
         i.save()
+
 def data_sort():
     movie=Movie.objects.all()
     for i in movie:
@@ -90,9 +96,9 @@ def recommend(id):
     for i in genre:
         G.append(i['name'])
     return set(G)
+
 @api_view(['GET'])
 def index(request):
-    # get_top_rated_data()
     # data_sort()
     # get_movie_video()
     # get_movie_runtime()
@@ -113,9 +119,9 @@ def index(request):
                 L.append(i)
     else:
         L = []
-
-    collections=Card_collection.objects.all()
-    return render(request,'movies/index.html',{'resdatas':serialized_data,'datas':genre,'collections':collections,'rec':L})
+    collections=Card_collection.objects.all().order_by('updated_at')[:10]
+    cards=Card.objects.all().order_by('created_at')[:10]
+    return render(request,'movies/index.html',{'resdatas':serialized_data,'datas':genre,'collections':collections,'cards':cards,'rec':L})
 
 @api_view(['GET'])
 @login_required
@@ -128,8 +134,9 @@ def my_reco(request,num):
             D=[]
             for j in i.genres.all().values():
                 D.append(j['name'])
-            a=set.intersection(set(D),rec)
-            if len(a)>=len(D)-1 and len(a)!=0:
+            # a=set.intersection(set(D),rec)
+            a=set(D)&rec
+            if len(a)>=2 and len(a)!=0:
                 L.append(i)
     else:
         L = []
@@ -139,9 +146,6 @@ def my_reco(request,num):
         A.append(i)
     genre=Genre.objects.values()
     return render(request,'movies/myreco.html',{'resdatas':L[20*(num-1):20*num],'datas':genre,'total':A})
-
-
-
 
 @require_safe
 @login_required
@@ -167,15 +171,15 @@ def sort(request,pk,num):
     # 평점순
     if pk==1:
         print(pk)
-        movie=Movie.objects.all().order_by('-vote_average')[20*(num-1):20*num]
+        movie=Movie.objects.all().order_by('-vote_average')[5*(num-1):5*num]
     #인기도순
     elif pk==2:
         print(pk)
-        movie=Movie.objects.all().order_by('-popularity')[20*(num-1):20*num]
+        movie=Movie.objects.all().order_by(Cast('popularity', FloatField()).desc())[5*(num-1):5*num]
     #개봉일순
     elif pk==3:
         print(pk)
-        movie=Movie.objects.all().order_by('-release_date')[20*(num-1):20*num]
+        movie=Movie.objects.all().order_by('-release_date')[5*(num-1):5*num]
     genre=Genre.objects.values()
     serializer=MovieListSerializer(movie,many=True)
     serialized_data = serializer.data
@@ -187,7 +191,7 @@ def sort(request,pk,num):
     return render(request,'movies/sort.html',{'resdatas':serialized_data,'datas':genre,'total':A,'pk':pk,'G':G})
 
 @api_view(['GET'])
-def genre_sort(request,genre_pk,n):
+def genre_sort(request,genre_pk,n,m):
     # 모험
     if genre_pk==12:
         movie=Movie.objects.filter(genres=genre_pk)
@@ -249,9 +253,15 @@ def genre_sort(request,genre_pk,n):
     for i in range(1,len(movie)//20+2):
         A.append(i)
     genre=Genre.objects.values()
-    serializer=MovieListSerializer(movie.order_by('-vote_average'),many=True)
+    if m==1:
+        serializer=MovieListSerializer(movie.order_by('-vote_average'),many=True)
+    elif m==2:
+        serializer=MovieListSerializer(movie.order_by(Cast('popularity', FloatField()).desc()),many=True)
+    elif m==3:
+        serializer=MovieListSerializer(movie.order_by('-release_date'),many=True)
     serialized_data = serializer.data
-    return render(request,'movies/sort.html',{'resdatas':serialized_data[20*(n-1):20*n],'datas':genre,'total':A,'pk':n,'genre_id':genre_pk})
+    # print(serialized_data)
+    return render(request,'movies/sort.html',{'resdatas':serialized_data[5*(n-1):5*n],'datas':genre,'total':A,'pk':n,'genre_id':genre_pk,'m':m})
 
 
 @api_view(['GET'])

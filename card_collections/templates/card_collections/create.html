@@ -1,12 +1,450 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block style %}
+p {
+  margin-bottom: 0;
+}
+a {
+  color: white;
+}
+ul {
+  padding-left: 0;
+}
+li {
+  list-style: none;
+}
+button {
+  background: none;
+  border: none;
+  outline: 0;
+  color: white;
+}
+
+input {
+  background-color: #494949;
+  max-width: 700px;
+}
+.form-control {
+  background-color: #494949;
+}
+#id_title, #id_description {
+  color: white;
+}
+.form-control::placeholder {
+  color: #999;
+}
+#id_title:focus, #id_description:focus {
+  background-color: #494949;
+}
+#id_cards {
+  max-width: 700px;
+}
+.multiselect-dropdown{
+  color: black;
+  height: 400px;
+  display: inline-block;
+  padding: 2px 5px 0px 5px;
+  border-radius: 4px;
+  border: solid 1px #ced4da;
+  background-color: #494949;
+  position: relative;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right .75rem center;
+  background-size: 16px 12px;
+}
+.multiselect-dropdown span.optext, .multiselect-dropdown span.placeholder{
+  margin-right:0.5em; 
+  margin-bottom:2px;
+  padding:1px 0; 
+  border-radius: 4px; 
+  display:inline-block;
+}
+.multiselect-dropdown span.optext{
+  background-color:rgb(255, 217, 0);
+  color: #494949;
+  padding:1px 0.75em; 
+}
+.multiselect-dropdown span.optext .optdel {
+  float: right;
+  margin: 0 -6px 1px 5px;
+  font-size: 0.7em;
+  margin-top: 2px;
+  cursor: pointer;
+  color: #666;
+}
+.multiselect-dropdown span.optext .optdel:hover { color: #c66;}
+.multiselect-dropdown span.placeholder{
+  display: none;
+}
+.multiselect-dropdown-list-wrapper{
+  box-shadow: gray 0 3px 8px;
+  z-index: 100;
+  padding:2px;
+  border-radius: 4px;
+  border: solid 1px #dad7ce;
+  display: none;
+  margin: -1px;
+  position: absolute;
+  top:0;
+  left: 0;
+  right: 0;
+  background: rgb(44, 44, 44);
+  height: 400px;
+  overflow: scroll;
+}
+.multiselect-dropdown-list-wrapper .multiselect-dropdown-search{
+  margin-bottom:5px;
+  background-color: rgb(44, 44, 44);
+  color: white;
+}
+.multiselect-dropdown-list-wrapper .multiselect-dropdown-search::placeholder {
+  color: rgb(133, 133, 133);
+}
+.multiselect-dropdown-list{
+  padding:3px;
+  height: 400px;
+  overflow-y:auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-wrap: wrap;
+}
+.multiselect-dropdown-list-wrapper::-webkit-scrollbar {
+  display: none;
+}
+.multiselect-dropdown-list::-webkit-scrollbar {
+  width: 6px;
+}
+.multiselect-dropdown-list::-webkit-scrollbar-thumb {
+  background-color: #bec4ca;
+  border-radius:3px;
+}
+.multiselect-dropdown-list input{
+  height: 1.15em;
+  width: 1.15em;
+  margin-right: 0.35em;  
+}
+.multiselect-dropdown-list div.checked{
+}
+.multiselect-dropdown-list :hover{
+  
+}
+.multiselect-dropdown-list label {
+  display: none;
+}
+.multiselect-dropdown span.maxselected {width:100%;}
+.multiselect-dropdown-all-selector {border-bottom:solid 1px #999;}
+
+.photo-card {
+  border-radius: 5px;
+  width: 200px;
+  height: 300px;
+  position: relative;
+  background: white;
+  color: black;
+  padding: 16px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.photo-card:hover {
+  border: 3px solid #eec12d;
+}
+.checked > div {
+  border: 3px solid #eec12d;
+}
+.multiselect-dropdown-list > div > input {
+  display: none;
+}
+.photo-card > span {
+  display: block;
+  width: 100%;
+  margin-bottom: 5px;
+}
+.photo-card .movie-info-top {
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+.photo-card .movie-info-bottom {
+  margin-bottom: 10px;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  padding: 10px 0;
+}
+.photo-card .movie-info-bottom > p {
+  margin-bottom: 0;
+}
+.photo-card .movie-info-bottom p:first-child {
+  font-size: 16px;
+  font-weight: bold;
+}
+.photo-card .ticket-date {
+  font-size: 12px;
+}
+.photo-card .ticket-barcode {
+  position: absolute;
+  bottom: 10px;
+}
+.create-btn {
+  background-color:#eec12d;
+  color:#000;
+  padding: 5px 10px;
+  border-radius: 5px;
+  float: right;
+  height: 40px;
+  margin-top: 10px;
+}
+.create-btn:hover {
+  background-color:#e6aa28;
+}
+label {
+  margin: 20px 0 10px 0;
+}
+
+{% endblock style %}
 
 {% block content %}
-  <h1>CREATE</h1>
-  <form action="{% url 'card_collections:create'%}" method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit">Create</button>
-  </form>
-  <hr>
-  <a href="{% url 'card_collections:index' %}">뒤로가기</a>
+<div id="header" class="sub-header">
+  <div class="header-inner">
+    <div class="back-btn">
+      <a href="" id="back">
+        <svg width="24" height="24" viewBox="0 0 1024 1024" fill="#ffffff" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M669.6 849.6c8.8 8 22.4 7.2 30.4-1.6s7.2-22.4-1.6-30.4l-309.6-280c-8-7.2-8-17.6 0-24.8l309.6-270.4c8.8-8 9.6-21.6 2.4-30.4-8-8.8-21.6-9.6-30.4-2.4L360.8 480.8c-27.2 24-28 64-0.8 88.8l309.6 280z" fill=""></path></g></svg>
+      </a>
+    </div>
+    <p>포토카드 컬렉션 제작</p>
+    <div></div>
+  </div>
+</div>
+
+<div class="container-area">
+  <div class="create-form">
+    <form action="{% url 'card_collections:create'%}" method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="id_title">포토티켓북 이름</label> 
+        <input type="text" name="title" maxlength="100" required="" id="id_title" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="id_description">포토티켓북 설명</label>
+        <input type="text" name="description" maxlength="200" class="form-control" placeholder="포토티켓북에 대한 간단한 설명을 적어주세요!" title="" required="" id="id_description">
+      </div>
+      <label for="id_cards">카드 선택</label>
+      <br>
+      <select name="cards" required="" id="id_cards" multiple=""  multiselect-search="true">
+        {% for card in my_cards %}
+          <option value="{{ card.pk }}">
+            {{ card.movie_type }}, {{ card.watched_location }}, {{ card.movie.title }}, {{ card.movie.original_title }}, {{ card.watched_date }}, {{ card.content }}, {{ card.watched_people }}
+          </option>
+        {% endfor %}
+      </select>
+      <br>
+      <button class="create-btn" type="submit">생성하기</button>
+    </form>
+  </div>
+</div>
+
+
 {% endblock content %}
+
+{% block script %}
+<script>
+  const back = document.querySelector('#back');
+  back.addEventListener('click',function (event) {
+    event.preventDefault()
+    history.back()
+  });
+
+  function MultiselectDropdown(options){
+    var config={
+      search:true,
+      height:'400px',
+      placeholder:'select',
+      txtSelected:'selected',
+      txtAll:'All',
+      txtRemove: 'Remove',
+      txtSearch:'search',
+      ...options
+    };
+    function newEl(tag,attrs){
+      var e=document.createElement(tag);
+      if(attrs!==undefined) Object.keys(attrs).forEach(k=>{
+        if(k==='class') { Array.isArray(attrs[k]) ? attrs[k].forEach(o=>o!==''?e.classList.add(o):0) : (attrs[k]!==''?e.classList.add(attrs[k]):0)}
+        else if(k==='style'){  
+          Object.keys(attrs[k]).forEach(ks=>{
+            e.style[ks]=attrs[k][ks];
+          });
+        }
+        else if(k==='text'){attrs[k]===''?e.innerHTML='&nbsp;':e.innerText=attrs[k]}
+        else e[k]=attrs[k];
+      });
+      return e;
+    }
+
+    
+    document.querySelectorAll("select[multiple]").forEach((el,k)=>{
+
+      var div=newEl('div',{class:'multiselect-dropdown',style:{width:'100%',padding:config.style?.padding??''}});
+      el.style.display='none';
+      el.parentNode.insertBefore(div,el.nextSibling);
+      var listWrap=newEl('div',{class:'multiselect-dropdown-list-wrapper'});
+      var list=newEl('div',{class:'multiselect-dropdown-list',style:{height:config.height}});
+      var search=newEl('input',{class:['multiselect-dropdown-search'].concat([config.searchInput?.class??'form-control']),style:{width:'100%',display:el.attributes['multiselect-search']?.value==='true'?'block':'none'},placeholder:config.txtSearch});
+      listWrap.appendChild(search);
+      div.appendChild(listWrap);
+      listWrap.appendChild(list);
+
+      el.loadOptions=()=>{
+        list.innerHTML='';
+        
+        if(el.attributes['multiselect-select-all']?.value=='true'){
+          var op=newEl('div',{class:'multiselect-dropdown-all-selector'})
+          var ic=newEl('input',{type:'checkbox'});
+          var pc=newEl('div',{class:'photo-card'});
+
+          pc.innerHTML = `<div class="movie-info-top">
+                            <p>{{ card.movie_type }}</p>
+                            <p>{{ card.watched_location }}</p>
+                          </div>
+                          <div class="movie-info-bottom">
+                            <p class="movie-title-ko">{{ card.movie.title }}</p>
+                            <p class="movie-title-en">{{ card.movie.original_title }}</p>
+                          </div>
+                          <div class="ticket-date">
+                            {{ card.watched_date }}
+                          </div>
+                          <div class="ticket-comment">
+                            {{ card.content }}
+                          </div>
+                          <div class="ticket-people">
+                            {{ card.watched_people }}명
+                          </div>
+                          <div class="ticket-barcode">
+                            <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
+                          </div>`
+          op.appendChild(pc);
+          console.log(pc)
+          op.appendChild(ic);
+          op.appendChild(newEl('label',{text:config.txtAll}));
+    
+          op.addEventListener('click',()=>{
+            op.classList.toggle('checked');
+            op.querySelector("input").checked=!op.querySelector("input").checked;
+            
+            var ch=op.querySelector("input").checked;
+            list.querySelectorAll(":scope > div:not(.multiselect-dropdown-all-selector)")
+              .forEach(i=>{if(i.style.display!=='none'){i.querySelector("input").checked=ch; i.optEl.selected=ch}});
+    
+            el.dispatchEvent(new Event('change'));
+          });
+          ic.addEventListener('click',(ev)=>{
+            ic.checked=!ic.checked;
+          });
+          el.addEventListener('change', (ev)=>{
+            let itms=Array.from(list.querySelectorAll(":scope > div:not(.multiselect-dropdown-all-selector)")).filter(e=>e.style.display!=='none')
+            let existsNotSelected=itms.find(i=>!i.querySelector("input").checked);
+            if(ic.checked && existsNotSelected) ic.checked=false;
+            else if(ic.checked==false && existsNotSelected===undefined) ic.checked=true;
+          });
+    
+          list.appendChild(op);
+        }
+
+        Array.from(el.options).map(o=>{
+
+          const data = o.innerText.trim().split(',');
+
+          var op=newEl('div',{class:o.selected?'checked':'',optEl:o})
+          var ic=newEl('input',{type:'checkbox',checked:o.selected});
+          var pc=newEl('div',{class:'photo-card'});
+          op.appendChild(ic);
+          op.appendChild(pc);
+          op.appendChild(newEl('label',{text:o.text}));
+
+          pc.innerHTML = `<span class="movie-info-top">
+                            <p>${data[0]}</p>
+                            <p>${data[1]}</p>
+                          </span>
+                          <span class="movie-info-bottom">
+                            <p class="movie-title-ko">${data[2]}</p>
+                            <p class="movie-title-en">${data[3]}</p>
+                          </span>
+                          <span class="ticket-date">
+                            ${data[4]}
+                          </span>
+                          <span class="ticket-comment">
+                            ${data[5]}
+                          </span>
+                          <span class="ticket-people">
+                            ${data[6]}명
+                          </span>
+                          <span class="ticket-barcode">
+                            <img height="45px" src="{% static 'accounts/ticket-barcode.gif' %} " alt="바코드">
+                          </span>`
+          
+          op.addEventListener('click',()=>{
+            op.classList.toggle('checked');
+            op.querySelector("input").checked=!op.querySelector("input").checked;
+            op.optEl.selected=!!!op.optEl.selected;
+            el.dispatchEvent(new Event('change'));
+          });
+          ic.addEventListener('click',(ev)=>{
+            ic.checked=!ic.checked;
+          });
+          o.listitemEl=op;
+          list.appendChild(op);
+        });
+        div.listEl=listWrap;
+
+        div.refresh=()=>{
+          div.querySelectorAll('span.optext, span.placeholder').forEach(t=>div.removeChild(t));
+          var sels=Array.from(el.selectedOptions);
+          if(sels.length>(el.attributes['multiselect-max-items']?.value??5)){
+            div.appendChild(newEl('span',{class:['optext','maxselected'],text:sels.length+' '+config.txtSelected}));          
+          }
+          else{
+            sels.map(x=>{
+              const textValue = `<${x.text.split(',')[2]}> ${x.text.split(',')[5]} / ${x.text.split(',')[4]}`
+              var c=newEl('span',{class:'optext',text:textValue, srcOption: x});
+              if((el.attributes['multiselect-hide-x']?.value !== 'true'))
+                c.appendChild(newEl('span',{class:'optdel',text:'🗙',title:config.txtRemove, onclick:(ev)=>{c.srcOption.listitemEl.dispatchEvent(new Event('click'));div.refresh();ev.stopPropagation();}}));
+
+              div.appendChild(c);
+            });
+          }
+          if(0==el.selectedOptions.length) div.appendChild(newEl('span',{class:'placeholder',text:el.attributes['placeholder']?.value??config.placeholder}));
+        };
+        div.refresh();
+      }
+      el.loadOptions();
+      
+      search.addEventListener('input',()=>{
+        list.querySelectorAll(":scope div:not(.multiselect-dropdown-all-selector):not(.photo-card)").forEach(d=>{
+          console.log(d);
+          var txt=d.querySelector("label").innerText.toUpperCase();
+          d.style.display=txt.includes(search.value.toUpperCase())?'block':'none';
+        });
+      });
+
+      div.addEventListener('click',()=>{
+        div.listEl.style.display='block';
+        search.focus();
+        search.select();
+      });
+      
+      document.addEventListener('click', function(event) {
+        if (!div.contains(event.target)) {
+          listWrap.style.display='none';
+          div.refresh();
+        }
+      });    
+    });
+  }
+
+  window.addEventListener('load',()=>{
+    MultiselectDropdown(window.MultiselectDropdownOptions);
+  });
+
+</script>
+{% endblock script %}

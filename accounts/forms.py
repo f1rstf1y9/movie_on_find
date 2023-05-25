@@ -25,6 +25,7 @@ class UserCreationForm(forms.ModelForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])
+        
         if commit:
             user.save()
         user.like_genres.set(self.cleaned_data["like_genres"])
@@ -35,7 +36,7 @@ class UserChangeForm(forms.ModelForm):
     email = forms.CharField(disabled=True)
     class Meta:
         model = User
-        fields = ('email', 'profile_image', 'nickname', 'like_genres')
+        fields = ('email', 'profile_image', 'nickname', 'like_genres',)
         widgets={
             'nickname': forms.Textarea(attrs={"rows":"1", "cols":"6"}),
         }

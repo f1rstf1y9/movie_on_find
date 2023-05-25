@@ -9,19 +9,9 @@
   box-sizing: border-box;
 }
 
-.container {
-  max-width: 100vw;
-  margin: 62px 0;
-  padding: 0;
-}
-
 a {
+  color: white;
   text-decoration: none;
-  color: #5C7FB8
-}
-
-a:hover {
-  text-decoration: underline;
 }
 
 p {
@@ -52,17 +42,16 @@ button {
   position: relative;
 }
 
-.hero { 
+.backdrop { 
+  display: flex;
   margin:0;
   position: relative;
-  overflow: hidden;
-  z-index:1;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-    
+  height: 300px;
 }
 
-.hero:before {
+.backdrop::before {
   content:'';
   width:100%; height:100%;
   position:absolute;
@@ -71,10 +60,9 @@ button {
   background-color: black;
   background: url("https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces{{resdatas.backdrop_path}}");
   background-size: cover;
-  filter: blur(8px);
+  filter: blur(11px);
   opacity: 0.3;
-  -webkit-filter: blur(8px);
-  z-index:-1;
+  -webkit-filter: blur(11px);
   transform: skewY(-2.2deg);
   transition: transform 2s;
   transform: scale(1);
@@ -82,19 +70,22 @@ button {
   -webkit-backface-visibility: hidden; 
 }
 
-.hero:hover:before {
+.backdrop:hover:before {
   transform: scale(1.1);
 }
 
+.hero {
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  transform: translateY(-60px);
+}
+
 .cover {
-  width: 187px;
-  position: absolute;
-  top: 160px;
-  left: calc(100vw/2.4 - 220px);
-  z-index: 2;
+  width: 200px;
 }
 .details {
-  padding: 190px 0 0 calc(100vw/2.4);
 }
 
 .details > div {
@@ -121,29 +112,25 @@ button {
   background-color: #ffffff5e;
   border-radius: 5px;
   margin-top: 5px;
-  padding: 10px 20px !important;
+  padding: 10px 15px 10px 20px !important;
+}
+
+.create-ticket {
+  border-right: 1px solid rgb(73, 73, 73);
+  padding-right: 20px;
+}
+.create-ticket:hover a {
+  color: rgb(228, 161, 36);
 }
 
 .create-review {
   font-size: 12px;
-  color: rgb(73, 70, 70);
+  color: rgb(228, 228, 228);
   display: flex;
   flex-direction: column;
   align-items: center;
   border-right: 1px solid rgb(73, 73, 73);
   padding-right: 20px;
-}
-
-.likes {
-  margin-left: 24px;
-}
-
-
-.likes:before {
-  content: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/icon_like.png");
-  position: relative;
-  top: 2px;
-  padding-right: 7px;
 }
 
 .tag {
@@ -197,7 +184,7 @@ fieldset, label { margin: 0; padding: 0; }
   margin-left: 20px;
 }
 .icon-btn {
-  padding: 0 20px;
+  padding: 0 15px;
 }
 .icon-btn span {
   font-size: 14px;
@@ -270,11 +257,210 @@ a[data-tooltip][data-placement="top"]::after {
 
 .movie-card {
   max-width: 700px;
+  background-color: #3a3a41;
+  border: 1px solid #1f1f24;
+  min-height: 500px;
   margin: 0 auto;
-  margin-top: 50px;
-  background-color: #27272c;
+  border-radius: 7px;
   padding: 30px;
-  border-radius: 5px;
+}
+.movie-card hr {
+  margin: 30px 0;
+}
+.movie-card .section-title {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+.movie-card .section-title div {
+  display: flex;
+  gap: 10px;
+}
+.movie-card .section-title a {
+  z-index: 5;
+}
+.movie-card .section-title h3 {
+  font-size: 20px;
+  font-weight: bold;
+}
+.movie-card .basic-info p {
+  margin: 5px 0;
+  font-size: 15px;
+}
+
+/* review-item */
+.review-item {
+  border-radius: 10px;
+  height: 100%;
+  width: 100%;
+}
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.user-info > img {
+  width: 30px;
+  border-radius: 50%;
+  background-color: #fff;
+}
+.item-data {
+  color: rgba(255, 175, 2, 0.719);
+  font-size: 12px;
+}
+.item-content {
+  margin-bottom: 10px;
+  font-size: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.spoiler-prevent {
+  color: rgb(103, 103, 103);
+  font-size: 12px;
+}
+.item-content.spoiler {
+  filter: blur(5px);
+}
+.icon-box {
+  display: flex;
+  border-top: 1px solid rgb(46, 46, 46);
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+}
+.icon-box button, .icon-box a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+}
+.icon-box button p, .icon-box a p {
+  width: 20px;
+  display: flex;
+  margin-bottom: 0;
+}
+
+/* carousel */
+.carousel {
+  margin-top: -70px;
+}
+.carousel h2 {
+  margin: 0;
+}
+.carousel .carousel__card {
+  text-decoration: none;
+  color: #fff;
+  position: relative;
+}
+
+.carousel h3 {
+  font-size: 16px;
+  margin: 0;
+  margin-bottom: 4px;
+}
+.carousel span {
+  color: #a7a7a7;
+  font-size: 14px;
+}
+.carousel .dragging .carousel__card {
+  pointer-events: none;
+}
+.carousel .carousel__wrapper {
+  position: relative;
+  margin-bottom: 24px;
+}
+@media only screen and (min-width: 1180px) {
+  .carousel .carousel__wrapper.has-arrows .carousel__content {
+    justify-content: start;
+  }
+}
+@media only screen and (min-width: 1180px) {
+  .carousel .carousel__wrapper.has-arrows .carousel__arrows {
+    display: flex;
+  }
+}
+.carousel .carousel__content {
+  justify-content: start;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  display: grid;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  padding: 0;
+  margin: 0;
+  grid-gap: 24px;
+  grid-auto-flow: column;
+  list-style: none;
+}
+.carousel .carousel__content::-webkit-scrollbar {
+  display: none;
+}
+.carousel .carousel__item .carousel__card {
+  width: 330px;
+  height: 330px;
+  display: flex;
+  justify-content: center;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  user-select: none;
+  margin: 10px 0px;
+  padding: 24px;
+  background-color: rgb(36, 35, 34);
+  border-radius: clamp(0px, ((100vw - 4px) - 100%) * 9999, 8px);
+  cursor: pointer;
+}
+.carousel .carousel__controls {
+  position: relative;
+  top: 170px;
+  left: -15px;
+  width: 105%;
+  display: flex;
+  justify-content: space-between;
+  z-index: 4;
+}
+.carousel .carousel__arrow {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  border: 0;
+  padding: 18px 16px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.728);
+}
+.carousel .carousel__arrow:before {
+  content: "";
+  background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNSIgaGVpZ2h0PSI5IiB2aWV3Qm94PSIwIDAgMTUgOSI+Cgk8cGF0aCBmaWxsPSIjMzMzMzMzIiBkPSJNNy44NjcgOC41NzRsLTcuMjItNy4yMi43MDctLjcwOEw3Ljg2NyA3LjE2IDE0LjA1Ljk4bC43MDYuNzA3Ii8+Cjwvc3ZnPgo=");
+  background-size: contain;
+  filter: brightness(2);
+  display: block;
+  width: 18px;
+  height: 12px;
+  cursor: pointer;
+}
+.carousel .carousel__arrow.arrow-prev:before {
+  transform: rotate(90deg);
+}
+.carousel .carousel__arrow.arrow-next:before {
+  transform: rotate(-90deg);
+}
+.carousel .carousel__arrow.disabled::before {
+  background: transparent;
+}
+.carousel .carousel__arrow.disabled {
+  background: transparent;
 }
 
 {% endblock style %}
@@ -282,126 +468,193 @@ a[data-tooltip][data-placement="top"]::after {
 {% block content %}
 <div class="movie-header">
 	<div class="movie-card-container">
-		<div class="movie-poster">
-      <img src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2{{resdatas.poster_path}}" alt="cover" class="cover"/>
+		<div class="backdrop">
+      
+		</div>
+    <div class="hero">
+      <div class="movie-poster">
+        <img src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2{{resdatas.poster_path}}" alt="cover" class="cover"/>
     </div>
-		<div class="hero">
-			<div class="details">
-        <div>
-          <div class="title1">
-            {{resdatas.title}}
-          </div>
-          <div class="title2">
-            {{resdatas.original_title}} ({{ resdatas.release_date|split:"-" }})
-          </div>
+    <div class="details">
+      <div>
+        <div class="title1">
+          {{resdatas.title}}
         </div>
-        <div class="movie-info">
-          {% for genre_id in resdatas.genre_ids %}
-            {% for data in datas %}
-              {% ifequal genre_id data.id %}
-                <span class="tag">{{data.name}}</span>
-              {% endifequal %}
-            {% endfor %}
+        <div class="title2">
+          {{resdatas.original_title}} ({{ resdatas.release_date|split:"-" }})
+        </div>
+      </div>
+      <div class="movie-info">
+        {% for genre_id in resdatas.genre_ids %}
+          {% for data in datas %}
+            {% ifequal genre_id data.id %}
+              <span class="tag">{{data.name}}</span>
+            {% endifequal %}
           {% endfor %}
+        {% endfor %}
+      </div>
+      <div class="movie-vote">
+        평균 ★{{resdatas.vote_average}} ({{resdatas.popularity}}%)
+      </div>
+      <div class="movie-tool">
+        <div class="create-ticket">
+          <a href="{% url 'cards:create' resdatas.id%}">포토티켓 만들기</a>
         </div>
-        <div class="movie-vote">
-          평균 ★{{resdatas.vote_average}} ({{resdatas.popularity}})
-        </div>
-        <div class="movie-tool">
-          <div class="create-review">
-            <p>평가하기</p>
-            <fieldset class="rating">
-              <input type="radio" id="star5" name="rating" value="10"/><label class="full" for="star5" title="Awesome - 5 stars"></label>
-              <input type="radio" id="star4half" name="rating" value="9"/><label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
-              <input type="radio" id="star4" name="rating" value="8" checked/><label class="full" for="star4" title="Pretty good - 4 stars"></label>
-              <input type="radio" id="star3half" name="rating" value="7"/><label class="half" for="star3half" title="Meh - 3.5 stars"></label>
-              <input type="radio" id="star3" name="rating" value="6"/><label class="full" for="star3" title="Meh - 3 stars"></label>
-              <input type="radio" id="star2half" name="rating" value="5"/><label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
-              <input type="radio" id="star2" name="rating" value="4"/><label class="full" for="star2" title="Kinda bad - 2 stars"></label>
-              <input type="radio" id="star1half" name="rating" value="3"/><label class="half" for="star1half" title="Meh - 1.5 stars"></label>
-              <input type="radio" id="star1" name="rating" value="2"/><label class="full" for="star1" title="Sucks big time - 1 star"></label>
-              <input type="radio" id="starhalf" name="rating" value="1"/><label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
-            </fieldset>
-          </div>
-          <div class="icon--group">
+        {% comment %} <div class="create-review">
+          <fieldset class="rating">
+            <input type="radio" id="star5" name="rating" value="10"/><label class="full" for="star5" title="Awesome - 5 stars"></label>
+            <input type="radio" id="star4half" name="rating" value="9"/><label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+            <input type="radio" id="star4" name="rating" value="8" checked/><label class="full" for="star4" title="Pretty good - 4 stars"></label>
+            <input type="radio" id="star3half" name="rating" value="7"/><label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+            <input type="radio" id="star3" name="rating" value="6"/><label class="full" for="star3" title="Meh - 3 stars"></label>
+            <input type="radio" id="star2half" name="rating" value="5"/><label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+            <input type="radio" id="star2" name="rating" value="4"/><label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+            <input type="radio" id="star1half" name="rating" value="3"/><label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+            <input type="radio" id="star1" name="rating" value="2"/><label class="full" for="star1" title="Sucks big time - 1 star"></label>
+            <input type="radio" id="starhalf" name="rating" value="1"/><label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+          </fieldset>
+        </div> {% endcomment %}
+        <div class="icon--group">
+          <form class="watched-forms" data-movie-id="{{ resdatas.id }}">
+            {% csrf_token %}
+            <button class="icon-btn" id="watched-{{ resdatas.id }}" {% if request.user.id in resdatas.watched %} style="color:#ffc700;" {% endif %}>
+              <div class="icon">
+                <svg viewBox="0 0 24 24" width="24" height="24"  fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Edit / Add_Plus"> <path id="Vector" d="M6 12H12M12 12H18M12 12V18M12 12V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+              </div>
+              <span>봤어요</span>
+            </button>
 
-            <form class="watched-forms" data-movie-id="{{ resdatas.id }}">
-              {% csrf_token %}
-              {% if request.user.id in resdatas.watched %}
-              <button class="icon-btn">
-                <div class="icon">
-                  <svg viewBox="0 0 24 24" width="24" height="24"  fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Edit / Add_Plus"> <path id="Vector" d="M6 12H12M12 12H18M12 12V18M12 12V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
-                </div>
-                <span id="watched-{{ resdatas.id }}">안봤어요</span>
-              </button>
-              {% else %}
-              <button class="icon-btn">
-                <div class="icon">
-                  <svg viewBox="0 0 24 24" width="24" height="24"  fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Edit / Add_Plus"> <path id="Vector" d="M6 12H12M12 12H18M12 12V18M12 12V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
-                </div>
-                <span id="watched-{{ resdatas.id }}">봤어요</span>
-              </button>
-              {% endif %}
-            </form>
-            <form class="watching-forms" data-movie-id="{{ resdatas.id }}">
-              {% csrf_token %}
-              {% if request.user.id in resdatas.watching %}
-              <button class="icon-btn" >
-                <div class="icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" class="injected-svg" data-src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDVDNyA1IDIuNzMgOC4xMSAxIDEyLjVDMi43MyAxNi44OSA3IDIwIDEyIDIwQzE3IDIwIDIxLjI3IDE2Ljg5IDIzIDEyLjVDMjEuMjcgOC4xMSAxNyA1IDEyIDVaTTEyIDE3LjVDOS4yNCAxNy41IDcgMTUuMjYgNyAxMi41QzcgOS43NCA5LjI0IDcuNSAxMiA3LjVDMTQuNzYgNy41IDE3IDkuNzQgMTcgMTIuNUMxNyAxNS4yNiAxNC43NiAxNy41IDEyIDE3LjVaTTEyIDkuNUMxMC4zNCA5LjUgOSAxMC44NCA5IDEyLjVDOSAxNC4xNiAxMC4zNCAxNS41IDEyIDE1LjVDMTMuNjYgMTUuNSAxNSAxNC4xNiAxNSAxMi41QzE1IDEwLjg0IDEzLjY2IDkuNSAxMiA5LjVaIiBmaWxsPSJjdXJyZW50Q29sb3IiLz4KPC9zdmc+Cg==" xmlns:xlink="http://www.w3.org/1999/xlink">
-                  <path d="M12 5C7 5 2.73 8.11 1 12.5C2.73 16.89 7 20 12 20C17 20 21.27 16.89 23 12.5C21.27 8.11 17 5 12 5ZM12 17.5C9.24 17.5 7 15.26 7 12.5C7 9.74 9.24 7.5 12 7.5C14.76 7.5 17 9.74 17 12.5C17 15.26 14.76 17.5 12 17.5ZM12 9.5C10.34 9.5 9 10.84 9 12.5C9 14.16 10.34 15.5 12 15.5C13.66 15.5 15 14.16 15 12.5C15 10.84 13.66 9.5 12 9.5Z" fill="currentColor"></path>
-                  </svg>
-                </div>
-                <span id="watching-{{ resdatas.id }}">안보는중</span>
-              </button>
-            
-              {% else %}
-              <button class="icon-btn" >
-                <div class="icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" class="injected-svg" data-src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDVDNyA1IDIuNzMgOC4xMSAxIDEyLjVDMi43MyAxNi44OSA3IDIwIDEyIDIwQzE3IDIwIDIxLjI3IDE2Ljg5IDIzIDEyLjVDMjEuMjcgOC4xMSAxNyA1IDEyIDVaTTEyIDE3LjVDOS4yNCAxNy41IDcgMTUuMjYgNyAxMi41QzcgOS43NCA5LjI0IDcuNSAxMiA3LjVDMTQuNzYgNy41IDE3IDkuNzQgMTcgMTIuNUMxNyAxNS4yNiAxNC43NiAxNy41IDEyIDE3LjVaTTEyIDkuNUMxMC4zNCA5LjUgOSAxMC44NCA5IDEyLjVDOSAxNC4xNiAxMC4zNCAxNS41IDEyIDE1LjVDMTMuNjYgMTUuNSAxNSAxNC4xNiAxNSAxMi41QzE1IDEwLjg0IDEzLjY2IDkuNSAxMiA5LjVaIiBmaWxsPSJjdXJyZW50Q29sb3IiLz4KPC9zdmc+Cg==" xmlns:xlink="http://www.w3.org/1999/xlink">
-                  <path d="M12 5C7 5 2.73 8.11 1 12.5C2.73 16.89 7 20 12 20C17 20 21.27 16.89 23 12.5C21.27 8.11 17 5 12 5ZM12 17.5C9.24 17.5 7 15.26 7 12.5C7 9.74 9.24 7.5 12 7.5C14.76 7.5 17 9.74 17 12.5C17 15.26 14.76 17.5 12 17.5ZM12 9.5C10.34 9.5 9 10.84 9 12.5C9 14.16 10.34 15.5 12 15.5C13.66 15.5 15 14.16 15 12.5C15 10.84 13.66 9.5 12 9.5Z" fill="currentColor"></path>
-                  </svg>
-                </div>
-                <span id="watching-{{ resdatas.id }}">보는중</span>
-              </button>
-            {% endif %}
           </form>
-
+          <form class="watching-forms" data-movie-id="{{ resdatas.id }}">
+            {% csrf_token %}
+            <button class="icon-btn"  id="watching-{{ resdatas.id }}" {% if request.user.id in resdatas.watching %} style="color:#ffc700;" {% endif %}>
+              <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" class="injected-svg" data-src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDVDNyA1IDIuNzMgOC4xMSAxIDEyLjVDMi43MyAxNi44OSA3IDIwIDEyIDIwQzE3IDIwIDIxLjI3IDE2Ljg5IDIzIDEyLjVDMjEuMjcgOC4xMSAxNyA1IDEyIDVaTTEyIDE3LjVDOS4yNCAxNy41IDcgMTUuMjYgNyAxMi41QzcgOS43NCA5LjI0IDcuNSAxMiA3LjVDMTQuNzYgNy41IDE3IDkuNzQgMTcgMTIuNUMxNyAxNS4yNiAxNC43NiAxNy41IDEyIDE3LjVaTTEyIDkuNUMxMC4zNCA5LjUgOSAxMC44NCA5IDEyLjVDOSAxNC4xNiAxMC4zNCAxNS41IDEyIDE1LjVDMTMuNjYgMTUuNSAxNSAxNC4xNiAxNSAxMi41QzE1IDEwLjg0IDEzLjY2IDkuNSAxMiA5LjVaIiBmaWxsPSJjdXJyZW50Q29sb3IiLz4KPC9zdmc+Cg==" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <path d="M12 5C7 5 2.73 8.11 1 12.5C2.73 16.89 7 20 12 20C17 20 21.27 16.89 23 12.5C21.27 8.11 17 5 12 5ZM12 17.5C9.24 17.5 7 15.26 7 12.5C7 9.74 9.24 7.5 12 7.5C14.76 7.5 17 9.74 17 12.5C17 15.26 14.76 17.5 12 17.5ZM12 9.5C10.34 9.5 9 10.84 9 12.5C9 14.16 10.34 15.5 12 15.5C13.66 15.5 15 14.16 15 12.5C15 10.84 13.66 9.5 12 9.5Z" fill="currentColor"></path>
+                </svg>
+              </div>
+              <span id="watching-{{ resdatas.id }}">보는중</span>
+            </button>
+          </form>
           <form class="interest-forms" data-movie-id="{{ resdatas.id }}">
             {% csrf_token %}
-            {% if request.user.id in resdatas.interest %}
-            <button class="icon-btn">
+            <button class="icon-btn" id="interest-{{ resdatas.id }}" {% if request.user.id in resdatas.watching %} style="color:#ffc700;" {% endif %}>
               <div class="icon">
                 <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Check"> <path id="Vector" d="M6 12L10.2426 16.2426L18.727 7.75732" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
               </div>
-              <span id="interest-{{ resdatas.id }}">보기싫어요</span>
+              <span>보고싶어요</span>
             </button>
-            {% else %}
-            <button class="icon-btn">
-              <div class="icon">
-                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Check"> <path id="Vector" d="M6 12L10.2426 16.2426L18.727 7.75732" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
-              </div>
-              <span id="interest-{{ resdatas.id }}">보고싶어요</span>
-            </button>
-            {% endif %}
           </form>
-          </div>
         </div>
-			</div>
-			<!-- end details -->
-		</div>
+      </div>
+    </div>
+    </div>
+    
 		<!-- end hero -->
 	</div>
 	<!-- end container -->
 </div>
 
 <div class="movie-card">
+  <div class="basic-info">
+    <div class="section-title">
+      <h3>기본 정보</h3>
+    </div>
+    <div class="info-desc">
+      <p>원제</p>
+      <p>2023 · 미국 · 액션</p>
+      <p>러닝 타임 · 15세</p>
+      <p>{{resdatas.overview}}</p>
+    </div>
+  </div>
+  <hr>
+  <div class="movie-review">
+    <div class="section-title">
+      <div>        
+        <h3>리뷰</h3>
+        {% if reviews %}
+          <p>{{ reviews|length }}개</p>
+        {% endif %}
+      </div>
+      <a href="{% url 'reviews:create' resdatas.id%}">리뷰 작성하기</a>
+    </div>
+    <div class="review-container">
+      <div class="carousel">
+        {% comment %} 리뷰 {% endcomment %}
+        <div class="carousel__wrapper">
+          {% if reviews|length > 1 %}
+          <div class="carousel__controls">
+            <button class="carousel__arrow disabled arrow-prev"></button>
+            <button class="carousel__arrow arrow-next"></button>
+          </div>
+          {% else %}
+          <div style="height:60px;">-</div>
+          {% endif %}
+
+          <ul class="carousel__content">
+            {% for review in reviews %}
+              <li class="carousel__item">
+                <div class="carousel__card">
+                  <div class="review-item">
+                    <div class="item-header">
+                      <a class="user-info" href="{% url 'accounts:profile' review.user.email %}">
+                        <img src="{{review.user.profile_image.url}}" alt="{{review.user.nickname}}">
+                        <p>{{ review.user.nickname }}</p>
+                      </a>
+                      <p class="item-data">{{ review.created_at }}</p>
+                    </div>
+                    {% if review.spoiler %}
+                    <a href="{% url 'reviews:detail' review.pk %}" class="spoiler-link">
+                      <div class="spoiler-prevent">
+                        *스포일러가 포함된 리뷰입니다. 확인하려면 클릭해주세요.
+                      </div>
+                      <div class="item-content spoiler">
+                        {{ review.content }}
+                      </div>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'reviews:detail' review.pk %}">
+                      <div class="item-content">
+                        {{ review.content }}
+                      </div>
+                    </a>
+                    {% endif %}
+                    <div class="icon-box">
+                      <form action="#" class="review-like-form" data-review-id="{{ review.pk }}">
+                        {% csrf_token %}
+                        <button class="like" id="like-{{ review.pk }}"  {% if not user.is_authenticated or user == review.user %}disabled{% endif %}>
+                          {% if request.user in review.like_users.all %}
+                            <p class="icon"><svg viewBox="0 0 24 24" fill="#ff4d4d" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ff4d4d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg></p>
+                          {% else %}
+                            <p class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg></p>
+                          {% endif %}
+                          <p class="review-like-count">{{ review.like_users.all|length}}</p>
+                        </button>  
+                      </form>   
+                      <a class="comment" href="{% url 'reviews:detail' review.pk %}">
+                        <p class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_429_11233)"> <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 13.4876 3.36093 14.891 4 16.1272L3 21L7.8728 20C9.10904 20.6391 10.5124 21 12 21Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> <defs> <clipPath id="clip0_429_11233"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg></p>
+                        <p>{{ review.comment_set.all|length }}</p>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+          </div>
+        </div>
+    </div>
+
+  </div>
+</div>
+<a href="{% url 'movies:index' %}" id="back">뒤로가기</a>
+{% comment %} <div class="movie-card">
     {{resdatas.overview}}
   <hr>
   <a href="{% url 'reviews:create' resdatas.id%}">CREATE REVIEW</a>
 
-<h4>게시글 목록</h4>
-{% if reviews %}
+  <h4>게시글 목록</h4>
+  {% if reviews %}
     <p>{{ reviews|length }}개의 게시글이 있습니다.</p>
   {% endif %}
   <ul>
@@ -459,19 +712,40 @@ a[data-tooltip][data-placement="top"]::after {
     </div>
     {% endfor %}
   </ul>
-  <a href="" id="back">뒤로가기</a>
-</div>
-
-
-
-
-
+  <a href="{% url 'movies:index' %}" id="back">뒤로가기</a>
+</div> {% endcomment %}
 {% endblock content %}
 
+{% comment %} {% for genre_id in resdatas.genre_ids %}
+  {% for data in datas %}
+    {% ifequal genre_id data.id %}
+      {{data.name}}
+    {% endifequal %}
+  {% endfor %}
+{% endfor %} {% endcomment %}
+{% comment %} <a href="{% url 'movies:index' %}">뒤로가기</a> {% endcomment %}
 
 
 {% block script %}
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script type="module">
+  const moviePk = location.href.split('/')[4]
+  const options = {
+    method: 'GET',
+    url: `https://api.themoviedb.org/3/movie/${moviePk}?api_key=f0ee4eefc21a888bf1229e2d951df4e6&language=ko`,
+    headers: {
+      accept: 'application/json',
+    }
+  };
+  axios
+    .request(options)
+    .then(function (response) {
+      console.log(response.data.backdrop_path);
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
+</script>
 <script>
   const forms = document.querySelectorAll('.like-forms');
   const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
@@ -504,7 +778,6 @@ a[data-tooltip][data-placement="top"]::after {
   // watching
   const watching_forms = document.querySelectorAll('.watching-forms');
  
-
   watching_forms.forEach((form) => {
     form.addEventListener('click', function (event) {
       event.preventDefault()
@@ -518,10 +791,10 @@ a[data-tooltip][data-placement="top"]::after {
         const isWatching = response.data.is_watching
         const WatchingBtn = document.querySelector(`#watching-${movieId}`);
         if (isWatching === true) {  
-          WatchingBtn.innerText = '안보는중'
+          WatchingBtn.style = "color:#ffc700;"
         } else {
-          WatchingBtn.innerText = '보는중'
-      }
+          WatchingBtn.style = "color:white;"
+        }
     })
     })
   })
@@ -542,10 +815,10 @@ a[data-tooltip][data-placement="top"]::after {
         const isWatched = response.data.is_watched
         const WatchedBtn = document.querySelector(`#watched-${movieId}`);
         if (isWatched === true) {  
-          WatchedBtn.innerText = '안봤어요'
+          WatchedBtn.style = "color:#ffc700;"
         } else {
-          WatchedBtn.innerText = '봤어요'
-      }
+          WatchedBtn.style = "color:white;"
+        }
     })
     })
   })
@@ -566,9 +839,10 @@ a[data-tooltip][data-placement="top"]::after {
           const isInterest = response.data.is_interest
           const InterestBtn = document.querySelector(`#interest-${movieId}`);
           if (isInterest === true) {  
-            InterestBtn.innerText = '보기싫어요'
+            InterestBtn.style = "color:#ffc700;"
           } else {
-            InterestBtn.innerText = '보고싶어요'
+            InterestBtn.style = "color:white;"
+            
         }
       })
       })
@@ -579,5 +853,128 @@ a[data-tooltip][data-placement="top"]::after {
       history.back()
     })
 </script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const spoilerLinks = document.querySelectorAll(".spoiler-link");
+    const reviewItems = document.querySelectorAll(".review-item");
 
+    spoilerLinks.forEach(function(item) {
+      item.addEventListener("click", function() {
+        if (item.classList.contains('spoiler-link')){
+          event.preventDefault();
+          const itemMessage = item.querySelector(".spoiler-prevent");
+          const itemContent = item.querySelector(".item-content");
+          itemContent.classList.remove("spoiler");
+          itemMessage.style.display = "none";
+          item.classList.remove("spoiler-link");
+        }
+      });
+    });
+  });
+
+  window.addEventListener( 'load', () => {
+    const COMPONENT_SELECTOR = '.carousel__wrapper';
+    const CONTROLS_SELECTOR = '.carousel__controls';
+    const CONTENT_SELECTOR = '.carousel__content';
+
+    const components = document.querySelectorAll( COMPONENT_SELECTOR );
+
+    for ( let i = 0; i < components.length; i++ ) {
+      const component = components[ i ];
+      const content = component.querySelector( CONTENT_SELECTOR );
+      let x = 0;
+      let mx = 0;
+      const maxScrollWidth = content.scrollWidth - content.clientWidth / 2 - content.clientWidth / 2;
+      const nextButton = component.querySelector( '.arrow-next' );
+      const prevButton = component.querySelector( '.arrow-prev' );
+
+      if ( maxScrollWidth !== 0 ) {
+        component.classList.add( 'has-arrows' );
+      }
+
+      if ( nextButton ) {
+        nextButton.addEventListener( 'click', function ( event ) {
+          event.preventDefault();
+          x = content.clientWidth / 2 + content.scrollLeft + 0;
+          content.scroll( {
+            left: x,
+            behavior: 'smooth',
+          } );
+        } );
+      }
+
+      if ( prevButton ) {
+        prevButton.addEventListener( 'click', function ( event ) {
+          event.preventDefault();
+          x = content.clientWidth / 2 - content.scrollLeft + 0;
+          content.scroll( {
+            left: -x,
+            behavior: 'smooth',
+          } );
+        } );
+      }
+
+      /**
+      * Mouse move handler.
+      *
+      * @param {object} e event object.
+      */
+      const mousemoveHandler = ( e ) => {
+        const mx2 = e.pageX - content.offsetLeft;
+        if ( mx ) {
+          content.scrollLeft = content.sx + mx - mx2;
+        }
+      };
+
+      /**
+      * Mouse down handler.
+      *
+      * @param {object} e event object.
+      */
+      const mousedownHandler = ( e ) => {
+        content.sx = content.scrollLeft;
+        mx = e.pageX - content.offsetLeft;
+        content.classList.add( 'dragging' );
+      };
+
+      /**
+      * Scroll handler.
+      */
+      const scrollHandler = () => {
+        toggleArrows();
+      };
+
+      /**
+      * Toggle arrow handler.
+      */
+      const toggleArrows = () => {
+        console.log(content.scrollLeft)
+        if ( content.scrollLeft > maxScrollWidth - 10 ) {
+          nextButton.classList.add( 'disabled' );
+        } else if ( content.scrollLeft < 10 ) {
+          prevButton.classList.add( 'disabled' );
+        } else {
+          nextButton.classList.remove( 'disabled' );
+          prevButton.classList.remove( 'disabled' );
+        }
+      };
+
+      /**
+      * Mouse up handler.
+      */
+      {% comment %} const mouseupHandler = () => {
+        mx = 0;
+        content.classList.remove( 'dragging' );
+      };
+
+      content.addEventListener( 'mousemove', mousemoveHandler );
+      content.addEventListener( 'mousedown', mousedownHandler );
+      if ( component.querySelector( CONTROLS_SELECTOR ) !== undefined ) {
+        content.addEventListener( 'scroll', scrollHandler );
+      }
+      content.addEventListener( 'mouseup', mouseupHandler );
+      content.addEventListener( 'mouseleave', mouseupHandler ); {% endcomment %}
+    }
+  } );
+</script>
 {% endblock script %}
