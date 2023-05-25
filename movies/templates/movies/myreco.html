@@ -3,9 +3,8 @@
 
 {% block style %}
 .movie-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   width: fit-content;
   margin: 0 auto;
 }
