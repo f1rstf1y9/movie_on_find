@@ -569,7 +569,7 @@ a[data-tooltip][data-placement="top"]::after {
         {% for genre_id in resdatas.genre_ids %}
           {% for data in datas %}
             {% ifequal genre_id data.id %}
-              <span class="tag">{{data.name}}</span>
+              <a href="{% url 'movies:genre_sort' genre_id 1 1 %}" class="tag">{{data.name}}</a>
             {% endifequal %}
           {% endfor %}
         {% endfor %}

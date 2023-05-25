@@ -772,7 +772,7 @@ h1 {
         <button class="carousel__arrow arrow-next"></button>
       </div>
       <ul class="carousel__content">
-        {% for card in cards %}
+        {% for card in cards reversed %}
         <li class="carousel__item" onclick="moveTo({{card.pk}})">
           <div class="item-inner photo-ticket-inner">
             <a class="item-front" href="{% url 'cards:detail' card.pk %}">
@@ -820,7 +820,7 @@ h1 {
   <h1>최근 생성된 포토티켓북</h1>
   <div class="o-wrapper mx-md-2">
     <div class="c-slider">
-      {% for collection in collections|slice:":10" %}
+      {% for collection in collections|slice:":10" reversed %}
       <div class="c-slide c-slide--{{collection.pk}}" style="border-left: 10px solid {{collection.collection_color}};" onclick="moveToCollection({{collection.pk}})">
         <div class="c-slide__content">
           <figure class="c-slide__image-wrapper">

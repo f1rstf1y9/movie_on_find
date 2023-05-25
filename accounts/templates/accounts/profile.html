@@ -467,7 +467,7 @@
                     <span class="link-label">좋아요한 리뷰</span>
                   </div>
                   <div class="link-action-wrap">
-                    <span class="link-count">{{person.like_review.all|length}}</span>
+                    <span class="link-count">{{person.like_reivew.all|length}}</span>
                     <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" preserveAspectRatio="none" class=""><path fill-rule="evenodd" clip-rule="evenodd" d="M5.293 3.05a1 1 0 000 1.415L8.828 8l-3.535 3.536a1 1 0 101.414 1.414l4.23-4.23a1 1 0 00.013-1.427L6.707 3.051a1 1 0 00-1.414 0z" fill="#586A85"></path></svg>
                   </div>
                 </a>
@@ -485,7 +485,7 @@
                     <button class="carousel__arrow arrow-next"></button>
                   </div>
                   <ul class="carousel__content">
-                    {% for card in person.card_set.all %}
+                    {% for card in person.card_set.all reversed %}
                     <li class="carousel__item" onclick="moveTo({{card.pk}})">
                       <div class="item-inner photo-ticket-inner">
                         <a class="item-front" href="{% url 'cards:detail' card.pk %}">
@@ -539,7 +539,7 @@
                 </header>
                 
                 <div class="c-slider">
-                  {% for collection in person.card_collection_set.all %}
+                  {% for collection in person.card_collection_set.all reversed %}
                   <div class="c-slide c-slide--{{collection.pk}}" style="border-left: 10px solid {{collection.collection_color}};" onclick="moveToCollection({{collection.pk}})">
                     <div class="c-slide__content">
                       <figure class="c-slide__image-wrapper">
