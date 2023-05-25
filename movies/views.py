@@ -268,7 +268,8 @@ def search(request):
     context={
         'form':form,
         'movies':movies,
-        'blind':blind
+        'blind':blind,
+        'keyword':keyword,
     }
     return render(request,'movies/search.html',context)
 

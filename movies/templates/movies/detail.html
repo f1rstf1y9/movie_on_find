@@ -561,9 +561,17 @@ a[data-tooltip][data-placement="top"]::after {
       <h3>기본 정보</h3>
     </div>
     <div class="info-desc">
-      <p>원제</p>
-      <p>2023 · 미국 · 액션</p>
-      <p>러닝 타임 · 15세</p>
+      <p>{{resdatas.original_title}}</p>
+      <p>{{resdatas.release_date|split:"-"}} 
+        {% for genre_id in resdatas.genre_ids %}
+        {% for data in datas %}
+          {% ifequal genre_id data.id %}
+          · {{data.name}}
+          {% endifequal %}
+        {% endfor %}
+        {% endfor %}
+      </p>
+      <p>{{resdatas.runtime}}분</p>
       <p>{{resdatas.overview}}</p>
     </div>
   </div>
@@ -639,6 +647,8 @@ a[data-tooltip][data-placement="top"]::after {
                   </div>
                 </div>
               </li>
+            {% empty %}
+              리뷰가 없어요! 가장 먼저 리뷰를 작성해보세요😊
             {% endfor %}
           </ul>
           </div>

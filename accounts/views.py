@@ -136,8 +136,12 @@ def delete(request):
 def profile(request, username):
     User = get_user_model()
     person = User.objects.get(email=username)
+    total_watched_time = 0
+    for movie in person.watched_movies.all():
+        total_watched_time += movie.runtime
     context = {
         'person': person,
+        'total_watched_time': total_watched_time,
     }
     return render(request, 'accounts/profile.html', context)
 

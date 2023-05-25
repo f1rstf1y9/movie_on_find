@@ -238,7 +238,7 @@ li {
           <div class="movie_header">
             <img class="locandina" src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/{{movie.poster_path}}" alt="">
             <h3>{{movie.title}}</h3>
-            <h5>{{movie.release_date}}</h5>
+            <h5>{{movie.release_date|split:"-"}} · {{movie.runtime}}분</h5>
             <span class="minutes">★ {{ movie.vote_average }}</span>
             <p class="type">
               {% for genre_id in resdata.genre_ids %}

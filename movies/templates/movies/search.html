@@ -274,7 +274,7 @@ li {
 <div class="container-area">
     {% if blind.ans %}
     {% if movies|length > 0 %}
-    <h1><b>{{movies|length}}</b>개의 검색결과가 있습니다.</h1>
+    <h1><b>'{{keyword}}'</b>에 대해 <b>{{movies|length}}</b>개의 검색결과가 있습니다.</h1>
     {% endif %}
     <ul class="movie-card-list">
         {% for movie in movies %}
@@ -285,7 +285,7 @@ li {
             <div class="movie_header">
                 <img class="locandina" src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/{{movie.poster_path}}" alt="">
                 <h3>{{movie.title}}</h3>
-                <h5>{{movie.release_date}}</h5>
+                <h5>{{movie.release_date|split:"-"}} · {{movie.runtime}}분</h5>
                 <span class="minutes">★ {{ movie.vote_average }}</span>
                 <p class="type">
                 {% for genre_id in resdata.genre_ids %}

@@ -120,7 +120,7 @@ p {
   }
 
   .info_section {
-    padding-top: 40px;
+    padding-top: 90px;
     padding-left: calc(100vw/4);
     background: linear-gradient(to right, rgb(44, 44, 44) 50%, transparent 100%);
   }
@@ -245,14 +245,35 @@ p {
   padding-top: 260px;
 }
 
+.section-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.section-header a {
+  padding-right: 20px;
+  color: #fff;
+}
+
 .title h3 {
   font-size: 18px;
   font-weight: 800;
   text-decoration: none;
+  margin-bottom: 0;
+}
+
+.sub-title {
+  font-size: 16px;
+  color: gray;
 }
 
 .vote-average {
-  font-size: 16px;
+  font-size: 14px;
+  background-color: #ffd700;
+  padding: 2px 5px;
+  border-radius: 2px;
+  width: 48px;
+  color: black;
 }
 
 .genre {
@@ -649,7 +670,7 @@ h1 {
             <div class="movie_header">
               <img class="locandina" src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/{{resdata.poster_path}}" alt="{{resdata.title}}"/>
               <h1>{{resdata.title}}</h1>
-              <h4>{{resdata.release_date}}</h4>
+              <h4>{{resdata.release_date|split:"-"}} · {{resdata.runtime}}분</h4>
               <span class="minutes">★ {{ resdata.vote_average }}</span>
               <p class="type">
                 {% for genre_id in resdata.genre_ids %}
@@ -702,7 +723,10 @@ h1 {
   
   {% if rec %}
   <div class="recommend">
-    <h1>{{user.nickname}}님을 위한 추천 영화</h1>
+    <div class="section-header">
+      <h1>{{user.nickname}}님을 위한 추천 영화</h1>
+      <a href="{%url 'movies:my_reco' num=1%}">더보기</a>
+    </div>
     <div class="movie-list">
       {% for resdata in rec|slice:":8"%}
       <a href="{% url 'movies:detail' resdata.id %}" class="movie-item">
@@ -713,7 +737,10 @@ h1 {
           <div class="title">
             <h3>{{ resdata.title }}</h3>
           </div>
-          <div class="vote-average">{{ resdata.vote_average }}</div>
+          <div class="sub-title">
+            {{resdata.original_title}} ({{ resdata.release_date|split:"-" }})
+          </div>
+          <div class="vote-average">★ {{ resdata.vote_average }}</div>
           <div class="genre">
             {% for genre_id in resdata.genre_ids %}
             {% for data in datas %}
@@ -724,15 +751,10 @@ h1 {
             {% endfor %}
           </div>
           <div class="overview">{{ resdata.overview }}</div>
-          <div class="movie-button">
-            <button class="like btn-like">보고싶어요</button>
-            <button class="comment">댓글</button>
-          </div>
         </div>
       </a>
       {% endfor %}
     </div>
-    <a href="{%url 'movies:my_reco' num=1%}">더보기</a>
   </div>
   {% else %}
   <hr>
@@ -812,7 +834,7 @@ h1 {
           <div class="c-slide__user">
             <p>by {{collection.user.nickname}}</p>
           </div>
-          <a href="/" class="c-slide__link">
+          <a href="{% url 'card_collections:detail' collection.pk %}" class="c-slide__link">
             <svg width="11" height="18" xmlns="http://www.w3.org/2000/svg">
               <path d="M10.328 9.036a.543.543 0 0 1 .172.395c0 .15-.057.281-.172.396L2.324  17.83a.543.543 0 0 1-.395.172.543.543 0 0 1-.396-.172l-.858-.859a.543.543 0 0 1-.172-.395c0-.149.057-.28.172-.395l6.75-6.75L.675 2.68a.543.543 0 0 1-.172-.395c0-.15.057-.28.172-.395l.858-.86A.543.543 0 0 1 1.93.86c.148 0 .28.057.395.172l8.004 8.004z" fill="#000" fill-rule="evenodd"/>
             </svg>
