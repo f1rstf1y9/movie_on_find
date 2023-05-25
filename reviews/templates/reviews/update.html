@@ -1,4 +1,11 @@
 {% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block style %}
+.container-area .form-group {
+  margin-bottom: 20px;
+}
+{% endblock style %}
 
 {% block content %}
 <div id="header" class="sub-header">
@@ -15,8 +22,8 @@
 <div class="container-area">
   <form action="{% url 'reviews:update' review.pk %}" method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit">
+    {% bootstrap_form form %}
+    <input type="submit" class="btn btn-warning" value="리뷰 수정하기">
   </form>
 </div>
 {% endblock content %}

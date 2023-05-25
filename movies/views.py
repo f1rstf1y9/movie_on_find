@@ -24,7 +24,7 @@ from django.template.defaulttags import register
 def split(value, key): 
     return value.split(key)[0]
 
-my_id=''
+my_id='f0ee4eefc21a888bf1229e2d951df4e6'
 def get_top_rated_data():
     result=[]
     for page in range(1,51):
@@ -60,7 +60,7 @@ def get_top_rated_data():
 
 # get_object_or_404, get_list_or_404(Movie)
 def get_movie_video():
-    movie=get_list_or_404(Movie)
+    movie=Movie.objects.all()
     for i in movie:
         url='https://api.themoviedb.org/3/movie/'+str(i.pk)+'/videos?api_key='+my_id+'&language=ko'
         response=requests.get(url).json()
@@ -73,7 +73,7 @@ def get_movie_video():
             i.save()
 
 def get_movie_runtime():
-    movie=get_list_or_404(Movie)
+    movie=Movie.objects.all()
     for i in movie:
         url1='https://api.themoviedb.org/3/movie/'+str(i.pk)+'?api_key='+my_id+'&language=ko'
         response1=requests.get(url1).json()
@@ -96,6 +96,9 @@ def recommend(id):
 
 @api_view(['GET'])
 def index(request):
+    # data_sort()
+    # get_movie_video()
+    # get_movie_runtime()
     movie=Movie.objects.all().order_by('-vote_average')[:10]
     genre=Genre.objects.values()
     serializer=MovieListSerializer(movie,many=True)
@@ -128,8 +131,9 @@ def my_reco(request,num):
             D=[]
             for j in i.genres.all().values():
                 D.append(j['name'])
-            a=set.intersection(set(D),rec)
-            if len(a)>=len(D)-1 and len(a)!=0:
+            # a=set.intersection(set(D),rec)
+            a=set(D)&rec
+            if len(a)>=2 and len(a)!=0:
                 L.append(i)
     else:
         L = []

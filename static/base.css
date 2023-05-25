@@ -46,6 +46,11 @@ img {
 .navbar__profile {
 
 }
+
+.search-box {
+  height:40px;
+}
+
 form {
   display: inline;
 }

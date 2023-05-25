@@ -1540,7 +1540,7 @@ p {
             <a href="{% url 'movies:sort' pk=1 num=1 %}" class="btn btn-primary">평점순</a>
             <a href="{% url 'movies:sort' pk=2 num=1 %}" class="btn btn-primary">인기도순</a>
             <a href="{% url 'movies:sort' pk=3 num=1 %}" class="btn btn-primary">개봉일순</a>
-            <a href="" id="back" class="btn btn-secondary">뒤로가기</a>
+            {% comment %} <a href="" id="back" class="btn btn-secondary">뒤로가기</a> {% endcomment %}
         </div>
     </div>
     <hr>

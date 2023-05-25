@@ -277,7 +277,6 @@ button {
     <h2>{{card_collection.description}}</h2>
     <p>좋아요 <span id="like-count">{{ card_collection.like_users.all|length }}</span>개</p>
   </div>
-  <hr>
   <div>
     <form class="like-forms" data-collection-id="{{ card_collection.id }}">
       {% csrf_token %}
