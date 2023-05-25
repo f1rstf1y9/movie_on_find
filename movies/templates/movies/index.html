@@ -717,7 +717,7 @@ h1 {
   <br>
   <div class="genre-container">
     {% for genre_id in datas %}
-      <a href="{% url 'movies:genre_sort' genre_pk=genre_id.id n=1 %}" class="btn btn-outline-primary">{{genre_id.name}}</a>
+      <a href="{% url 'movies:genre_sort' genre_pk=genre_id.id n=1 m=1 %}" class="btn btn-outline-primary">{{genre_id.name}}</a>
     {% endfor %}
   </div>  
   

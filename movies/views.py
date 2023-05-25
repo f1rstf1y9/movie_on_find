@@ -19,6 +19,9 @@ from accounts.models import User
 from django.db import transaction
 from movies.forms import Searchform
 from django.template.defaulttags import register
+from django.db.models import FloatField
+from django.db.models.functions import Cast
+
 
 @register.filter(name='split')
 def split(value, key): 
@@ -172,7 +175,7 @@ def sort(request,pk,num):
     #인기도순
     elif pk==2:
         print(pk)
-        movie=Movie.objects.all().order_by('-popularity')[5*(num-1):5*num]
+        movie=Movie.objects.all().order_by(Cast('popularity', FloatField()).desc())[5*(num-1):5*num]
     #개봉일순
     elif pk==3:
         print(pk)
@@ -188,7 +191,7 @@ def sort(request,pk,num):
     return render(request,'movies/sort.html',{'resdatas':serialized_data,'datas':genre,'total':A,'pk':pk,'G':G})
 
 @api_view(['GET'])
-def genre_sort(request,genre_pk,n):
+def genre_sort(request,genre_pk,n,m):
     # 모험
     if genre_pk==12:
         movie=Movie.objects.filter(genres=genre_pk)
@@ -250,9 +253,15 @@ def genre_sort(request,genre_pk,n):
     for i in range(1,len(movie)//20+2):
         A.append(i)
     genre=Genre.objects.values()
-    serializer=MovieListSerializer(movie.order_by('-vote_average'),many=True)
+    if m==1:
+        serializer=MovieListSerializer(movie.order_by('-vote_average'),many=True)
+    elif m==2:
+        serializer=MovieListSerializer(movie.order_by(Cast('popularity', FloatField()).desc()),many=True)
+    elif m==3:
+        serializer=MovieListSerializer(movie.order_by('-release_date'),many=True)
     serialized_data = serializer.data
-    return render(request,'movies/sort.html',{'resdatas':serialized_data[5*(n-1):5*n],'datas':genre,'total':A,'pk':n,'genre_id':genre_pk})
+    # print(serialized_data)
+    return render(request,'movies/sort.html',{'resdatas':serialized_data[5*(n-1):5*n],'datas':genre,'total':A,'pk':n,'genre_id':genre_pk,'m':m})
 
 
 @api_view(['GET'])
@@ -268,8 +277,7 @@ def search(request):
     context={
         'form':form,
         'movies':movies,
-        'blind':blind,
-        'keyword':keyword,
+        'blind':blind
     }
     return render(request,'movies/search.html',context)
 

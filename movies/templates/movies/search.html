@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
+{% load static %}
 
 {% block style %}
+body {
+  background-image: url("{% static 'image/search_tile.png' %}");
+  width: 100%;
+  min-height: 100vh;
+}
 li {
     list-style: none;
 }
