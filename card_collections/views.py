@@ -8,7 +8,13 @@ from django import forms
 from card_collections.forms import CollectionForm
 from django.http import JsonResponse
 import random
+from django.template.defaulttags import register
 # Create your views here.
+
+@register.filter(name='to_int')
+def to_int(value): 
+    return int(value)
+
 @require_safe
 def index(request):
     card_collections=Card_collection.objects.all()
