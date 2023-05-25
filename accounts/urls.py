@@ -21,4 +21,5 @@ urlpatterns = [
     path('profile/<username>/watching', views.watching, name="watching"),
     path('profile/<username>/watched', views.watched, name="watched"),
     path('profile/<username>/reviews', views.reviews, name="reviews"),
+    path('profile/<username>/like_reviews', views.like_reviews, name="like_reviews"),
 ]

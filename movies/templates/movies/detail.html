@@ -8,7 +8,9 @@
 *, *:before, *:after {
   box-sizing: border-box;
 }
-
+img {
+  object-fit: cover;
+}
 a {
   color: white;
   text-decoration: none;
@@ -272,7 +274,7 @@ a[data-tooltip][data-placement="top"]::after {
   display: flex;
   justify-content: space-between;
 }
-.movie-card .section-title div {
+.movie-card .section-title > div {
   display: flex;
   gap: 10px;
 }
@@ -306,7 +308,8 @@ a[data-tooltip][data-placement="top"]::after {
   gap: 15px;
 }
 .user-info > img {
-  width: 30px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background-color: #fff;
 }
@@ -461,6 +464,84 @@ a[data-tooltip][data-placement="top"]::after {
 }
 .carousel .carousel__arrow.disabled {
   background: transparent;
+}
+
+/**/
+.o-wrapper {
+  margin: auto;
+  margin-top: 36px;
+  overflow: hidden;
+  padding-bottom: 50px;
+}
+
+.c-slider {
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+  width: max-content%;
+}
+
+.c-slide {
+  font-weight: normal;
+  margin-right: 20px;
+  background: #FFFFFF;
+  border-radius: 3px;
+  border-left: 10px solid #FCEDB7;
+  padding: 20px; 
+  box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.15);
+  
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  overflow: hidden;
+  width: 180px;
+  height: 200px;
+}
+
+.c-slide__title {
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.c-slide__content {
+  width: 100%;
+}
+
+.c-slide__actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.c-slide__image-wrapper {
+  margin: 0;
+  padding: 0;
+  border-radius: 3px;
+  overflow: hidden;
+  height: 0;
+  padding-top: 80%;
+  position: relative;
+}
+
+.c-slide__image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  max-width: 100%;
+  min-height: 100%;
+  margin: auto;
+  padding: 0;
+  transform: translate3d(-50%, -50%, 0);
+}
+
+.c-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 {% endblock style %}
@@ -653,76 +734,48 @@ a[data-tooltip][data-placement="top"]::after {
           </div>
         </div>
     </div>
-
+  </div>
+  <hr>
+  <div class="movie-book">
+    <div class="section-title">
+      <div>        
+        <h3>이 영화가 포함된 포토티켓북</h3>
+      </div>
+    </div>
+    <div class="ticketbook-container">
+      <div class="o-wrapper mx-md-2">
+        <div class="c-slider">
+          {% for card in cards %}
+          {% for collection in card.collections.all %}
+          <div class="c-slide c-slide--{{collection.pk}}" style="border-left: 10px solid {{collection.collection_color}};" onclick="moveToCollection({{collection.pk}})">
+            <div class="c-slide__content">
+              <figure class="c-slide__image-wrapper">
+                {% with collection.cards.all|first as first_card %}{{ first_card.movie.poster_path }}{% endwith %}
+                {{collection.cards.all.0}}
+                <img class="c-slide__image" src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/{{collection.cards.all.0.movie.poster_path}}" alt="">
+              </figure>
+              <h3 class="c-slide__title" style="color:black">{{ collection.title }}</h3>
+            </div>
+            
+            <div class="c-slide__actions">
+              <div class="c-slide__heart">
+              </div>
+              <a href="{% url 'card_collections:detail' collection.pk %}" class="c-slide__link">
+                <svg width="11" height="18" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10.328 9.036a.543.543 0 0 1 .172.395c0 .15-.057.281-.172.396L2.324  17.83a.543.543 0 0 1-.395.172.543.543 0 0 1-.396-.172l-.858-.859a.543.543 0 0 1-.172-.395c0-.149.057-.28.172-.395l6.75-6.75L.675 2.68a.543.543 0 0 1-.172-.395c0-.15.057-.28.172-.395l.858-.86A.543.543 0 0 1 1.93.86c.148 0 .28.057.395.172l8.004 8.004z" fill="#000" fill-rule="evenodd"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+          {% endfor %} 
+          {% endfor %}
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-<a href="{% url 'movies:index' %}" id="back">뒤로가기</a>
-{% comment %} <div class="movie-card">
-    {{resdatas.overview}}
-  <hr>
-  <a href="{% url 'reviews:create' resdatas.id%}">CREATE REVIEW</a>
 
-  <h4>게시글 목록</h4>
-  {% if reviews %}
-    <p>{{ reviews|length }}개의 게시글이 있습니다.</p>
-  {% endif %}
-  <ul>
-    {% for review in reviews %}
-    <div>
-      {% if review.spoiler == 'True' %}
-      스포방지
-      {% else %}
-      스포일러
-      {% endif %}
-      <li>
-        {{ review.user }}
-        <br>
-        <a href="{% url 'reviews:detail' review.id%}">{{ review.title }}</a>
-        <br>
-        {{review.content}}
-        <br>
-        {{review.vote}}
-        <p>좋아요 : <p id="likes">{{ review.like_users.all|length }}</p></p>
-        <div>
-          <form class="like-forms" data-review-id="{{ review.id }}">
-            {% csrf_token %}
-            {% if request.user != review.user%}
-            {% if request.user in review.like_users.all %}
-              <input type="submit" value="좋아요 취소" id="like-{{ review.id }}">
-            {% else %}
-              <input type="submit" value="좋아요" id="like-{{ review.pk }}">
-            {% endif %}
-            {% endif %}
-          </form>
-        </div>
-      </li>
-    </div>
-    {% empty %}
-      <li>게시글이 없어요...</li>
-    {% endfor %}
-  </ul>
-  <hr>
-  {% if request.user.is_authenticated %}
-    <div>
-    <a href="{% url 'cards:create' resdatas.id%}">CREATE CARD</a>
-    </div>
-  {% endif %}
-  <hr>
-  {% if cards %}
-    <p>{{ cards|length }}개의 카드가 있습니다.</p>
-  {% endif %}
-  <ul>
-    {% for card in cards %}
-    <div>
-      title:{{card.title}}
-      content:{{card.content}}
-      movie_id:{{card.movie_id}}
-      이미지:{{resdatas.poster_path}}
-    </div>
-    {% endfor %}
-  </ul>
-  <a href="{% url 'movies:index' %}" id="back">뒤로가기</a>
-</div> {% endcomment %}
+<a href="{% url 'movies:index' %}" id="back">뒤로가기</a>
 {% endblock content %}
 
 {% comment %} {% for genre_id in resdatas.genre_ids %}
@@ -985,5 +1038,114 @@ a[data-tooltip][data-placement="top"]::after {
       content.addEventListener( 'mouseleave', mouseupHandler ); {% endcomment %}
     }
   } );
+  const slider = document.getElementsByClassName('c-slider')[0];
+  const timeline = new TimelineLite();
+
+  let canMove = false;
+  let touchDown = 0;
+  let prevX = 0;
+  let slides = document.getElementsByClassName('c-slide');
+  const slideWidth = slides[0].offsetWidth + 20;
+
+
+  const init = () => {
+    slider.addEventListener('mousedown', handleMouse);
+    slider.addEventListener('mouseup', handleMouse);
+    slider.addEventListener('mousemove', handleMove);
+    
+    slider.addEventListener('touchstart', handleTouch);
+    slider.addEventListener('touchmove', handleTouchMove);
+  };
+
+  /* Mouse handlers */
+  const handleMouse = e => {
+    if (e.type === 'mouseup') {
+      canMove = false;
+    } else {
+      canMove = true;
+    }
+  };
+
+  const handleMove = e => {
+    if (e.pageX < prevX && canMove) {
+      /* to left */
+      handleSwipeLeft();
+      canMove = false;
+    } else if (e.pageX > prevX && canMove) {
+      /* to right */
+      handleSwipeRight();
+      canMove = false;
+    }
+
+    prevX = e.pageX;
+  };
+
+  /* Touch handlers */
+  const handleTouch = e => {
+    touchDown = e.touches[0].clientX
+  }
+
+  const handleTouchMove = e => {
+    if (!touchDown) {
+      return
+    }
+
+    const touchUp = e.touches[0].clientX
+    const touchDiff = touchDown - touchUp
+
+    if (touchDiff > 0) {
+      handleSwipeLeft();
+    } else {
+      handleSwipeRight();
+    }
+
+    touchDown = null
+  };
+
+  /* Swipe handlers */
+  const handleSwipeLeft = () => {  
+    timeline.fromTo(slider, 1, 
+      {
+        x: '0px'
+      },
+      {
+        x: `-${slideWidth}px`,
+        ease: Power4.easeOut
+      }
+    );
+    
+    timeline.to(slider, 0.001, 
+      {
+        x: '0px',
+        onComplete: () => {
+          slider.appendChild(slides[0]);
+          slides = document.getElementsByClassName('c-slide');
+        }
+      }
+    );
+  };
+
+  const handleSwipeRight = () => {  
+    timeline.to(slider, 0.001, 
+      {
+        x: `-${slideWidth}px`,
+        onComplete: () => {
+          const first = slides[0];
+          const last = slides[slides.length - 1];
+          slider.insertBefore(last, first);
+          slides = document.getElementsByClassName('c-slide');
+        }
+      }
+    );
+    
+    timeline.to(slider, 1, 
+      {
+        x: `0px`,
+        ease: Power4.easeOut
+      }
+    );
+  };
+
+init();
 </script>
 {% endblock script %}

@@ -292,7 +292,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: stretch;
-  width: 770px;
+  width: max-content;
 }
 
 .c-slide {
@@ -450,13 +450,24 @@
                 </a>
               </div>
               
-              <div class="other-profile-links-container">
+              <div class="other-profile-links-container" style="margin-bottom:10px;">
                 <a href="{% url 'accounts:reviews' person.email %}" class="other-link-wrap" id="userReviewLabel">
                   <div class="link-label-wrap">
                     <span class="link-label">작성한 리뷰</span>
                   </div>
                   <div class="link-action-wrap">
                     <span class="link-count">{{person.review_set.all|length}}</span>
+                    <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" preserveAspectRatio="none" class=""><path fill-rule="evenodd" clip-rule="evenodd" d="M5.293 3.05a1 1 0 000 1.415L8.828 8l-3.535 3.536a1 1 0 101.414 1.414l4.23-4.23a1 1 0 00.013-1.427L6.707 3.051a1 1 0 00-1.414 0z" fill="#586A85"></path></svg>
+                  </div>
+                </a>
+              </div>
+              <div class="other-profile-links-container">
+                <a href="{% url 'accounts:like_reviews' person.email %}" class="other-link-wrap" id="userReviewLabel">
+                  <div class="link-label-wrap">
+                    <span class="link-label">좋아요한 리뷰</span>
+                  </div>
+                  <div class="link-action-wrap">
+                    <span class="link-count">{{person.like_review.all|length}}</span>
                     <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" preserveAspectRatio="none" class=""><path fill-rule="evenodd" clip-rule="evenodd" d="M5.293 3.05a1 1 0 000 1.415L8.828 8l-3.535 3.536a1 1 0 101.414 1.414l4.23-4.23a1 1 0 00.013-1.427L6.707 3.051a1 1 0 00-1.414 0z" fill="#586A85"></path></svg>
                   </div>
                 </a>

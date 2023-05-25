@@ -230,3 +230,11 @@ def reviews(request, username):
         'person' : person,
     }
     return render(request, 'accounts/reviews.html', context)
+
+def like_reviews(request, username):
+    User = get_user_model()
+    person = User.objects.get(email=username)
+    context = {
+        'person' : person,
+    }
+    return render(request, 'accounts/like_reviews.html', context)
