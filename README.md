@@ -1,6 +1,16 @@
 # Movie On Find - 취향에 맞는 나만의 영화 찾기
 
+[4.jpg](https://github.com/f1rstf1y9/movie_on_find/blob/main/readme/4.jpg)
+
+
+
 ## 역할
+
+[3.jpg](https://github.com/f1rstf1y9/movie_on_find/blob/main/readme/3.jpg)
+
+[8.jpg](https://github.com/f1rstf1y9/movie_on_find/blob/main/readme/8.jpg)
+
+[9.jpg](https://github.com/f1rstf1y9/movie_on_find/blob/main/readme/9.jpg)
 
 - 사용한 프레임워크 & 언어
     - Django + VanillaJS
@@ -13,7 +23,6 @@
     - 영화추천알고리즘 구현
     - 영화검색기능 구현
     - 기타 백엔드 구현
-
 - 은경
     - 로그인(+소셜로그인)
     - 프로필 페이지 레이아웃 구현
@@ -62,6 +71,8 @@
     - EX) 선호장르가 코메디, 액션, 판타지일때 여기서 2개이상 곂치는 영화를 추천리스트에 담아 서비스를 제공할 수 있도록 구현하였다.
 
 ## 서비스대표기능
+
+[6.jpg](https://github.com/f1rstf1y9/movie_on_find/blob/main/readme/6.jpg)
 
 | No. | 구분 | 기능 | 기능설명 |
 | --- | --- | --- | --- |
