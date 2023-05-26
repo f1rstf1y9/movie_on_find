@@ -1,16 +1,16 @@
 # Movie On Find - 취향에 맞는 나만의 영화 찾기
 
-[4.jpg](https://github.com/f1rstf1y9/movie_on_find/blob/main/readme/4.jpg)
+![4.jpg](https://github.com/f1rstf1y9/movie_on_find/blob/main/readme/4.jpg)
 
 
 
 ## 역할
 
-[3.jpg](https://github.com/f1rstf1y9/movie_on_find/blob/main/readme/3.jpg)
+![3.jpg](https://github.com/f1rstf1y9/movie_on_find/blob/main/readme/3.jpg)
 
-[8.jpg](https://github.com/f1rstf1y9/movie_on_find/blob/main/readme/8.jpg)
+![8.jpg](https://github.com/f1rstf1y9/movie_on_find/blob/main/readme/8.jpg)
 
-[9.jpg](https://github.com/f1rstf1y9/movie_on_find/blob/main/readme/9.jpg)
+![9.jpg](https://github.com/f1rstf1y9/movie_on_find/blob/main/readme/9.jpg)
 
 - 사용한 프레임워크 & 언어
     - Django + VanillaJS
@@ -72,7 +72,7 @@
 
 ## 서비스대표기능
 
-[6.jpg](https://github.com/f1rstf1y9/movie_on_find/blob/main/readme/6.jpg)
+![6.jpg](https://github.com/f1rstf1y9/movie_on_find/blob/main/readme/6.jpg)
 
 | No. | 구분 | 기능 | 기능설명 |
 | --- | --- | --- | --- |
