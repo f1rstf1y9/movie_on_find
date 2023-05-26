@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 
 # Create your models here.
+
 class Genre(models.Model):
     name = models.CharField(max_length=50)
     def __str__(self):
@@ -28,3 +29,4 @@ class Movie(models.Model):
 # class Actor(models.Model):
 #     name=models.CharField(max_length=100)
     # movie=models.ManyToManyField(Movie, related_name='actor')
+
