@@ -2,6 +2,10 @@
 
 ![4.png](https://github.com/f1rstf1y9/movie_on_find/blob/main/readme/4.png)
 
+## 시연 영상
+
+[![SSAFY 9기 관통프로젝트 Movie On Find](http://img.youtube.com/vi/BgPRvZ84qow/0.jpg)](https://youtu.be/BgPRvZ84qow?t=0s)
+
 
 
 ## 역할
