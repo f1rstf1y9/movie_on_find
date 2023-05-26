@@ -1,0 +1,1151 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block style %}
+
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+img {
+  object-fit: cover;
+}
+a {
+  color: white;
+  text-decoration: none;
+}
+
+p {
+  margin-bottom: 0;
+}
+
+ul {
+  padding-left: 0;
+}
+li {
+  list-style: none;
+}
+button {
+  background: none;
+  border: none;
+  outline: 0;
+  color: white;
+}
+
+.movie-header{
+  width: 100vw;
+  color: #A9A8A3;
+  height: 100%;
+}
+
+.movie-card-container {
+  margin: 0 auto;
+  position: relative;
+}
+
+.backdrop { 
+  display: flex;
+  margin:0;
+  position: relative;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  height: 300px;
+}
+
+.backdrop::before {
+  content:'';
+  width:100%; height:100%;
+  position:absolute;
+  overflow: hidden;
+  top:0; left:0;
+  background-color: black;
+  background: url("https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces{{resdatas.backdrop_path}}");
+  background-size: cover;
+  filter: blur(11px);
+  opacity: 0.3;
+  -webkit-filter: blur(11px);
+  transform: skewY(-2.2deg);
+  transition: transform 2s;
+  transform: scale(1);
+  //chrome antialias fix
+  -webkit-backface-visibility: hidden; 
+}
+
+.backdrop:hover:before {
+  transform: scale(1.1);
+}
+
+.hero {
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  transform: translateY(-60px);
+}
+
+.cover {
+  width: 200px;
+}
+.details {
+}
+
+.details > div {
+  padding: 5px 0;
+}
+
+.title1 {
+  color: white;
+  font-size: 40px;
+  position: relative;
+}
+
+.title2 {    
+  color: #888683;
+  font-size: 16px;    
+  font-weight: 300;
+}
+
+.movie-tool {
+  color: black;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  background-color: #ffffff5e;
+  border-radius: 5px;
+  margin-top: 5px;
+  padding: 10px 15px 10px 20px !important;
+}
+
+.create-ticket {
+  border-right: 1px solid rgb(73, 73, 73);
+  padding-right: 20px;
+}
+.create-ticket:hover a {
+  color: rgb(228, 161, 36);
+}
+
+.create-review {
+  font-size: 12px;
+  color: rgb(228, 228, 228);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 1px solid rgb(73, 73, 73);
+  padding-right: 20px;
+}
+
+.tag {
+  color: #000;
+  background: rgb(228, 161, 36);
+  border-radius: 5px;
+  padding: 3px 8px;
+  font-size: 14px;
+  margin-right: 4px;
+  line-height: 35px;
+  cursor: pointer;
+}
+
+.tag:hover {
+  background: rgb(181, 127, 28);
+}
+
+
+//star rating stuff via: https://codepen.io/jamesbarnett/pen/vlpkh/
+
+fieldset, label { margin: 0; padding: 0; }
+
+/****** Style Star Rating Widget *****/
+
+.rating { 
+  border: none;
+  float: left;
+}
+
+.rating > input { display: none; } 
+.rating > label:before { 
+  margin: 3px;
+  margin-top: 0;
+  font-size: 1.5em;
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f005";
+}
+
+.rating > .half:before { 
+  content: "\f089";
+  position: absolute;
+}
+
+.rating > label { 
+  color: #ddd; 
+ float: right; 
+}
+
+.icon--group {
+  margin-left: 20px;
+}
+.icon-btn {
+  padding: 0 15px;
+}
+.icon-btn span {
+  font-size: 14px;
+}
+
+/***** CSS Magic to Highlight Stars on Hover *****/
+
+.rating > input:checked ~ label, /* show gold star when clicked */
+.rating:not(:checked) > label:hover, /* hover current star */
+.rating:not(:checked) > label:hover ~ label { color: #FFD700;  } /* hover previous stars in list */
+
+.rating > input:checked + label:hover, /* hover current star when changing rating */
+.rating > input:checked ~ label:hover,
+.rating > label:hover ~ input:checked ~ label, /* lighten current selection */
+.rating > input:checked ~ label:hover ~ label { color: #FFED85;  } 
+
+//tooltip stuff via: https://codepen.io/peiche/pen/JaftA
+
+a[data-tooltip] {
+  position: relative;
+}
+a[data-tooltip]::before,
+a[data-tooltip]::after {
+  position: absolute;
+  display: none;
+  opacity: 0.85;
+}
+a[data-tooltip]::before {
+  /*
+   * using data-tooltip instead of title so we 
+   * don't have the real tooltip overlapping
+   */
+  content: attr(data-tooltip);
+  background: #000;
+  color: #fff;
+  font-size: 13px;
+  padding: 5px;
+  border-radius: 5px;
+  /* we don't want the text to wrap */
+  white-space: nowrap;
+  text-decoration: none;
+}
+a[data-tooltip]::after {
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  content: '';
+}
+
+a[data-tooltip]:hover::before,
+a[data-tooltip]:hover::after {
+  display: block;
+}
+
+/** positioning **/
+
+/* top tooltip */
+a[data-tooltip][data-placement="top"]::before {
+  bottom: 100%;
+  left: 0;
+  margin-bottom: 40px;
+}
+a[data-tooltip][data-placement="top"]::after {
+  border-top-color: #000;
+  border-bottom: none;
+  bottom: 50px;
+  left: 20px;
+  margin-bottom: 4px;
+}
+
+.movie-card {
+  max-width: 700px;
+  background-color: #3a3a41;
+  border: 1px solid #1f1f24;
+  min-height: 500px;
+  margin: 0 auto;
+  border-radius: 7px;
+  padding: 30px;
+}
+.movie-card hr {
+  margin: 30px 0;
+}
+.movie-card .section-title {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+.movie-card .section-title > div {
+  display: flex;
+  gap: 10px;
+}
+.movie-card .section-title a {
+  z-index: 5;
+}
+.movie-card .section-title h3 {
+  font-size: 20px;
+  font-weight: bold;
+}
+.movie-card .basic-info p {
+  margin: 5px 0;
+  font-size: 15px;
+}
+
+/* review-item */
+.review-item {
+  border-radius: 10px;
+  height: 100%;
+  width: 100%;
+}
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.user-info > img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #fff;
+}
+.item-data {
+  color: rgba(255, 175, 2, 0.719);
+  font-size: 12px;
+}
+.item-content {
+  margin-bottom: 10px;
+  font-size: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.spoiler-prevent {
+  color: rgb(103, 103, 103);
+  font-size: 12px;
+}
+.item-content.spoiler {
+  filter: blur(5px);
+}
+.icon-box {
+  display: flex;
+  border-top: 1px solid rgb(46, 46, 46);
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+}
+.icon-box button, .icon-box a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+}
+.icon-box button p, .icon-box a p {
+  width: 20px;
+  display: flex;
+  margin-bottom: 0;
+}
+
+/* carousel */
+.carousel {
+  margin-top: -70px;
+}
+.carousel h2 {
+  margin: 0;
+}
+.carousel .carousel__card {
+  text-decoration: none;
+  color: #fff;
+  position: relative;
+}
+
+.carousel h3 {
+  font-size: 16px;
+  margin: 0;
+  margin-bottom: 4px;
+}
+.carousel span {
+  color: #a7a7a7;
+  font-size: 14px;
+}
+.carousel .dragging .carousel__card {
+  pointer-events: none;
+}
+.carousel .carousel__wrapper {
+  position: relative;
+  margin-bottom: 24px;
+}
+@media only screen and (min-width: 1180px) {
+  .carousel .carousel__wrapper.has-arrows .carousel__content {
+    justify-content: start;
+  }
+}
+@media only screen and (min-width: 1180px) {
+  .carousel .carousel__wrapper.has-arrows .carousel__arrows {
+    display: flex;
+  }
+}
+.carousel .carousel__content {
+  justify-content: start;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  display: grid;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  padding: 0;
+  margin: 0;
+  grid-gap: 24px;
+  grid-auto-flow: column;
+  list-style: none;
+}
+.carousel .carousel__content::-webkit-scrollbar {
+  display: none;
+}
+.carousel .carousel__item .carousel__card {
+  width: 330px;
+  height: 330px;
+  display: flex;
+  justify-content: center;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  user-select: none;
+  margin: 10px 0px;
+  padding: 24px;
+  background-color: rgb(36, 35, 34);
+  border-radius: clamp(0px, ((100vw - 4px) - 100%) * 9999, 8px);
+  cursor: pointer;
+}
+.carousel .carousel__controls {
+  position: relative;
+  top: 170px;
+  left: -15px;
+  width: 105%;
+  display: flex;
+  justify-content: space-between;
+  z-index: 4;
+}
+.carousel .carousel__arrow {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  border: 0;
+  padding: 18px 16px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.728);
+}
+.carousel .carousel__arrow:before {
+  content: "";
+  background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNSIgaGVpZ2h0PSI5IiB2aWV3Qm94PSIwIDAgMTUgOSI+Cgk8cGF0aCBmaWxsPSIjMzMzMzMzIiBkPSJNNy44NjcgOC41NzRsLTcuMjItNy4yMi43MDctLjcwOEw3Ljg2NyA3LjE2IDE0LjA1Ljk4bC43MDYuNzA3Ii8+Cjwvc3ZnPgo=");
+  background-size: contain;
+  filter: brightness(2);
+  display: block;
+  width: 18px;
+  height: 12px;
+  cursor: pointer;
+}
+.carousel .carousel__arrow.arrow-prev:before {
+  transform: rotate(90deg);
+}
+.carousel .carousel__arrow.arrow-next:before {
+  transform: rotate(-90deg);
+}
+.carousel .carousel__arrow.disabled::before {
+  background: transparent;
+}
+.carousel .carousel__arrow.disabled {
+  background: transparent;
+}
+
+/**/
+.o-wrapper {
+  margin: auto;
+  margin-top: 36px;
+  overflow: hidden;
+  padding-bottom: 50px;
+}
+
+.c-slider {
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+  width: max-content%;
+}
+
+.c-slide {
+  font-weight: normal;
+  margin-right: 20px;
+  background: #FFFFFF;
+  border-radius: 3px;
+  border-left: 10px solid #FCEDB7;
+  padding: 20px; 
+  box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.15);
+  
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  overflow: hidden;
+  width: 180px;
+  height: 200px;
+}
+
+.c-slide__title {
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.c-slide__content {
+  width: 100%;
+}
+
+.c-slide__actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.c-slide__image-wrapper {
+  margin: 0;
+  padding: 0;
+  border-radius: 3px;
+  overflow: hidden;
+  height: 0;
+  padding-top: 80%;
+  position: relative;
+}
+
+.c-slide__image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  max-width: 100%;
+  min-height: 100%;
+  margin: auto;
+  padding: 0;
+  transform: translate3d(-50%, -50%, 0);
+}
+
+.c-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+{% endblock style %}
+
+{% block content %}
+<div class="movie-header">
+	<div class="movie-card-container">
+		<div class="backdrop">
+      
+		</div>
+    <div class="hero">
+      <div class="movie-poster">
+        <img src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2{{resdatas.poster_path}}" alt="cover" class="cover"/>
+    </div>
+    <div class="details">
+      <div>
+        <div class="title1">
+          {{resdatas.title}}
+        </div>
+        <div class="title2">
+          {{resdatas.original_title}} ({{ resdatas.release_date|split:"-" }})
+        </div>
+      </div>
+      <div class="movie-info">
+        {% for genre_id in resdatas.genre_ids %}
+          {% for data in datas %}
+            {% ifequal genre_id data.id %}
+              <a href="{% url 'movies:genre_sort' genre_id 1 1 %}" class="tag">{{data.name}}</a>
+            {% endifequal %}
+          {% endfor %}
+        {% endfor %}
+      </div>
+      <div class="movie-vote">
+        평균 ★{{resdatas.vote_average}} ({{resdatas.popularity}}%)
+      </div>
+      <div class="movie-tool">
+        <div class="create-ticket">
+          <a href="{% url 'cards:create' resdatas.id%}">포토티켓 만들기</a>
+        </div>
+        {% comment %} <div class="create-review">
+          <fieldset class="rating">
+            <input type="radio" id="star5" name="rating" value="10"/><label class="full" for="star5" title="Awesome - 5 stars"></label>
+            <input type="radio" id="star4half" name="rating" value="9"/><label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+            <input type="radio" id="star4" name="rating" value="8" checked/><label class="full" for="star4" title="Pretty good - 4 stars"></label>
+            <input type="radio" id="star3half" name="rating" value="7"/><label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+            <input type="radio" id="star3" name="rating" value="6"/><label class="full" for="star3" title="Meh - 3 stars"></label>
+            <input type="radio" id="star2half" name="rating" value="5"/><label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+            <input type="radio" id="star2" name="rating" value="4"/><label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+            <input type="radio" id="star1half" name="rating" value="3"/><label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+            <input type="radio" id="star1" name="rating" value="2"/><label class="full" for="star1" title="Sucks big time - 1 star"></label>
+            <input type="radio" id="starhalf" name="rating" value="1"/><label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+          </fieldset>
+        </div> {% endcomment %}
+        <div class="icon--group">
+          <form class="watched-forms" data-movie-id="{{ resdatas.id }}">
+            {% csrf_token %}
+            <button class="icon-btn" id="watched-{{ resdatas.id }}" {% if request.user.id in resdatas.watched %} style="color:#ffc700;" {% endif %}>
+              <div class="icon">
+                <svg viewBox="0 0 24 24" width="24" height="24"  fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Edit / Add_Plus"> <path id="Vector" d="M6 12H12M12 12H18M12 12V18M12 12V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+              </div>
+              <span>봤어요</span>
+            </button>
+          </form>
+          <form class="watching-forms" data-movie-id="{{ resdatas.id }}">
+            {% csrf_token %}
+            <button class="icon-btn"  id="watching-{{ resdatas.id }}" {% if request.user.id in resdatas.watching %} style="color:#ffc700;" {% endif %}>
+              <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" class="injected-svg" data-src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDVDNyA1IDIuNzMgOC4xMSAxIDEyLjVDMi43MyAxNi44OSA3IDIwIDEyIDIwQzE3IDIwIDIxLjI3IDE2Ljg5IDIzIDEyLjVDMjEuMjcgOC4xMSAxNyA1IDEyIDVaTTEyIDE3LjVDOS4yNCAxNy41IDcgMTUuMjYgNyAxMi41QzcgOS43NCA5LjI0IDcuNSAxMiA3LjVDMTQuNzYgNy41IDE3IDkuNzQgMTcgMTIuNUMxNyAxNS4yNiAxNC43NiAxNy41IDEyIDE3LjVaTTEyIDkuNUMxMC4zNCA5LjUgOSAxMC44NCA5IDEyLjVDOSAxNC4xNiAxMC4zNCAxNS41IDEyIDE1LjVDMTMuNjYgMTUuNSAxNSAxNC4xNiAxNSAxMi41QzE1IDEwLjg0IDEzLjY2IDkuNSAxMiA5LjVaIiBmaWxsPSJjdXJyZW50Q29sb3IiLz4KPC9zdmc+Cg==" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <path d="M12 5C7 5 2.73 8.11 1 12.5C2.73 16.89 7 20 12 20C17 20 21.27 16.89 23 12.5C21.27 8.11 17 5 12 5ZM12 17.5C9.24 17.5 7 15.26 7 12.5C7 9.74 9.24 7.5 12 7.5C14.76 7.5 17 9.74 17 12.5C17 15.26 14.76 17.5 12 17.5ZM12 9.5C10.34 9.5 9 10.84 9 12.5C9 14.16 10.34 15.5 12 15.5C13.66 15.5 15 14.16 15 12.5C15 10.84 13.66 9.5 12 9.5Z" fill="currentColor"></path>
+                </svg>
+              </div>
+              <span id="watching-{{ resdatas.id }}">보는중</span>
+            </button>
+          </form>
+          <form class="interest-forms" data-movie-id="{{ resdatas.id }}">
+            {% csrf_token %}
+            <button class="icon-btn" id="interest-{{ resdatas.id }}" {% if request.user.id in resdatas.interest %} style="color:#ffc700;" {% endif %}>
+              <div class="icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Check"> <path id="Vector" d="M6 12L10.2426 16.2426L18.727 7.75732" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+              </div>
+              <span>보고싶어요</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    </div>
+    
+		<!-- end hero -->
+	</div>
+	<!-- end container -->
+</div>
+
+<div class="movie-card">
+  <div class="basic-info">
+    <div class="section-title">
+      <h3>기본 정보</h3>
+    </div>
+    <div class="info-desc">
+      <p>{{resdatas.original_title}}</p>
+      <p>{{resdatas.release_date|split:"-"}} 
+        {% for genre_id in resdatas.genre_ids %}
+        {% for data in datas %}
+          {% ifequal genre_id data.id %}
+          · {{data.name}}
+          {% endifequal %}
+        {% endfor %}
+        {% endfor %}
+      </p>
+      <p>{{resdatas.runtime}}분</p>
+      <p>{{resdatas.overview}}</p>
+    </div>
+  </div>
+  <hr>
+  <div class="movie-review">
+    <div class="section-title">
+      <div>        
+        <h3>리뷰</h3>
+        {% if reviews %}
+          <p>{{ reviews|length }}개</p>
+        {% endif %}
+      </div>
+      <a href="{% url 'reviews:create' resdatas.id%}">리뷰 작성하기</a>
+    </div>
+    <div class="review-container">
+      <div class="carousel">
+        {% comment %} 리뷰 {% endcomment %}
+        <div class="carousel__wrapper">
+          {% if reviews|length > 1 %}
+          <div class="carousel__controls">
+            <button class="carousel__arrow disabled arrow-prev"></button>
+            <button class="carousel__arrow arrow-next"></button>
+          </div>
+          {% else %}
+          <div style="height:60px;">-</div>
+          {% endif %}
+
+          <ul class="carousel__content">
+            {% for review in reviews %}
+              <li class="carousel__item">
+                <div class="carousel__card">
+                  <div class="review-item">
+                    <div class="item-header">
+                      <a class="user-info" href="{% url 'accounts:profile' review.user.email %}">
+                        <img src="{{review.user.profile_image.url}}" alt="{{review.user.nickname}}">
+                        <p>{{ review.user.nickname }}</p>
+                      </a>
+                      <p class="item-data">{{ review.created_at }}</p>
+                    </div>
+                    {% if review.spoiler %}
+                    <a href="{% url 'reviews:detail' review.pk %}" class="spoiler-link">
+                      <div class="spoiler-prevent">
+                        *스포일러가 포함된 리뷰입니다. 확인하려면 클릭해주세요.
+                      </div>
+                      <div class="item-content spoiler">
+                        {{ review.content }}
+                      </div>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'reviews:detail' review.pk %}">
+                      <div class="item-content">
+                        {{ review.content }}
+                      </div>
+                    </a>
+                    {% endif %}
+                    <div class="icon-box">
+                      <form action="#" class="review-like-form" data-review-id="{{ review.pk }}">
+                        {% csrf_token %}
+                        <button class="like" id="like-{{ review.pk }}"  {% if not user.is_authenticated or user == review.user %}disabled{% endif %}>
+                          {% if request.user in review.like_users.all %}
+                            <p class="icon"><svg viewBox="0 0 24 24" fill="#ff4d4d" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ff4d4d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg></p>
+                          {% else %}
+                            <p class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Heart_01"> <path id="Vector" d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg></p>
+                          {% endif %}
+                          <p class="review-like-count">{{ review.like_users.all|length}}</p>
+                        </button>  
+                      </form>   
+                      <a class="comment" href="{% url 'reviews:detail' review.pk %}">
+                        <p class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_429_11233)"> <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 13.4876 3.36093 14.891 4 16.1272L3 21L7.8728 20C9.10904 20.6391 10.5124 21 12 21Z" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> <defs> <clipPath id="clip0_429_11233"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg></p>
+                        <p>{{ review.comment_set.all|length }}</p>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            {% empty %}
+              리뷰가 없어요! 가장 먼저 리뷰를 작성해보세요😊
+            {% endfor %}
+          </ul>
+          </div>
+        </div>
+    </div>
+  </div>
+  <hr>
+  <div class="movie-book">
+    <div class="section-title">
+      <div>        
+        <h3>이 영화가 포함된 포토티켓북</h3>
+      </div>
+    </div>
+    <div class="ticketbook-container">
+      <div class="o-wrapper mx-md-2">
+        <div class="c-slider">
+          {% for card in cards %}
+          {% for collection in card.collections.all %}
+          <div class="c-slide c-slide--{{collection.pk}}" style="border-left: 10px solid {{collection.collection_color}};" onclick="moveToCollection({{collection.pk}})">
+            <div class="c-slide__content">
+              <figure class="c-slide__image-wrapper">
+                {% with collection.cards.all|first as first_card %}{{ first_card.movie.poster_path }}{% endwith %}
+                {{collection.cards.all.0}}
+                <img class="c-slide__image" src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/{{collection.cards.all.0.movie.poster_path}}" alt="">
+              </figure>
+              <h3 class="c-slide__title" style="color:black">{{ collection.title }}</h3>
+            </div>
+            
+            <div class="c-slide__actions">
+              <div class="c-slide__heart">
+              </div>
+              <a href="{% url 'card_collections:detail' collection.pk %}" class="c-slide__link">
+                <svg width="11" height="18" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10.328 9.036a.543.543 0 0 1 .172.395c0 .15-.057.281-.172.396L2.324  17.83a.543.543 0 0 1-.395.172.543.543 0 0 1-.396-.172l-.858-.859a.543.543 0 0 1-.172-.395c0-.149.057-.28.172-.395l6.75-6.75L.675 2.68a.543.543 0 0 1-.172-.395c0-.15.057-.28.172-.395l.858-.86A.543.543 0 0 1 1.93.86c.148 0 .28.057.395.172l8.004 8.004z" fill="#000" fill-rule="evenodd"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+          {% endfor %} 
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<a href="{% url 'movies:index' %}" id="back">뒤로가기</a>
+{% endblock content %}
+
+{% comment %} {% for genre_id in resdatas.genre_ids %}
+  {% for data in datas %}
+    {% ifequal genre_id data.id %}
+      {{data.name}}
+    {% endifequal %}
+  {% endfor %}
+{% endfor %} {% endcomment %}
+{% comment %} <a href="{% url 'movies:index' %}">뒤로가기</a> {% endcomment %}
+
+
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script type="module">
+  const moviePk = location.href.split('/')[4]
+  const options = {
+    method: 'GET',
+    url: `https://api.themoviedb.org/3/movie/${moviePk}?api_key=f0ee4eefc21a888bf1229e2d951df4e6&language=ko`,
+    headers: {
+      accept: 'application/json',
+    }
+  };
+  axios
+    .request(options)
+    .then(function (response) {
+      console.log(response.data.backdrop_path);
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
+</script>
+<script>
+  const forms = document.querySelectorAll('.like-forms');
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+
+  forms.forEach((form) => {
+    form.addEventListener('submit', function (event) {
+      event.preventDefault()
+      const reviewId = event.target.dataset.reviewId
+      axios({
+        method: 'post',
+        url: `http://127.0.0.1:8000/reviews/${reviewId}/likes/`,
+        headers: {'X-CSRFToken': csrftoken},
+      })
+      .then((response) => {
+        // like 버튼을 이전에 눌렀는가? 좋아요 / 좋아요 취소를 할지 결정 (서버로 좋아요 여부 받기)
+        const isLiked = response.data.is_liked
+        const likeBtn = document.querySelector(`#like-${reviewId}`)
+        const likes=document.querySelector("#likes")
+        if (isLiked === true) {
+          likeBtn.value = '좋아요 취소'
+          likes.textContent=Number(likes.textContent) + 1
+        } else {
+          likeBtn.value = '좋아요',
+          likes.textContent=Number(likes.textContent) - 1
+        }
+      })
+    })
+  })
+
+  // watching
+  const watching_forms = document.querySelectorAll('.watching-forms');
+ 
+  watching_forms.forEach((form) => {
+    form.addEventListener('click', function (event) {
+      event.preventDefault()
+      const movieId = document.querySelector('.watching-forms').dataset.movieId;
+      axios({
+        method: 'post',
+        url: `http://127.0.0.1:8000/movies/${movieId}/watching/`,
+        headers: {'X-CSRFToken': csrftoken},
+      })
+      .then((response) => {
+        const isWatching = response.data.is_watching
+        const WatchingBtn = document.querySelector(`#watching-${movieId}`);
+        if (isWatching === true) {  
+          WatchingBtn.style = "color:#ffc700;"
+        } else {
+          WatchingBtn.style = "color:white;"
+        }
+    })
+    })
+  })
+  // watched
+  const watched_forms = document.querySelectorAll('.watched-forms');
+
+  watched_forms.forEach((form) => {
+    form.addEventListener('click', function (event) {
+      event.preventDefault()
+      const movieId = document.querySelector('.watched-forms').dataset.movieId;
+
+      axios({
+        method: 'post',
+        url: `http://127.0.0.1:8000/movies/${movieId}/watched/`,
+        headers: {'X-CSRFToken': csrftoken},
+      })
+      .then((response) => {
+        const isWatched = response.data.is_watched
+        const WatchedBtn = document.querySelector(`#watched-${movieId}`);
+        if (isWatched === true) {  
+          WatchedBtn.style = "color:#ffc700;"
+        } else {
+          WatchedBtn.style = "color:white;"
+        }
+    })
+    })
+  })
+    // interest
+    const interest_forms = document.querySelectorAll('.interest-forms');
+  
+    interest_forms.forEach((form) => {
+      form.addEventListener('click', function (event) {
+        event.preventDefault()
+        const movieId = document.querySelector('.interest-forms').dataset.movieId;
+      
+        axios({
+          method: 'post',
+          url: `http://127.0.0.1:8000/movies/${movieId}/interest/`,
+          headers: {'X-CSRFToken': csrftoken},
+        })
+        .then((response) => {
+          const isInterest = response.data.is_interest
+          const InterestBtn = document.querySelector(`#interest-${movieId}`);
+          if (isInterest === true) {  
+            InterestBtn.style = "color:#ffc700;"
+          } else {
+            InterestBtn.style = "color:white;"
+            
+        }
+      })
+      })
+    })
+    const back=document.querySelector('#back')
+    back.addEventListener('click',function (event) {
+      event.preventDefault()
+      history.back()
+    })
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const spoilerLinks = document.querySelectorAll(".spoiler-link");
+    const reviewItems = document.querySelectorAll(".review-item");
+
+    spoilerLinks.forEach(function(item) {
+      item.addEventListener("click", function() {
+        if (item.classList.contains('spoiler-link')){
+          event.preventDefault();
+          const itemMessage = item.querySelector(".spoiler-prevent");
+          const itemContent = item.querySelector(".item-content");
+          itemContent.classList.remove("spoiler");
+          itemMessage.style.display = "none";
+          item.classList.remove("spoiler-link");
+        }
+      });
+    });
+  });
+
+  window.addEventListener( 'load', () => {
+    const COMPONENT_SELECTOR = '.carousel__wrapper';
+    const CONTROLS_SELECTOR = '.carousel__controls';
+    const CONTENT_SELECTOR = '.carousel__content';
+
+    const components = document.querySelectorAll( COMPONENT_SELECTOR );
+
+    for ( let i = 0; i < components.length; i++ ) {
+      const component = components[ i ];
+      const content = component.querySelector( CONTENT_SELECTOR );
+      let x = 0;
+      let mx = 0;
+      const maxScrollWidth = content.scrollWidth - content.clientWidth / 2 - content.clientWidth / 2;
+      const nextButton = component.querySelector( '.arrow-next' );
+      const prevButton = component.querySelector( '.arrow-prev' );
+
+      if ( maxScrollWidth !== 0 ) {
+        component.classList.add( 'has-arrows' );
+      }
+
+      if ( nextButton ) {
+        nextButton.addEventListener( 'click', function ( event ) {
+          event.preventDefault();
+          x = content.clientWidth / 2 + content.scrollLeft + 0;
+          content.scroll( {
+            left: x,
+            behavior: 'smooth',
+          } );
+        } );
+      }
+
+      if ( prevButton ) {
+        prevButton.addEventListener( 'click', function ( event ) {
+          event.preventDefault();
+          x = content.clientWidth / 2 - content.scrollLeft + 0;
+          content.scroll( {
+            left: -x,
+            behavior: 'smooth',
+          } );
+        } );
+      }
+
+      /**
+      * Mouse move handler.
+      *
+      * @param {object} e event object.
+      */
+      const mousemoveHandler = ( e ) => {
+        const mx2 = e.pageX - content.offsetLeft;
+        if ( mx ) {
+          content.scrollLeft = content.sx + mx - mx2;
+        }
+      };
+
+      /**
+      * Mouse down handler.
+      *
+      * @param {object} e event object.
+      */
+      const mousedownHandler = ( e ) => {
+        content.sx = content.scrollLeft;
+        mx = e.pageX - content.offsetLeft;
+        content.classList.add( 'dragging' );
+      };
+
+      /**
+      * Scroll handler.
+      */
+      const scrollHandler = () => {
+        toggleArrows();
+      };
+
+      /**
+      * Toggle arrow handler.
+      */
+      const toggleArrows = () => {
+        console.log(content.scrollLeft)
+        if ( content.scrollLeft > maxScrollWidth - 10 ) {
+          nextButton.classList.add( 'disabled' );
+        } else if ( content.scrollLeft < 10 ) {
+          prevButton.classList.add( 'disabled' );
+        } else {
+          nextButton.classList.remove( 'disabled' );
+          prevButton.classList.remove( 'disabled' );
+        }
+      };
+
+      /**
+      * Mouse up handler.
+      */
+      {% comment %} const mouseupHandler = () => {
+        mx = 0;
+        content.classList.remove( 'dragging' );
+      };
+
+      content.addEventListener( 'mousemove', mousemoveHandler );
+      content.addEventListener( 'mousedown', mousedownHandler );
+      if ( component.querySelector( CONTROLS_SELECTOR ) !== undefined ) {
+        content.addEventListener( 'scroll', scrollHandler );
+      }
+      content.addEventListener( 'mouseup', mouseupHandler );
+      content.addEventListener( 'mouseleave', mouseupHandler ); {% endcomment %}
+    }
+  } );
+  const slider = document.getElementsByClassName('c-slider')[0];
+  const timeline = new TimelineLite();
+
+  let canMove = false;
+  let touchDown = 0;
+  let prevX = 0;
+  let slides = document.getElementsByClassName('c-slide');
+  const slideWidth = slides[0].offsetWidth + 20;
+
+
+  const init = () => {
+    slider.addEventListener('mousedown', handleMouse);
+    slider.addEventListener('mouseup', handleMouse);
+    slider.addEventListener('mousemove', handleMove);
+    
+    slider.addEventListener('touchstart', handleTouch);
+    slider.addEventListener('touchmove', handleTouchMove);
+  };
+
+  /* Mouse handlers */
+  const handleMouse = e => {
+    if (e.type === 'mouseup') {
+      canMove = false;
+    } else {
+      canMove = true;
+    }
+  };
+
+  const handleMove = e => {
+    if (e.pageX < prevX && canMove) {
+      /* to left */
+      handleSwipeLeft();
+      canMove = false;
+    } else if (e.pageX > prevX && canMove) {
+      /* to right */
+      handleSwipeRight();
+      canMove = false;
+    }
+
+    prevX = e.pageX;
+  };
+
+  /* Touch handlers */
+  const handleTouch = e => {
+    touchDown = e.touches[0].clientX
+  }
+
+  const handleTouchMove = e => {
+    if (!touchDown) {
+      return
+    }
+
+    const touchUp = e.touches[0].clientX
+    const touchDiff = touchDown - touchUp
+
+    if (touchDiff > 0) {
+      handleSwipeLeft();
+    } else {
+      handleSwipeRight();
+    }
+
+    touchDown = null
+  };
+
+  /* Swipe handlers */
+  const handleSwipeLeft = () => {  
+    timeline.fromTo(slider, 1, 
+      {
+        x: '0px'
+      },
+      {
+        x: `-${slideWidth}px`,
+        ease: Power4.easeOut
+      }
+    );
+    
+    timeline.to(slider, 0.001, 
+      {
+        x: '0px',
+        onComplete: () => {
+          slider.appendChild(slides[0]);
+          slides = document.getElementsByClassName('c-slide');
+        }
+      }
+    );
+  };
+
+  const handleSwipeRight = () => {  
+    timeline.to(slider, 0.001, 
+      {
+        x: `-${slideWidth}px`,
+        onComplete: () => {
+          const first = slides[0];
+          const last = slides[slides.length - 1];
+          slider.insertBefore(last, first);
+          slides = document.getElementsByClassName('c-slide');
+        }
+      }
+    );
+    
+    timeline.to(slider, 1, 
+      {
+        x: `0px`,
+        ease: Power4.easeOut
+      }
+    );
+  };
+
+init();
+</script>
+{% endblock script %}

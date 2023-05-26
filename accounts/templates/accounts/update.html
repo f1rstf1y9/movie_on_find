@@ -1,16 +1,166 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 
+{% block nav %}
+  <a href="{% url 'accounts:profile' %} user.username" class="btn btn-secondary">BACK</a>
+  <span>회원정보 수정</span>
+{% endblock nav %}
+
+{% block style %}
+.form-group:has(#id_kakao_id) {
+    display: none;
+  } 
+  form > div {
+    margin: 30px 0;
+  }
+  .form-group > textarea, .form-control {
+    color: white;
+    background-color: #494949;
+    border:#b1b1b1;
+    height: 45px;
+  }
+  .form-group > textarea::placeholder, .form-control::placeholder {
+    color: rgb(202, 202, 202);
+  }
+  .form-group > textarea:focus, .form-control:focus {
+    color: white;
+    box-shadow: none;
+    box-shadow: 0px 0px 4px 1px rgba(255,255,255,1);
+    -webkit-box-shadow: 0px 0px 4px 1px rgba(255,255,255,1);
+    -moz-box-shadow: 0px 0px 4px 1px rgba(255,255,255,1);
+    background-color: #494949;
+  }
+  .join-btn > button {
+    background-color: rgb(255, 217, 2);
+    border: none;
+    color: black;
+    height: 40px;
+  }
+  .join-btn > button:hover {
+    background-color: rgba(255, 217, 2, 0.863);
+    border: none;
+    color: black;
+  }
+  body > div > form > div:nth-child(3) {
+  
+  }
+  .profile-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+  }
+  
+  #id_like_genres {
+    background: #494949;
+    padding: 20px;
+  }
+  .checkbox {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+    border-radius: 5px;
+  }
+  
+  .form-check {
+    display: flex;
+    align-items: center;
+  }
+  
+  .form-check-label {
+    margin-bottom: 0;
+  }
+{% endblock style %}
+
 {% block content %}
-<h1>회원정보수정</h1>
-<form action="{% url 'accounts:update' %}" method="POST">
-    {% csrf_token %}
-    {% bootstrap_form form %}
-    <div class="d-grid my-2">
-        <button class="btn btn-primary" type="submit">회원 정보 수정</button>
-    </div>
-</form>
+<div class="container-area">
+    <form action="/accounts/update/" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group"><label for="id_email">Email</label><input type="text" name="email" value="f1rstf1y9@naver.com" class="form-control" placeholder="Email" title="" required="" disabled="" id="id_email"></div>
+        <div class="form-group"><label for="id_profile_image">Profile image</label><br><img src="" class="profile-image"><input type="file" name="profile_image" accept="image/*" class="form-control-file" title="" id="id_profile_image"></div>
+        <div class="form-group"><label for="id_nickname">Nickname</label><textarea name="nickname" cols="40" rows="1" class="form-control" placeholder="Nickname" title="" required="" id="id_nickname">찐찐막</textarea></div>
+        <div class="form-group"><label>Like genres</label><div class="checkbox" id="id_like_genres">
+        <div class="form-check"><label class="form-check-label" for="id_like_genres_0"><input class="form-check-input" id="id_like_genres_0" name="like_genres" title="" type="checkbox" value="12">
+        모험</label>
+        </div>
+        <div class="form-check"><label class="form-check-label" for="id_like_genres_1"><input checked="" class="form-check-input" id="id_like_genres_1" name="like_genres" title="" type="checkbox" value="14">
+        판타지</label>
+        </div>
+        <div class="form-check"><label class="form-check-label" for="id_like_genres_2"><input class="form-check-input" id="id_like_genres_2" name="like_genres" title="" type="checkbox" value="16">
+        애니메이션</label>
+        </div>
+        <div class="form-check"><label class="form-check-label" for="id_like_genres_3"><input class="form-check-input" id="id_like_genres_3" name="like_genres" title="" type="checkbox" value="18">
+        드라마</label>
+        </div>
+        <div class="form-check"><label class="form-check-label" for="id_like_genres_4"><input class="form-check-input" id="id_like_genres_4" name="like_genres" title="" type="checkbox" value="27">
+        공포</label>
+        </div>
+        <div class="form-check"><label class="form-check-label" for="id_like_genres_5"><input class="form-check-input" id="id_like_genres_5" name="like_genres" title="" type="checkbox" value="28">
+        액션</label>
+        </div>
+        <div class="form-check"><label class="form-check-label" for="id_like_genres_6"><input checked="" class="form-check-input" id="id_like_genres_6" name="like_genres" title="" type="checkbox" value="35">
+        코미디</label>
+        </div>
+        <div class="form-check"><label class="form-check-label" for="id_like_genres_7"><input class="form-check-input" id="id_like_genres_7" name="like_genres" title="" type="checkbox" value="36">
+        역사</label>
+        </div>
+        <div class="form-check"><label class="form-check-label" for="id_like_genres_8"><input class="form-check-input" id="id_like_genres_8" name="like_genres" title="" type="checkbox" value="37">
+        서부</label>
+        </div>
+        <div class="form-check"><label class="form-check-label" for="id_like_genres_9"><input class="form-check-input" id="id_like_genres_9" name="like_genres" title="" type="checkbox" value="53">
+        스릴러</label>
+        </div>
+        <div class="form-check"><label class="form-check-label" for="id_like_genres_10"><input class="form-check-input" id="id_like_genres_10" name="like_genres" title="" type="checkbox" value="80">
+        범죄</label>
+        </div>
+        <div class="form-check"><label class="form-check-label" for="id_like_genres_11"><input class="form-check-input" id="id_like_genres_11" name="like_genres" title="" type="checkbox" value="99">
+        다큐멘터리</label>
+        </div>
+        <div class="form-check"><label class="form-check-label" for="id_like_genres_12"><input class="form-check-input" id="id_like_genres_12" name="like_genres" title="" type="checkbox" value="878">
+        SF</label>
+        </div>
+        <div class="form-check"><label class="form-check-label" for="id_like_genres_13"><input checked="" class="form-check-input" id="id_like_genres_13" name="like_genres" title="" type="checkbox" value="9648">
+        미스터리</label>
+        </div>
+        <div class="form-check"><label class="form-check-label" for="id_like_genres_14"><input class="form-check-input" id="id_like_genres_14" name="like_genres" title="" type="checkbox" value="10402">
+        음악</label>
+        </div>
+        <div class="form-check"><label class="form-check-label" for="id_like_genres_15"><input class="form-check-input" id="id_like_genres_15" name="like_genres" title="" type="checkbox" value="10749">
+        로맨스</label>
+        </div>
+        <div class="form-check"><label class="form-check-label" for="id_like_genres_16"><input class="form-check-input" id="id_like_genres_16" name="like_genres" title="" type="checkbox" value="10751">
+        가족</label>
+        </div>
+        <div class="form-check"><label class="form-check-label" for="id_like_genres_17"><input class="form-check-input" id="id_like_genres_17" name="like_genres" title="" type="checkbox" value="10752">
+        전쟁</label>
+        </div>
+        <div class="form-check"><label class="form-check-label" for="id_like_genres_18"><input class="form-check-input" id="id_like_genres_18" name="like_genres" title="" type="checkbox" value="10770">
+        TV 영화</label>
+        </div>
+        </div></div>
+                <div class="d-grid my-2">
+                    <button class="btn btn-primary" type="submit">회원 정보 수정</button>
+                </div>
+            </form>
+</div>
 <hr>
-<a href="{% url 'movies:index' %}" class="btn btn-secondary">BACK</a>
 {% endblock content %}
 
+{% block script %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const profileImage = document.getElementsByClassName('profile-image');
+        const fileInput = document.getElementById('id_profile_image');
+    
+        // 초기 프로필 이미지 설정
+        profileImage.src = fileInput.value ? URL.createObjectURL(fileInput.files[0]) : profileImage.src;
+    
+        // 파일 입력이 변경되면 프로필 이미지 업데이트
+        fileInput.addEventListener('change', function() {
+          profileImage.src = URL.createObjectURL(this.files[0]);
+        });
+      });
+</script>
+{% endblock script %}

@@ -1,0 +1,325 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+
+{% block style %}
+body {
+  background-image: url("{% static 'image/search_tile.png' %}");
+  width: 100%;
+  min-height: 100vh;
+}
+li {
+    list-style: none;
+}
+.search-box {
+  display: none !important;
+}
+.search-container {
+  position: absolute;
+  top: 80px;
+  left: 0;
+  width: 100%;
+  height: 100px;
+}
+.search-container .search {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 60px;
+  background: rgb(243, 165, 21);
+  border-radius: 50%;
+  transition: all 1s;
+  z-index: 4;
+  box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.4);
+}
+.search-container .search:hover {
+  cursor: pointer;
+}
+.search-container .search::before {
+  content: "";
+  position: absolute;
+  margin: auto;
+  top: 22px;
+  right: 0;
+  bottom: 0;
+  left: 22px;
+  width: 12px;
+  height: 2px;
+  background: white;
+  transform: rotate(45deg);
+  transition: all 0.5s;
+}
+.search-container .search::after {
+  content: "";
+  position: absolute;
+  margin: auto;
+  top: -5px;
+  right: 0;
+  bottom: 0;
+  left: -5px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 2px solid white;
+  transition: all 0.5s;
+}
+.search-container input {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 50px;
+  outline: none;
+  border: none;
+  background: rgb(243, 165, 21);
+  color: white;
+  text-shadow: 0 0 10px rgb(243, 165, 21);
+  padding: 0 80px 0 20px;
+  border-radius: 30px;
+  box-shadow: 0 0 25px 0 rgb(243, 165, 21), 0 20px 25px 0 rgba(0, 0, 0, 0.2);
+  transition: all 1s;
+  opacity: 0;
+  z-index: 5;
+  font-weight: bolder;
+  letter-spacing: 0.1em;
+}
+.search-container input:hover {
+  cursor: pointer;
+}
+.search-container input:focus {
+  width: 400px;
+  opacity: 1;
+  cursor: text;
+}
+.search-container input:focus ~ .search {
+  right: -350px;
+  background: #151515;
+  z-index: 6;
+}
+.search-container input:focus ~ .search::before {
+  top: 0;
+  left: 0;
+  width: 25px;
+}
+.search-container input:focus ~ .search::after {
+  top: 0;
+  left: 0;
+  width: 25px;
+  height: 2px;
+  border: none;
+  background: white;
+  border-radius: 0%;
+  transform: rotate(-45deg);
+}
+.search-container input::placeholder {
+  color: white;
+  opacity: 0.5;
+  font-weight: bolder;
+}
+
+
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,700,800");
+
+.movie-card-list {
+  margin-top: 0px;
+}
+.movie_card {
+  font-family: "Montserrat", helvetica, arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  position: relative;
+  display: block;
+  max-width: 700px;
+  height: 160px;
+  margin: 30px auto;
+  overflow: hidden;
+  border-radius: 10px;
+  transition: all 0.4s;
+}
+.movie_card:hover {
+  transform: scale(1.02);
+  transition: all 0.4s;
+}
+.movie_card .info_section {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-blend-mode: multiply;
+  z-index: 2;
+  border-radius: 10px;
+}
+.movie_card .info_section .movie_header {
+  position: relative;
+  padding: 25px;
+  height: 40%;
+}
+.movie_card .info_section .movie_header h3 {
+  color: #fff;
+  font-weight: 400;
+  font-size: 20px;
+}
+.movie_card .info_section .movie_header h5 {
+  color: #9ac7fa;
+  font-weight: 400;
+  font-size: 16px;
+}
+.movie_card .info_section .movie_header .minutes {
+  display: inline-block;
+  margin-top: 10px;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+}
+.movie_card .info_section .movie_header .type {
+  display: inline-block;
+  color: #cee4fd;
+  margin-left: 10px;
+}
+.movie_card .info_section .movie_header .locandina {
+  position: relative;
+  float: left;
+  margin-right: 20px;
+  height: 80px;
+  box-shadow: 0 0 5px -5px rgba(0, 0, 0, 0.5);
+}
+.movie_card .blur_back {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  height: 100%;
+  right: 0;
+  background-size: cover;
+  border-radius: 11px;
+}
+
+@media screen and (min-width: 768px) {
+  .movie_header {
+    width: 60%;
+  }
+
+  .info_section {
+    background: linear-gradient(to right, #171616 50%, transparent 100%);
+  }
+
+  .blur_back {
+    width: 80%;
+    background-position: -100% 10% !important;
+  }
+}
+@media screen and (max-width: 768px) {
+  .movie_card {
+    width: 95%;
+    margin: 70px auto;
+    min-height: 200px;
+    height: auto;
+  }
+
+  .blur_back {
+    width: 100%;
+    background-position: 50% 50% !important;
+  }
+
+  .movie_header {
+    width: 100%;
+    margin-top: 85px;
+  }
+
+  .info_section {
+    background: linear-gradient(to top, #141413 50%, transparent 100%);
+    display: inline-grid;
+  }
+}
+.movie_card {
+  box-shadow: 0px 0px 30px -20px rgba(255, 183, 0, 0.5);
+}
+.movie_card:hover {
+  box-shadow: 0px 0px 40px -18px rgba(255, 183, 0, 0.273);
+}
+
+.bright_back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.bright_back img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.container-area {
+    margin-top: 210px;
+}
+.container-area h1 {
+    font-size: 22px;
+}
+.container-area h1 b {
+    color: rgb(255, 196, 0);
+}
+{% endblock style %}
+
+{% block content %}
+<form class="search-container" action="{% url 'movies:search'%}" method="GET">
+    <input type="text" name="keyword" value="" placeholder="검색어를 입력하세요" maxlength="100" id="id_keyword">
+    <div class="search"></div>
+</form>
+<div class="container-area">
+    {% if blind.ans %}
+    {% if movies|length > 0 %}
+    <h1><b>'{{keyword}}'</b>에 대해 <b>{{movies|length}}</b>개의 검색결과가 있습니다.</h1>
+    {% endif %}
+    <ul class="movie-card-list">
+        {% for movie in movies %}
+        <li>
+        <a href="{% url 'movies:detail' movie.id %}" class="movie-item">
+        <div class="movie_card">
+            <div class="info_section">
+            <div class="movie_header">
+                <img class="locandina" src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/{{movie.poster_path}}" alt="">
+                <h3>{{movie.title}}</h3>
+                <h5>{{movie.release_date|split:"-"}} · {{movie.runtime}}분</h5>
+                <span class="minutes">★ {{ movie.vote_average }}</span>
+                <p class="type">
+                {% for genre_id in resdata.genre_ids %}
+                {% for data in datas %}
+                    {% ifequal genre_id data.id %}
+                    {{data.name}}
+                    {% endifequal %}
+                {% endfor %}
+                {% endfor %}
+                </p>
+            </div>
+            </div>
+            <div class="blur_back bright_back">
+            <img src="https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces{{movie.backdrop_path}}" alt="{{movie.title}}"/>
+            </div>
+        </div>
+        </a>
+        </li>
+        {% empty %}
+        <p>검색 결과가 없습니다.</p>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+
+{% endblock content %}
+
+
+{% block script %}
+
+{% endblock script %}

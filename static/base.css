@@ -1,0 +1,142 @@
+@font-face {
+  font-family: 'IBMPlexSansKR-Regular';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}* { 
+  font-family: 'IBMPlexSansKR-Regular', 'sans-serif'; 
+}
+a {
+  text-decoration: none !important;
+}
+.navbar a, .navbar a:visited {
+  color: inherit !important;
+}
+.navbar a:hover {
+  color:rgb(255, 187, 0) !important
+}
+.logout-btn:hover {
+  color:rgb(255, 187, 0) !important
+}
+body {
+  background-color: rgb(44, 44, 44);
+  color: white;
+}
+img {
+  object-fit: cover;
+}
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 62px;
+  padding: 10px 40px;
+  z-index: 1000; /* 다른 요소들 위에 표시하기 위한 z-index 설정 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
+  color: white;
+}
+
+.navbar.bg-light {
+  background-color: #1b1a19 !important;
+}
+.navbar.bg-light .form-control {
+  border-radius: 4.25rem;
+}
+
+.navbar__content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-box {
+  height:40px;
+}
+
+form {
+  display: inline;
+}
+.logout-btn {
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  color: white;
+  margin-right: 10px;
+}
+
+.profile__image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.container-area {
+  max-width: 700px;
+  margin: 0 auto;
+  margin-top: 120px;
+  min-height: calc(100vh - 100px);
+}
+.sub-header {
+  margin: 0 auto;
+  width: 100%;
+  margin-top: 62px;
+  position: fixed;
+  z-index: 99;
+  top: 0;
+  background-color: rgb(44, 44, 44);
+}
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-weight: 700;
+  margin: 0 auto;
+  max-width: 700px;
+}
+
+.footer {
+  display: none;
+  width: 100%;
+  background-color: #222222;
+  color: #878787;
+  padding: 30px 0;
+  bottom: 0;
+  left: 0;
+}
+
+.footer__content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.footer__left {
+  width: 70%;
+}
+
+.footer__text {
+  margin-bottom: 10px;
+}
+
+.footer__right {
+  width: 30%;
+  text-align: right;
+}
+
+.footer__link {
+  color: #878787;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.footer__link:hover {
+  text-decoration: underline;
+}

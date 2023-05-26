@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block style %}
+.movie-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.movie-item {
+  flex-basis: calc(640px/3);
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.movie-item:hover .movie-info {
+  transform: translate(-50%, -100%);
+}
+
+.poster-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.movie-info {
+  width: 100%;
+  margin-top: 10px;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  transition: transform 0.3s ease;
+  background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+  padding: 20px;
+  border-radius: 5px;
+  color: #fff;
+  opacity: 0.9;
+  text-align: left;
+  padding-top: 260px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.section-header a {
+  padding-right: 20px;
+  color: #fff;
+}
+
+.title h3 {
+  font-size: 18px;
+  font-weight: 800;
+  text-decoration: none;
+  margin-bottom: 0;
+}
+
+.sub-title {
+  font-size: 16px;
+  color: gray;
+}
+
+.vote-average {
+  font-size: 14px;
+  background-color: #ffd700;
+  padding: 2px 5px;
+  border-radius: 2px;
+  width: 48px;
+  color: black;
+}
+
+.genre {
+  font-size: 14px;
+}
+
+.overview {
+  font-size: 14px;
+  margin-top: 10px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+hr {
+  margin-top: 40px;
+  margin-bottom: 40px;
+  border: 0;
+  border-top: 1px solid #ddd;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.pagination-nav {
+  margin-top: 30px;
+  display:flex;
+  justify-content: center;
+}
+{% endblock style %}
+
+{% block content %}
+<div id="header" class="sub-header">
+  <div class="header-inner">
+    <div class="back-btn">
+      <a href="{% url 'movies:index' %}" id="back">
+        <svg width="24" height="24" viewBox="0 0 1024 1024" fill="#ffffff" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M669.6 849.6c8.8 8 22.4 7.2 30.4-1.6s7.2-22.4-1.6-30.4l-309.6-280c-8-7.2-8-17.6 0-24.8l309.6-270.4c8.8-8 9.6-21.6 2.4-30.4-8-8.8-21.6-9.6-30.4-2.4L360.8 480.8c-27.2 24-28 64-0.8 88.8l309.6 280z" fill=""></path></g></svg>
+      </a>
+    </div>
+    <p>{{user.nickname}}님을 위한 추천 영화</p>
+    <div></div>
+  </div>
+</div>
+
+<div class="container-area">
+  <div class="movie-list">
+    {% for resdata in resdatas%}
+    <a href="{% url 'movies:detail' resdata.id %}" class="movie-item">
+      <div class="poster-image">
+        <img src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/{{resdata.poster_path}}" alt="">
+      </div>
+      <div class="movie-info">
+        <div class="title">
+          <h3>{{ resdata.title }}</h3>
+        </div>
+        <div class="sub-title">
+          {{resdata.original_title}} ({{ resdata.release_date|split:"-" }})
+        </div>
+        <div class="vote-average">★ {{ resdata.vote_average }}</div>
+        <div class="genre">
+          {% for genre_id in resdata.genre_ids %}
+          {% for data in datas %}
+            {% ifequal genre_id data.id %}
+            {{data.name}}
+            {% endifequal %}
+          {% endfor %}
+          {% endfor %}
+        </div>
+        <div class="overview">{{ resdata.overview }}</div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  
+  <nav class="pagination-nav">
+      <ul class="pagination">
+        {% for i in total %}
+        <li class="page-item"><a class="page-link" href="{% url 'movies:my_reco' num=i %}">{{i}}</a></li>
+          {% endfor %}
+      </ul>
+    </nav>
+  {% endblock content %}
+</div>
+
